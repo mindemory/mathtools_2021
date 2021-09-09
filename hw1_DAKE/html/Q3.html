@@ -1,0 +1,321 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-09"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Homework 0 - Question 2 - Mrugank Dake</a></li><li><a href="#2">3a)</a></li><li><a href="#3">3b)</a></li><li><a href="#4">3c)</a></li><li><a href="#5">3d)</a></li><li><a href="#6">3e)</a></li><li><a href="#7">3f)</a></li><li><a href="#8">3g)</a></li><li><a href="#9">3h)</a></li></ul></div><h2 id="1">Homework 0 - Question 2 - Mrugank Dake</h2><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+</pre><h2 id="2">3a)</h2><p>A column vector of 12 elements each of 3000 representing a steady income source of 3000 per month</p><pre class="codeinput">income = 3000 * ones(12, 1);
+disp(<span class="string">'The column vector is:'</span>)
+disp(income)
+</pre><pre class="codeoutput">The column vector is:
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+
+</pre><h2 id="3">3b)</h2><p>Due to the TAship, the income for the 7th month is now 4000. Therefore, the resulting income vector becomes:</p><pre class="codeinput">income(7) = 4000;
+disp(<span class="string">'The update vector is:'</span>)
+disp(income)
+</pre><pre class="codeoutput">The update vector is:
+        3000
+        3000
+        3000
+        3000
+        3000
+        3000
+        4000
+        3000
+        3000
+        3000
+        3000
+        3000
+
+</pre><h2 id="4">3c)</h2><p>The expenses matrix has four columns: rent, grocery, clothing, fun in the order. The expenses for each month are kept constant and also the expense across each domain is also kept constant, say 500 each.</p><pre class="codeinput">expenses = repmat(500, 12, 4);
+disp(<span class="string">'The expenses matrix is:'</span>)
+disp(expenses)
+</pre><pre class="codeoutput">The expenses matrix is:
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+   500   500   500   500
+
+</pre><h2 id="5">3d)</h2><p>The saving vector is the difference between the income vector and the row-sum vector of the expenses matrix</p><pre class="codeinput">savings = income - sum(expenses, 2);
+disp(<span class="string">'The savings vector is:'</span>)
+disp(savings)
+</pre><pre class="codeoutput">The savings vector is:
+        1000
+        1000
+        1000
+        1000
+        1000
+        1000
+        2000
+        1000
+        1000
+        1000
+        1000
+        1000
+
+</pre><h2 id="6">3e)</h2><p>The discount_vector is a vector with a linear spacing from 1 to 0.8 with 12 equal-spaced intervals</p><pre class="codeinput">discount_vector = linspace(1, .8, 12);
+<span class="comment">% Transforming the grocery and clothing columns i.e. columns 2 and 3 of the expenses matrix</span>
+<span class="comment">% using the discount matrix</span>
+expenses(:, 2:3) = expenses(:, 2:3) .* discount_vector';
+disp(<span class="string">'The resulting expenses matrix after discounting is:'</span>)
+disp(expenses)
+</pre><pre class="codeoutput">The resulting expenses matrix after discounting is:
+  500.0000  500.0000  500.0000  500.0000
+  500.0000  490.9091  490.9091  500.0000
+  500.0000  481.8182  481.8182  500.0000
+  500.0000  472.7273  472.7273  500.0000
+  500.0000  463.6364  463.6364  500.0000
+  500.0000  454.5455  454.5455  500.0000
+  500.0000  445.4545  445.4545  500.0000
+  500.0000  436.3636  436.3636  500.0000
+  500.0000  427.2727  427.2727  500.0000
+  500.0000  418.1818  418.1818  500.0000
+  500.0000  409.0909  409.0909  500.0000
+  500.0000  400.0000  400.0000  500.0000
+
+</pre><h2 id="7">3f)</h2><p>First, the savings can be updated with a second column that represents the savings after taking into account the discounted expenses</p><pre class="codeinput">savings(:, 2) = income - sum(expenses, 2);
+<span class="comment">% The savings can then be visualized as a grouped bar plot with the initla</span>
+<span class="comment">% and the discounted savings</span>
+figure;
+h = bar(savings, <span class="string">'grouped'</span>);
+set(h, {<span class="string">'DisplayName'</span>}, {<span class="string">'savings_{initial}'</span>, <span class="string">'savings_{discounted}'</span>}')
+xlabel(<span class="string">'Month'</span>)
+ylabel(<span class="string">'Savings'</span>)
+title(<span class="string">'Monitoring savings with and without discount'</span>)
+legend()
+</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <h2 id="8">3g)</h2><p>The Gaussian vector that accounts for the random variation can be constructed using the randn. The standard deviation of 100 can be incorporated by multiplying each element of the resulting vector with 100. This Gaussian distribution is already centered at 0. Hence the mean of 0 is already accounted for.</p><pre class="codeinput">gaus_vector = 100 .* randn(12, 1);
+<span class="comment">% The fun is the column 4 of the expenses matrix. Adding gaus_vector to the</span>
+<span class="comment">% fun column:</span>
+expenses(:, 4) = expenses(:, 4) + gaus_vector;
+<span class="comment">% Updating the savings with the incorporation of noise in fun</span>
+savings(:, 3) = income - sum(expenses, 2);
+figure;
+h = bar(savings, <span class="string">'grouped'</span>);
+set(h, {<span class="string">'DisplayName'</span>}, {<span class="string">'savings_{initial}'</span>, <span class="string">'savings_{discounted}'</span>, <span class="string">'savings_{with random noise}'</span>}')
+xlabel(<span class="string">'Month'</span>)
+ylabel(<span class="string">'Savings'</span>)
+title(<span class="string">'Monitoring savings with, without discount and random fun'</span>)
+legend()
+<span class="comment">% Visualizing the random vector that was added to the fun column can be</span>
+<span class="comment">% done using the histogram function</span>
+figure;
+histogram(gaus_vector)
+</pre><img vspace="5" hspace="5" src="Q3_02.png" alt=""> <img vspace="5" hspace="5" src="Q3_03.png" alt=""> <h2 id="9">3h)</h2><p>We can create a structure for each card with three fields: points from the table given in the question, rewards computed my multiplying the points to the expenses computed in 3g and the savings that can be computed by adding the rewards to the savings</p><pre class="codeinput">card(1).points = [0, 1, 2, 3] ./ 100;
+card(2).points = [0, 2, 2, 1] ./ 100;
+card(3).points = [0.1, 1, 1, 2] ./ 100;
+
+<span class="keyword">for</span> c = 1:numel(card)
+    figure;
+    card(c).rewards = expenses * card(c).points';
+    card(c).savings = savings(:, 3) + card(c).rewards;
+    bar(card(c).savings)
+    title([<span class="string">'Savings for card '</span>, num2str(c)])
+    xlabel(<span class="string">'Month'</span>)
+    ylabel(<span class="string">'Savings'</span>)
+<span class="keyword">end</span>
+
+rewards_array = [card.rewards];
+[m6, i6] = max(sum(rewards_array(1:6, :)));
+disp([<span class="string">'The highest rewards for the first 6 months is for the card '</span>, num2str(i6), <span class="keyword">...</span>
+    <span class="string">' with the total reward of '</span>, num2str(m6)])
+
+[m12, i12] = max(sum(rewards_array(1:6, :)));
+disp([<span class="string">'The highest rewards for all the months is for the card '</span>, num2str(i12), <span class="keyword">...</span>
+    <span class="string">' with the total reward of '</span>, num2str(m12)])
+</pre><pre class="codeoutput">The highest rewards for the first 6 months is for the card 1 with the total reward of 162.4023
+The highest rewards for all the months is for the card 1 with the total reward of 162.4023
+</pre><img vspace="5" hspace="5" src="Q3_04.png" alt=""> <img vspace="5" hspace="5" src="Q3_05.png" alt=""> <img vspace="5" hspace="5" src="Q3_06.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Homework 0 - Question 2 - Mrugank Dake
+clear; clc; close all;
+
+%% 3a)
+% A column vector of 12 elements each of 3000 representing a steady income
+% source of 3000 per month
+income = 3000 * ones(12, 1);
+disp('The column vector is:')
+disp(income)
+
+%% 3b)
+% Due to the TAship, the income for the 7th month is now 4000. Therefore,
+% the resulting income vector becomes:
+income(7) = 4000;
+disp('The update vector is:')
+disp(income)
+
+%% 3c)
+% The expenses matrix has four columns: rent, grocery, clothing, fun in the
+% order. The expenses for each month are kept constant and also the expense
+% across each domain is also kept constant, say 500 each.
+expenses = repmat(500, 12, 4);
+disp('The expenses matrix is:')
+disp(expenses)
+
+%% 3d)
+% The saving vector is the difference between the income vector and the
+% row-sum vector of the expenses matrix
+savings = income - sum(expenses, 2);
+disp('The savings vector is:')
+disp(savings)
+
+%% 3e)
+% The discount_vector is a vector with a linear spacing from 1 to 0.8 with
+% 12 equal-spaced intervals
+discount_vector = linspace(1, .8, 12);
+% Transforming the grocery and clothing columns i.e. columns 2 and 3 of the expenses matrix
+% using the discount matrix
+expenses(:, 2:3) = expenses(:, 2:3) .* discount_vector';
+disp('The resulting expenses matrix after discounting is:')
+disp(expenses)
+
+%% 3f)
+% First, the savings can be updated with a second column that represents
+% the savings after taking into account the discounted expenses
+savings(:, 2) = income - sum(expenses, 2);
+% The savings can then be visualized as a grouped bar plot with the initla
+% and the discounted savings
+figure;
+h = bar(savings, 'grouped');
+set(h, {'DisplayName'}, {'savings_{initial}', 'savings_{discounted}'}')
+xlabel('Month')
+ylabel('Savings')
+title('Monitoring savings with and without discount')
+legend()
+
+%% 3g)
+% The Gaussian vector that accounts for the random variation can be
+% constructed using the randn. The standard deviation of 100 can be
+% incorporated by multiplying each element of the resulting vector with
+% 100. This Gaussian distribution is already centered at 0. Hence the mean
+% of 0 is already accounted for.
+gaus_vector = 100 .* randn(12, 1);
+% The fun is the column 4 of the expenses matrix. Adding gaus_vector to the
+% fun column:
+expenses(:, 4) = expenses(:, 4) + gaus_vector;
+% Updating the savings with the incorporation of noise in fun
+savings(:, 3) = income - sum(expenses, 2);
+figure;
+h = bar(savings, 'grouped');
+set(h, {'DisplayName'}, {'savings_{initial}', 'savings_{discounted}', 'savings_{with random noise}'}')
+xlabel('Month')
+ylabel('Savings')
+title('Monitoring savings with, without discount and random fun')
+legend()
+% Visualizing the random vector that was added to the fun column can be
+% done using the histogram function
+figure;
+histogram(gaus_vector)
+
+%% 3h)
+% We can create a structure for each card with three fields: points from the
+% table given in the question, rewards computed my multiplying the points to
+% the expenses computed in 3g and the savings that can be computed by
+% adding the rewards to the savings
+
+card(1).points = [0, 1, 2, 3] ./ 100;
+card(2).points = [0, 2, 2, 1] ./ 100;
+card(3).points = [0.1, 1, 1, 2] ./ 100;
+
+for c = 1:numel(card)
+    figure;
+    card(c).rewards = expenses * card(c).points';
+    card(c).savings = savings(:, 3) + card(c).rewards;
+    bar(card(c).savings)
+    title(['Savings for card ', num2str(c)])
+    xlabel('Month')
+    ylabel('Savings')
+end
+
+rewards_array = [card.rewards];
+[m6, i6] = max(sum(rewards_array(1:6, :)));
+disp(['The highest rewards for the first 6 months is for the card ', num2str(i6), ...
+    ' with the total reward of ', num2str(m6)])
+
+[m12, i12] = max(sum(rewards_array(1:6, :)));
+disp(['The highest rewards for all the months is for the card ', num2str(i12), ...
+    ' with the total reward of ', num2str(m12)])
+
+##### SOURCE END #####
+--></body></html>
