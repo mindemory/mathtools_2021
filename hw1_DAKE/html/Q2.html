@@ -1,0 +1,250 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-14"><meta name="DC.source" content="Q2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Homework 0 - Question 2 - Mrugank Dake</a></li><li><a href="#2">2a)</a></li><li><a href="#3">2b)</a></li><li><a href="#4">2c)</a></li><li><a href="#5">2d, 2e, 2f)</a></li></ul></div><h2 id="1">Homework 0 - Question 2 - Mrugank Dake</h2><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+</pre><h2 id="2">2a)</h2><p>Vectors a and b are unit-length vectors and we can center them at 0. The If the two vectors are aligned with the tip of vector b sitting on the top of vector a, then the vector c which represents the hypotenuse of the resulting triangle is given as the sum of the vectors a and b. The length of the hypotenuse is then the length of the vector c, which is defined as the positive square-root of the sum of the two co-ordinates of the vector.</p><pre class="codeinput">a = [0 1];
+b = [1 0];
+c = a + b;
+hypotenuse_length = abs(sqrt(c(1)^2 + c(2)^2));
+disp([<span class="string">'The length of the hypotenuse i.e. vector c is: '</span>, num2str(hypotenuse_length)]);
+<span class="comment">% As can be seen, the length of the resulting hypotenuse vector agrees with</span>
+<span class="comment">% what we computed in question 1</span>
+</pre><pre class="codeoutput">The length of the hypotenuse i.e. vector c is: 1.4142
+</pre><h2 id="3">2b)</h2><p>(1)</p><pre class="codeinput">met1_length = abs(sqrt(c(1)^2 + c(2)^2));
+disp([<span class="string">'The length of the vector c using method 1 is: '</span>, num2str(met1_length)]);
+
+<span class="comment">% (2)</span>
+met2_length = abs(sqrt(sum(c.^2)));
+disp([<span class="string">'The length of the vector c using method 2 is: '</span>, num2str(met2_length)]);
+
+<span class="comment">% (3)</span>
+met3_length = abs(sqrt(dot(c, c)));
+disp([<span class="string">'The length of the vector c using method 3 is: '</span>, num2str(met3_length)]);
+
+<span class="comment">% (4)</span>
+met4_length = norm(c, 2);
+disp([<span class="string">'The length of the vector c using method 4 is: '</span>, num2str(met4_length)]);
+
+<span class="comment">% (4)</span>
+met5_length = abs(sqrt(c * c'));
+disp([<span class="string">'The length of the vector c using method 5 is: '</span>, num2str(met5_length)]);
+</pre><pre class="codeoutput">The length of the vector c using method 1 is: 1.4142
+The length of the vector c using method 2 is: 1.4142
+The length of the vector c using method 3 is: 1.4142
+The length of the vector c using method 4 is: 1.4142
+The length of the vector c using method 5 is: 1.4142
+</pre><h2 id="4">2c)</h2><p>The angle between the two vectors can be computed as the arccos of the ratio of the dot product of two vectors and the product of norms of the two vectors</p><pre class="codeinput">theta = acos(dot(c, a) / (norm(c, 2) * norm(a, 2)));
+disp([<span class="string">'The angle between the vectors c and a is: '</span>, num2str(theta)])
+
+<span class="comment">% Unit vector using shrinking the vector by its norm</span>
+c_hat_rescaling = c / norm(c, 2);
+disp([<span class="string">'The unit vector obtained by shrinking vector c is : '</span>])
+disp(c_hat_rescaling)
+
+<span class="comment">% Unit vector using the angle theta</span>
+c_hat_angle = [cos(theta) sin(theta)];
+disp([<span class="string">'The unit vector obtained using the angle theta is : '</span>])
+disp(c_hat_angle)
+
+<span class="comment">% Vector with same length as of c but with angle that is 3 times theta can</span>
+<span class="comment">% be obtained by taking a unit vector using cos(3 * theta) and sin(3 *</span>
+<span class="comment">% theta) and multiplying the vector by the length of the vector c</span>
+c3 = hypotenuse_length * [cos(3 * theta) sin(3 * theta)];
+disp(<span class="string">'Vector with the same length as that of vector c but with angle 3 times that of theta is:'</span>)
+disp(c3)
+
+<span class="comment">% Vector with same length as of c but with angle that is 4 times theta can</span>
+<span class="comment">% be obtained by taking a unit vector using cos(4 * theta) and sin(4 *</span>
+<span class="comment">% theta) and multiplying the vector by the length of the vector c</span>
+c4 = hypotenuse_length * [cos(4 * theta) sin(4 * theta)];
+disp(<span class="string">'Vector with the same length as that of vector c but with angle 4 times that of theta is:'</span>)
+disp(c4)
+</pre><pre class="codeoutput">The angle between the vectors c and a is: 0.7854
+The unit vector obtained by shrinking vector c is : 
+    0.7071    0.7071
+
+The unit vector obtained using the angle theta is : 
+    0.7071    0.7071
+
+Vector with the same length as that of vector c but with angle 3 times that of theta is:
+   -1.0000    1.0000
+
+Vector with the same length as that of vector c but with angle 4 times that of theta is:
+   -1.4142   -0.0000
+
+</pre><h2 id="5">2d, 2e, 2f)</h2><p>All the vectors can be plotted using the plot function and specifying the vectors x and y co-ordinates. Additionally a displayname and linewidth is added. The displayname is then used to prepare the legend. The graph also has x and y labels and title. The x and y scale limits are set to ensure an appropriate visibility of the vectors plotted. saveas function is used to save the figure as Matlab readable .fig format and printable .png format</p><pre class="codeinput">fig = figure;
+plot([0 a(1)], [0 a(2)], <span class="string">'r'</span>, <span class="string">'DisplayName'</span>, <span class="string">'a'</span>, <span class="string">'LineWidth'</span>, 2);
+hold <span class="string">on</span>;
+plot([0 b(1)], [0 b(2)], <span class="string">'b'</span>, <span class="string">'DisplayName'</span>, <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2);
+plot([0 c(1)], [0 c(2)], <span class="string">'g'</span>, <span class="string">'DisplayName'</span>, <span class="string">'c'</span>, <span class="string">'LineWidth'</span>, 2);
+plot([0 c3(1)], [0 c3(2)], <span class="string">'y'</span>, <span class="string">'DisplayName'</span>, <span class="string">'c3'</span>, <span class="string">'LineWidth'</span>, 2);
+plot([0 c4(1)], [0 c4(2)], <span class="string">'k'</span>, <span class="string">'DisplayName'</span>, <span class="string">'c4'</span>, <span class="string">'LineWidth'</span>, 2);
+legend();
+xlim([-1.5 1.25]); ylim([-0.25 1.5]);
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'y'</span>);
+title(<span class="string">'Plot of all vectors'</span>);
+saveas(fig, <span class="string">'Plot of all vectors.fig'</span>)
+saveas(fig, <span class="string">'Plot of all vectors.png'</span>)
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Homework 0 - Question 2 - Mrugank Dake
+clear; clc; close all;
+
+%% 2a)
+% Vectors a and b are unit-length vectors and we can center them at 0. The
+% If the two vectors are aligned with the tip of vector b sitting on the
+% top of vector a, then the vector c which represents the hypotenuse of the
+% resulting triangle is given as the sum of the vectors a and b. The length
+% of the hypotenuse is then the length of the vector c, which is defined as
+% the positive square-root of the sum of the two co-ordinates of the
+% vector.
+a = [0 1];
+b = [1 0];
+c = a + b;
+hypotenuse_length = abs(sqrt(c(1)^2 + c(2)^2));
+disp(['The length of the hypotenuse i.e. vector c is: ', num2str(hypotenuse_length)]);
+% As can be seen, the length of the resulting hypotenuse vector agrees with
+% what we computed in question 1
+
+%% 2b)
+% (1)
+met1_length = abs(sqrt(c(1)^2 + c(2)^2));
+disp(['The length of the vector c using method 1 is: ', num2str(met1_length)]);
+
+% (2)
+met2_length = abs(sqrt(sum(c.^2)));
+disp(['The length of the vector c using method 2 is: ', num2str(met2_length)]);
+
+% (3)
+met3_length = abs(sqrt(dot(c, c)));
+disp(['The length of the vector c using method 3 is: ', num2str(met3_length)]);
+
+% (4)
+met4_length = norm(c, 2);
+disp(['The length of the vector c using method 4 is: ', num2str(met4_length)]);
+
+% (4)
+met5_length = abs(sqrt(c * c'));
+disp(['The length of the vector c using method 5 is: ', num2str(met5_length)]);
+
+
+%% 2c)
+% The angle between the two vectors can be computed as the arccos of the
+% ratio of the dot product of two vectors and the product of norms of the
+% two vectors
+theta = acos(dot(c, a) / (norm(c, 2) * norm(a, 2)));
+disp(['The angle between the vectors c and a is: ', num2str(theta)])
+
+% Unit vector using shrinking the vector by its norm
+c_hat_rescaling = c / norm(c, 2);
+disp(['The unit vector obtained by shrinking vector c is : '])
+disp(c_hat_rescaling)
+
+% Unit vector using the angle theta
+c_hat_angle = [cos(theta) sin(theta)];
+disp(['The unit vector obtained using the angle theta is : '])
+disp(c_hat_angle)
+
+% Vector with same length as of c but with angle that is 3 times theta can
+% be obtained by taking a unit vector using cos(3 * theta) and sin(3 *
+% theta) and multiplying the vector by the length of the vector c
+c3 = hypotenuse_length * [cos(3 * theta) sin(3 * theta)];
+disp('Vector with the same length as that of vector c but with angle 3 times that of theta is:')
+disp(c3)
+
+% Vector with same length as of c but with angle that is 4 times theta can
+% be obtained by taking a unit vector using cos(4 * theta) and sin(4 *
+% theta) and multiplying the vector by the length of the vector c
+c4 = hypotenuse_length * [cos(4 * theta) sin(4 * theta)];
+disp('Vector with the same length as that of vector c but with angle 4 times that of theta is:')
+disp(c4)
+
+%% 2d, 2e, 2f)
+% All the vectors can be plotted using the plot function and specifying the
+% vectors x and y co-ordinates. Additionally a displayname and linewidth
+% is added. The displayname is then used to prepare the legend. The graph
+% also has x and y labels and title. The x and y scale limits are set to
+% ensure an appropriate visibility of the vectors plotted. saveas function
+% is used to save the figure as Matlab readable .fig format and printable
+% .png format
+fig = figure;
+plot([0 a(1)], [0 a(2)], 'r', 'DisplayName', 'a', 'LineWidth', 2);
+hold on;
+plot([0 b(1)], [0 b(2)], 'b', 'DisplayName', 'b', 'LineWidth', 2);
+plot([0 c(1)], [0 c(2)], 'g', 'DisplayName', 'c', 'LineWidth', 2);
+plot([0 c3(1)], [0 c3(2)], 'y', 'DisplayName', 'c3', 'LineWidth', 2);
+plot([0 c4(1)], [0 c4(2)], 'k', 'DisplayName', 'c4', 'LineWidth', 2);
+legend();
+xlim([-1.5 1.25]); ylim([-0.25 1.5]);
+xlabel('x'); ylabel('y');
+title('Plot of all vectors');
+saveas(fig, 'Plot of all vectors.fig')
+saveas(fig, 'Plot of all vectors.png')
+##### SOURCE END #####
+--></body></html>
