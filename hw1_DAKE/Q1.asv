@@ -50,26 +50,6 @@ u2_hat = u2 / norm(u2, 2);
 disp(['The cosine of angle between v2_x and u2_hat is ', num2str(v2_x'*u2_hat/norm(v2_x, 2))])
 
 %%
-% If v2_y is orthogonal to u2_hat, then the cosine of the angle between the 
-% two vectors should be 0.
-
-disp(['The cosine of angle between v2_y and u2_hat is ', num2str(round(v2_y'*u2_hat/norm(v2_y, 2), 10))])
-
-%%
-% Checking for the sum of the vectors v2_x and v2_y to add to v2
-v2_new = v2_x + v2_y;
-v2_new == v2
-
-%%
-% The sum of squared lengths of v2_x, v2_y, v2
-v2_x_len_sq = sum(v2_x.^2);
-v2_y_len_sq = sum(v2_y.^2);
-v2_len_sq = sum(v2.^2);
-
-%%
-% Check if the identity holds
-round(v2_len_sq - (v2_x_len_sq + v2_y_len_sq), 4) == 0
-%%
 function [v_x, v_y, perp_dist] = inner_prod(u_hat, v)
     % Given a vector v and a unit vector u_hat, this function computes:
     % i) v_x which is the component of v along u_hat. This can be computed
