@@ -39,22 +39,25 @@ clear; close all; clc;
 %%
 mtxExamples = load('mtxExamples.mat');
 mtx_fields = fieldnames(mtxExamples);
-for i = 1:size(mtx_fields, 1)
+for i = 1:1
     mtx = mtxExamples.(mtx_fields{i})
     [U, S, V] = svd(mtx)
     
-    null_cols = find(all(S<10^-3, 1));
-    if size(null_cols, 2) > 0
-        fprintf('There is a nullspace of size %d\n', size(null_cols, 2))
-        x =  V(:, null_cols) * randn(size(null_cols, 2), 1);
+    null_cols = find(all(S<10^-3, 2));
+    if size(null_cols, 1) > 0
+        fprintf('There is a nullspace of size %d\n', size(null_cols, 1))
+        x = zeros(size(V, 1), 1);
+        for cols = null_cols
+            x(cols) = randn();
+        end
         x
-        y = mtx * x
+        mtx * x
     else
         fprintf('No nullspace exists for this matrix\n')
     end
 
     range_rows = find(any(S>10^-3, 2));
-    y_range = U(:, range_rows) * randn(size(range_rows, 1), 1)
+    y_range = randn(size(range_rows, 1), 1)'*U(:, range_rows)
     x_range = pinv(mtx) * y_range;
     y_range_recomputed = mtx * x_range
 end

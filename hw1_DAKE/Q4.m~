@@ -40,20 +40,13 @@ w = [1, 4, 3.5, 2, 1];
 u = w/sqrt(sum(w.^2))
 
 %% c)
+% We have to determine a unit-length stimulus vector that is physically
+% realizable but produces the smallest response
+%%
 % Following the logic from (b), the smallest response will be produced by
 % the stimulus vector with cos(theta) = 0 i.e. when theta = 90. However,
 % since all the elements of the vector w are positive, any vector that is
 % orthogonal to w will have at least one of the quantities < 0. However,
 % for the stimulus to be physically realizable, all the elements of the
 % input stimulus vector have to be greater than 0, since the intensities
-% are supposed to be positive. Therefore, the goal here is to try to find
-% out a vector that is as close to being orthogonal to the weight vector as
-% possible but the components are still greater than 0.
-%%
-% The vector should be as close to being orthogonal and hence the best
-% candidate would be one of the basis vectors. Amongst the basis vectors,
-% the vector that will be closest to being orthonormal to the weight vector
-% is the one that lies along the component of weight vector i.e. smallest.
-%%
-% Hence the stimulus vectors that will produce the smallest responses in
-% these neurons are: [1 0 0 0 0] and [0 0 0 0 1]
+% are supposed t

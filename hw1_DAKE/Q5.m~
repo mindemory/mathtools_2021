@@ -23,7 +23,7 @@ sum(sum(round(basis' - inv(basis), 4)))
 %%
 % Checking for any N dimensional matrix. Here, N = 100 is checked for
 N1 = 100;
-basis1 = gramSchmidt(100);
+basis1 = gramSchmidt(100)
 sum(sum(round(basis1' - inv(basis1), 4)))
 %% Function
 function basis = gramSchmidt(N)

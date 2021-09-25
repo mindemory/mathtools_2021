@@ -1,0 +1,206 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#5">System 1:</a></li><li><a href="#24">System 2:</a></li><li><a href="#25">System 3:</a></li><li><a href="#36">System 4:</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><p>Let S be a system that maps the input vectors to the output vectors. For S to be a linear system, we should have:</p><p>S(av1 + bv2) = aS(v1) + bS(v2);</p><h2 id="5">System 1:</h2><p>The input vectors are:</p><p>v1 = [3, 2]; v2 = [-1, 1]</p><p>And the output vectors are:</p><p>w1 = 13; w2 = 3</p><p>Hence the system, if it exists, converts a 2 * 1 vector to a 1 * 1 vector (or a scalar). Therefore, the system has to be a matrix of size 1 * 2</p><p>Let the matrix be M = [a b]</p><p>Hence we have:</p><p>[a b]*[3 2]' = 13; and [a b]*[-1 1]' = 3</p><p>Therefore, 3a + 2b = 13; and -a + b = 3</p><p>From the equation on the right, we get:</p><p>b = 3 + a;</p><p>Substituting in the equation in the left:</p><p>3a + 2(3 + a) = 13</p><p>Therefore, 3a + 6 + 2a = 13</p><p>Therefore, 5a + 6 = 13</p><p>Therefore, 5a = 7</p><p>Therefore, a = 7/5 = 1.4</p><p>and b = 3 + a = 3 + 1.4 = 4.4</p><pre class="codeinput">M = [1.4, 4.4];
+u1 = [3, 2]'; u2 = [-1, 1]';
+v1 = 13; v2 = 3;
+</pre><p>Checking if the system works:</p><pre class="codeinput">round(v1 - M * u1, 4) == 0
+round(v2 - M * u2, 4) == 0
+</pre><pre class="codeoutput">
+ans =
+
+  logical
+
+   1
+
+
+ans =
+
+  logical
+
+   1
+
+</pre><h2 id="24">System 2:</h2><p>The system S here converts the input 0 to a vector [3, -3]. Since the transformation here is from a null vector of dimension 1 to an ouptut vector of shape (2, 1). No system exists that can multiply 0 to produce an output. Therefore, the system S does not exist.</p><h2 id="25">System 3:</h2><p>The input vectors are:</p><p>v1 = [5, 2.5], v2 = [-1, -0.5]</p><p>The output vectors are: w1 = [-5, -10], w2 = [1, 2]</p><p>The input and output vectors are of size 2 * 1 and hence the matrix that act as a representation of the system should be 2 * 2. Let this matrix be:</p><p>M = [a b; c d]</p><p>Therefore, we have four parameters that need to be figured out. However, a close examination of the input and output vectors shows that:</p><p>v1/-5 = v2 and w1/-5 = w2</p><p>Therefore, in this scenario, the two input/output pairs are linearly independent. Hence the problem boils down to solving for 4 hyperparameters given only one equation with two variables. Therefore, there are infinitely many solutions that can solve this system of input/output pairs.</p><p>The system might be linear, but the matrix that can be used to solve this system of equations is not unique. Two example matrices that can solve the pair of equations are:</p><p>M = [-1 0; -2 0]</p><p>M = [-2 2; -3 2]</p><h2 id="36">System 4:</h2><p>Let S be a system that converts the input vectors v1, v2, v3 to the output vectors w1, w2, w3, where:</p><p>v1 = [1, 3], v2 = [1, -1], v3 = [4, 0]</p><p>w1 = [3, 1], w2 = [-2, 2], w3 = [1, 6]</p><p>In this particular case, v1 + 3 * v2 = v3</p><p>Using the definition of a linear system, if S is indeed linear:</p><p>S(v1 + 3 * v2) = S(v1) + 3 * S(v2)</p><p>Evaluating the LHS, S([1, 3]' + 3 * [1, -1]') = S([4, 0]') = [1, 6]'</p><p>Evaluating the RHS, S([1, 3]') + 3 * S([1, -1]') = [3, 1]' + 3 * [-2, 2]'</p><p>Therefore, RHS = [3, 1]' + [-6, 6]' = [-3, 7]'</p><p>Because LHS != RHS, the system S is not linear</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%%
+% Let S be a system that maps the input vectors to the output vectors. For
+% S to be a linear system, we should have:
+%%
+% S(av1 + bv2) = aS(v1) + bS(v2);
+%% 
+% 
+%% System 1:
+% The input vectors are:
+%%
+% v1 = [3, 2]; v2 = [-1, 1]
+%% 
+% And the output vectors are:
+%%
+% w1 = 13; w2 = 3
+%%
+% Hence the system, if it exists, converts a 2 * 1 vector to a 1 * 1 vector
+% (or a scalar). Therefore, the system has to be a matrix of size 1 * 2
+%%
+% Let the matrix be M = [a b]
+%%
+% Hence we have:
+%%
+% [a b]*[3 2]' = 13; and [a b]*[-1 1]' = 3
+%%
+% Therefore, 3a + 2b = 13; and -a + b = 3
+%%
+% From the equation on the right, we get:
+%%
+% b = 3 + a;
+%% 
+% Substituting in the equation in the left:
+%%
+% 3a + 2(3 + a) = 13
+%%
+% Therefore, 3a + 6 + 2a = 13
+%%
+% Therefore, 5a + 6 = 13
+%%
+% Therefore, 5a = 7
+%%
+% Therefore, a = 7/5 = 1.4
+%%
+% and b = 3 + a = 3 + 1.4 = 4.4
+M = [1.4, 4.4];
+u1 = [3, 2]'; u2 = [-1, 1]';
+v1 = 13; v2 = 3;
+%%
+% Checking if the system works:
+round(v1 - M * u1, 4) == 0
+round(v2 - M * u2, 4) == 0
+
+%% System 2:
+% The system S here converts the input 0 to a vector [3, -3]. Since the
+% transformation here is from a null vector of dimension 1 to an ouptut
+% vector of shape (2, 1). No system exists that can multiply 0 to produce
+% an output. Therefore, the system S does not exist.
+
+%% System 3:
+% The input vectors are:
+%%
+% v1 = [5, 2.5], v2 = [-1, -0.5]
+%%
+% The output vectors are:
+% w1 = [-5, -10], w2 = [1, 2]
+%%
+% The input and output vectors are of size 2 * 1 and hence the matrix that 
+% act as a representation of the system should be 2 * 2. Let this matrix
+% be:
+%%
+% M = [a b; c d]
+%%
+% Therefore, we have four parameters that need to be figured out. However,
+% a close examination of the input and output vectors shows that:
+%%
+% v1/-5 = v2 and w1/-5 = w2
+%%
+% Therefore, in this scenario, the two input/output pairs are linearly
+% independent. Hence the problem boils down to solving for 4
+% hyperparameters given only one equation with two variables. Therefore,
+% there are infinitely many solutions that can solve this system of
+% input/output pairs.
+%%
+% The system might be linear, but the matrix that can be used to solve this
+% system of equations is not unique. Two example matrices that can solve
+% the pair of equations are:
+%%
+% M = [-1 0; -2 0]
+%%
+% M = [-2 2; -3 2]
+
+%% System 4:
+% Let S be a system that converts the input vectors v1, v2, v3 to the
+% output vectors w1, w2, w3, where:
+%%
+% v1 = [1, 3], v2 = [1, -1], v3 = [4, 0]
+%%
+% w1 = [3, 1], w2 = [-2, 2], w3 = [1, 6]
+%% 
+% In this particular case, v1 + 3 * v2 = v3
+%%
+% Using the definition of a linear system, if S is indeed linear:
+%%
+% S(v1 + 3 * v2) = S(v1) + 3 * S(v2)
+%%
+% Evaluating the LHS, S([1, 3]' + 3 * [1, -1]') = S([4, 0]') = [1, 6]'
+%%
+% Evaluating the RHS, S([1, 3]') + 3 * S([1, -1]') = [3, 1]' + 3 * [-2, 2]'
+%%
+% Therefore, RHS = [3, 1]' + [-6, 6]' = [-3, 7]'
+%%
+% Because LHS != RHS, the system S is not linear
+##### SOURCE END #####
+--></body></html>

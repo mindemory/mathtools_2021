@@ -1,0 +1,364 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li><li><a href="#4">c)</a></li><li><a href="#8">d)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><p>A random matrix of n vectors can be generated. In this case, n = 4. plotVec2 then creates a plot of each column vector in A</p><pre class="codeinput">A = randn(2, 4);
+plotVec2(A, <span class="string">'-ok'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <h2 id="3">b)</h2><p>Generate two random column vectors and then compute the lengths pf each vector and the angle between the two vectors using the function vecLenAngle</p><pre class="codeinput">v1 = randn(2, 1);
+v2 = randn(2, 1);
+[v1_length, v2_length, delta_theta] = vecLenAngle(v1, v2)
+</pre><pre class="codeoutput">
+v1_length =
+
+    1.2006
+
+
+v2_length =
+
+    1.0438
+
+
+delta_theta =
+
+    2.9410
+
+</pre><h2 id="4">c)</h2><p>Generate a random square matrix of size 2 and perform SVD on it to compute U, S, and V matrices.</p><pre class="codeinput">M = rand(2, 2);
+[U, S, V] = svd(M);
+</pre><p>Define standard basis vectors</p><pre class="codeinput">e1 = [1, 0]';
+e2 = [0, 1]';
+E = [e1, e2];
+</pre><p>Peform transformation on the basis vectors in the order V, S, and U. For each transformation, the lengths of the resultant vectors and the angle between the resultant vectors can be determined using the vecLenAngle function</p><pre class="codeinput">VE = V'*E;
+SVE = S*VE;
+USVE = U*SVE;
+[e1_length, e2_length, e_delta] = vecLenAngle(E(:, 1), E(:, 2))
+[Ve1_length, Ve2_length, Ve_delta] = vecLenAngle(VE(:, 1), VE(:, 2))
+[SVe1_length, SVe2_length, SVe_delta] = vecLenAngle(SVE(:, 1), SVE(:, 2))
+[USVe1_length, USVe2_length, USVe_delta] = vecLenAngle(USVE(:, 1), USVE(:, 2))
+</pre><pre class="codeoutput">
+e1_length =
+
+     1
+
+
+e2_length =
+
+     1
+
+
+e_delta =
+
+    1.5708
+
+
+Ve1_length =
+
+     1
+
+
+Ve2_length =
+
+     1
+
+
+Ve_delta =
+
+    1.5708
+
+
+SVe1_length =
+
+    0.5426
+
+
+SVe2_length =
+
+    0.5549
+
+
+SVe_delta =
+
+    0.2816
+
+
+USVe1_length =
+
+    0.5426
+
+
+USVe2_length =
+
+    0.5549
+
+
+USVe_delta =
+
+    0.2816
+
+</pre><p>From the transformations, we can see that the length of the vectors and the angle between the vectors change after transformation with S. This is the diagonal matrix produced in SVD and is responsible for stretching, elimination and addition of new dimensions, thus explaining the change in the length of the basis vectors and the angles between them.</p><pre class="codeinput">figure();
+plotVec2(E, <span class="string">'-ok'</span>)
+hold <span class="string">on</span>;
+plotVec2(VE, <span class="string">'-or'</span>)
+plotVec2(SVE, <span class="string">'-ob'</span>)
+plotVec2(USVE, <span class="string">'-og'</span>)
+legend(<span class="string">'e1'</span>, <span class="string">'e2'</span>, <span class="string">'Ve1'</span>, <span class="string">'Ve2'</span>, <span class="string">'SVe1'</span>, <span class="string">'SVe2'</span>, <span class="string">'USVe1'</span>, <span class="string">'USVe2'</span>)
+title(<span class="string">'Plot of basis vectors and their transformations'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_02.png" alt=""> <h2 id="8">d)</h2><p>Create an array theta of angles 2*pi*n/64, where n goes from 0 to 64 using linspace and the formula</p><pre class="codeinput">theta = 2*pi*linspace(0, 64, 65)/64;
+</pre><p>The data matrix P is composed of the first row being the cosine of the angle and the second row being the sine of the angle for each column vector in theta matrix</p><pre class="codeinput">P = [cos(theta); sin(theta)];
+</pre><p>Next we perform a transformation of the P matrix by V, SV and USV</p><pre class="codeinput">VP = V'*P;
+SVP = S*VP;
+USVP = U*SVP;
+</pre><p>Plotting the data matrix P and the first column of the data matrix P</p><pre class="codeinput">fig1 = figure();
+plot(P(1, :), P(2, :), <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'b'</span>)
+hold <span class="string">on</span>;
+plot(P(1, 1), P(2, 1), <span class="string">'r*'</span>)
+hold <span class="string">off</span>;
+axis <span class="string">equal</span>
+set(gca, <span class="string">'Color'</span>, [0.8, 0.8, 0.8])
+title(<span class="string">'The space of P'</span>)
+xlabel(<span class="string">'P_x'</span>)
+ylabel(<span class="string">'P_y'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_03.png" alt=""> <p>Plotting all the transformations of the P as it is passed through V, SV and USV and the corresponding transformation experience by the first column vector in P plotted as a red star</p><pre class="codeinput">fig2 = figure();
+plot(VP(1, :), VP(2, :), <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'g'</span>)
+hold <span class="string">on</span>;
+plot(VP(1, 1), VP(2, 1), <span class="string">'r*'</span>)
+plot(SVP(1, :), SVP(2, :), <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'k'</span>)
+plot(SVP(1, 1), SVP(2, 1), <span class="string">'r*'</span>)
+plot(USVP(1, :), USVP(2, :), <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>, <span class="string">'y'</span>)
+plot(USVP(1, 1), USVP(2, 1), <span class="string">'r*'</span>)
+legend(<span class="string">'VP'</span>, <span class="string">'VP1'</span>, <span class="string">'SVP'</span>, <span class="string">'SVP1'</span>, <span class="string">'USVP'</span>, <span class="string">'USVP1'</span>)
+set(gca, <span class="string">'Color'</span>, [0.8, 0.8, 0.8])
+title(<span class="string">'Transformation of P through V, SV and USV'</span>)
+xlabel(<span class="string">'P_x'</span>)
+ylabel(<span class="string">'P_y'</span>)
+axis <span class="string">equal</span>
+</pre><img vspace="5" hspace="5" src="Q3_04.png" alt=""> <img vspace="5" hspace="5" src="Q3_05.png" alt=""> <pre class="codeinput"><span class="keyword">function</span> plotVec2(A, t)
+    <span class="comment">% Check if the height of the matrix is 2, if so, plot the column</span>
+    <span class="comment">% vectors off the matrix A and scale axes from -1 to 1. Else, give an</span>
+    <span class="comment">% error</span>
+    <span class="keyword">if</span> size(A, 1) == 2
+        plotv(A, t);
+        axis([-1, 1, -1, 1]);
+    <span class="keyword">else</span>
+        disp(<span class="string">'Matrix height is greater than expected'</span>)
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [v1_length, v2_length, delta_theta] = vecLenAngle(v1, v2)
+    <span class="comment">% Given input vectors v1 and v2, the lengths of the vectors v1 and v2</span>
+    <span class="comment">% are computed as Euclidean distance. Then determine if either of the</span>
+    <span class="comment">% lengths are zero, if so, the length of the angle between the vectors</span>
+    <span class="comment">% cannot be determined. If the length is non-zero, then the angle can</span>
+    <span class="comment">% be computed as the cosine inverse of the ratio of the dot product of</span>
+    <span class="comment">% two vectors and the product of lengths of the two vectors</span>
+    v1_length = sqrt(sum(v1.^2));
+    v2_length = sqrt(sum(v2.^2));
+    <span class="keyword">if</span> v1_length == 0 || v2_length == 0
+        delta_theta = <span class="string">'Not defined'</span>;
+    <span class="keyword">else</span>
+        delta_theta = acos((v1'*v2)/(v1_length*v2_length));
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+% A random matrix of n vectors can be generated. In this case, n = 4.
+% plotVec2 then creates a plot of each column vector in A
+A = randn(2, 4);
+plotVec2(A, '-ok')
+
+%% b)
+% Generate two random column vectors and then compute the lengths pf each
+% vector and the angle between the two vectors using the function
+% vecLenAngle
+v1 = randn(2, 1);
+v2 = randn(2, 1);
+[v1_length, v2_length, delta_theta] = vecLenAngle(v1, v2)
+
+%% c)
+% Generate a random square matrix of size 2 and perform SVD on it to
+% compute U, S, and V matrices.
+M = rand(2, 2);
+[U, S, V] = svd(M);
+
+%%
+% Define standard basis vectors
+e1 = [1, 0]';
+e2 = [0, 1]';
+E = [e1, e2];
+
+%%
+% Peform transformation on the basis vectors in the order V, S, and U. For
+% each transformation, the lengths of the resultant vectors and the angle
+% between the resultant vectors can be determined using the vecLenAngle
+% function
+VE = V'*E;
+SVE = S*VE;
+USVE = U*SVE;
+[e1_length, e2_length, e_delta] = vecLenAngle(E(:, 1), E(:, 2))
+[Ve1_length, Ve2_length, Ve_delta] = vecLenAngle(VE(:, 1), VE(:, 2))
+[SVe1_length, SVe2_length, SVe_delta] = vecLenAngle(SVE(:, 1), SVE(:, 2))
+[USVe1_length, USVe2_length, USVe_delta] = vecLenAngle(USVE(:, 1), USVE(:, 2))
+
+%%
+% From the transformations, we can see that the length of the vectors and
+% the angle between the vectors change after transformation with S. This is
+% the diagonal matrix produced in SVD and is responsible for stretching,
+% elimination and addition of new dimensions, thus explaining the change in
+% the length of the basis vectors and the angles between them.
+figure();
+plotVec2(E, '-ok')
+hold on;
+plotVec2(VE, '-or')
+plotVec2(SVE, '-ob')
+plotVec2(USVE, '-og')
+legend('e1', 'e2', 'Ve1', 'Ve2', 'SVe1', 'SVe2', 'USVe1', 'USVe2')
+title('Plot of basis vectors and their transformations')
+
+%% d)
+% Create an array theta of angles 2*pi*n/64, where n goes from 0 to 64
+% using linspace and the formula
+theta = 2*pi*linspace(0, 64, 65)/64;
+%%
+% The data matrix P is composed of the first row being the cosine of the
+% angle and the second row being the sine of the angle for each column
+% vector in theta matrix
+P = [cos(theta); sin(theta)];
+%%
+% Next we perform a transformation of the P matrix by V, SV and USV
+VP = V'*P;
+SVP = S*VP;
+USVP = U*SVP;
+
+%%
+% Plotting the data matrix P and the first column of the data matrix P
+fig1 = figure();
+plot(P(1, :), P(2, :), 'LineWidth', 2, 'Color', 'b')
+hold on;
+plot(P(1, 1), P(2, 1), 'r*')
+hold off;
+axis equal
+set(gca, 'Color', [0.8, 0.8, 0.8])
+title('The space of P')
+xlabel('P_x')
+ylabel('P_y')
+
+%%
+% Plotting all the transformations of the P as it is passed through V, SV
+% and USV and the corresponding transformation experience by the first
+% column vector in P plotted as a red star
+fig2 = figure();
+plot(VP(1, :), VP(2, :), 'LineWidth', 2, 'Color', 'g')
+hold on;
+plot(VP(1, 1), VP(2, 1), 'r*')
+plot(SVP(1, :), SVP(2, :), 'LineWidth', 2, 'Color', 'k')
+plot(SVP(1, 1), SVP(2, 1), 'r*')
+plot(USVP(1, :), USVP(2, :), 'LineWidth', 2, 'Color', 'y')
+plot(USVP(1, 1), USVP(2, 1), 'r*')
+legend('VP', 'VP1', 'SVP', 'SVP1', 'USVP', 'USVP1')
+set(gca, 'Color', [0.8, 0.8, 0.8])
+title('Transformation of P through V, SV and USV')
+xlabel('P_x')
+ylabel('P_y')
+axis equal
+
+%%
+function plotVec2(A, t)
+    % Check if the height of the matrix is 2, if so, plot the column
+    % vectors off the matrix A and scale axes from -1 to 1. Else, give an
+    % error
+    if size(A, 1) == 2
+        plotv(A, t);
+        axis([-1, 1, -1, 1]);
+    else
+        disp('Matrix height is greater than expected')
+    end       
+    
+end
+
+function [v1_length, v2_length, delta_theta] = vecLenAngle(v1, v2)
+    % Given input vectors v1 and v2, the lengths of the vectors v1 and v2
+    % are computed as Euclidean distance. Then determine if either of the
+    % lengths are zero, if so, the length of the angle between the vectors
+    % cannot be determined. If the length is non-zero, then the angle can
+    % be computed as the cosine inverse of the ratio of the dot product of
+    % two vectors and the product of lengths of the two vectors
+    v1_length = sqrt(sum(v1.^2));
+    v2_length = sqrt(sum(v2.^2));
+    if v1_length == 0 || v2_length == 0
+        delta_theta = 'Not defined';
+    else
+        delta_theta = acos((v1'*v2)/(v1_length*v2_length));
+    end
+    
+end
+##### SOURCE END #####
+--></body></html>

@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q1</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q1.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q1</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,7 +52,6 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
-span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -69,21 +68,45 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
   </style></head><body><div class="content"><pre class="codeinput">clear; close <span class="string">all</span>; clc;
 </pre><p>The components of vector v along the direction of u_hat and along the direction perpendicular to u_hat can be computed by running the inner_prod function (for more details, refer to the function).</p><p>Creating random vectors v1 and u1 using the randn:</p><pre class="codeinput">v1 = randn(2, 1);
-v1 = [1; 1];
 u1 = randn(2, 1);
-u1 = [0; 1]
+</pre><p>Since u1_hat is supposed to be a unit vector, we compute u1_hat by dividing u1 by the norm of itself</p><pre class="codeinput">u1_hat = u1/norm(u1, 2);
+</pre><p>Next we compute the v1_x, v1_y, and v1_perp_dist using the inner_prod function</p><pre class="codeinput">[v1_x, v1_y, v1_perp_dist] = inner_prod(u1_hat, v1);
+plotv([u1_hat, v1, v1_x, v1_y], <span class="string">'-o'</span>)
+axis <span class="string">equal</span>
+legend(<span class="string">'$\hat{u_1}$'</span>, <span class="string">'$v_1$'</span>, <span class="string">'$v_1x$'</span>, <span class="string">'$v_1y$'</span>, <span class="string">'interpreter'</span>, <span class="string">'latex'</span>)
+<span class="comment">%axis([-1, 2, -1, 2])</span>
+</pre><img vspace="5" hspace="5" src="Q1_01.png" alt=""> <p>Let us begin by defining v2 and u2 in n = 4 dimensions.</p><pre class="codeinput">v2 = rand(4, 1);
+u2 = rand(4, 1);
+</pre><p>Normalizing u2 by its norm to create a unit vector u2_hat</p><pre class="codeinput">u2_hat = u2 / norm(u2, 2);
+</pre><p>Next we compute the v2_x, v2_y, and v2_perp_dist using the inner_prod function</p><pre class="codeinput">[v2_x, v2_y, v2_perp_dist] = inner_prod(u2_hat, v2);
+</pre><p>If v2_x lies in the same direction as u2_hat, then the cosine of the angle between the two vectors should be 1.</p><p>Because cos(theta) = u.v/||u||.||v||</p><p>And since <tt>|u2_hat</tt>| = 1</p><p>Therefore, cos(theta) = u2_hat.v2_x/||v2_x||</p><pre class="codeinput">disp([<span class="string">'The cosine of angle between v2_x and u2_hat is '</span>, num2str(v2_x'*u2_hat/norm(v2_x, 2))])
+</pre><pre class="codeoutput">The cosine of angle between v2_x and u2_hat is 1
+</pre><p>If v2_y is orthogonal to u2_hat, then the cosine of the angle between the two vectors should be 0.</p><pre class="codeinput">disp([<span class="string">'The cosine of angle between v2_y and u2_hat is '</span>, num2str(round(v2_y'*u2_hat/norm(v2_y, 2), 10))])
+</pre><pre class="codeoutput">The cosine of angle between v2_y and u2_hat is 0
+</pre><p>Checking for the sum of the vectors v2_x and v2_y to add to v2</p><pre class="codeinput">v2_new = v2_x + v2_y;
+v2_new == v2
 </pre><pre class="codeoutput">
-u1 =
+ans =
 
-     0
-     1
+  4&times;1 logical array
 
-</pre><p>Since u1_hat is supposed to be a unit vector, we compute u1_hat by taking diving u1 by the norm of itself</p><pre class="codeinput">u1_hat = u1/norm(u1, 2);
-</pre><p>Next we compute the v1_x, v1_y, and v1_perp_dist using the inner_prod function</p><pre class="codeinput">[v1_x, v1_y, w1_hat, v1_perp_dist] = inner_prod(u1_hat, v1)
-plot([u1_hat, v1, v1_x * u1_hat, v1_y * w1_hat])
-legend(<span class="string">'u1_hat'</span>, <span class="string">'v1'</span>, <span class="string">'v1_x'</span>, <span class="string">'v1_y'</span>)
+   1
+   1
+   1
+   1
 
-<span class="keyword">function</span> [v_x, v_y, w_hat, perp_dist] = inner_prod(u_hat, v)
+</pre><p>The sum of squared lengths of v2_x, v2_y, v2</p><pre class="codeinput">v2_x_len_sq = sum(v2_x.^2);
+v2_y_len_sq = sum(v2_y.^2);
+v2_len_sq = sum(v2.^2);
+</pre><p>Check if the identity holds</p><pre class="codeinput">round(v2_len_sq - (v2_x_len_sq + v2_y_len_sq), 4) == 0
+</pre><pre class="codeoutput">
+ans =
+
+  logical
+
+   1
+
+</pre><pre class="codeinput"><span class="keyword">function</span> [v_x, v_y, perp_dist] = inner_prod(u_hat, v)
     <span class="comment">% Given a vector v and a unit vector u_hat, this function computes:</span>
     <span class="comment">% i) v_x which is the component of v along u_hat. This can be computed</span>
     <span class="comment">% by taking the dot product of the two vectors.</span>
@@ -92,40 +115,11 @@ legend(<span class="string">'u1_hat'</span>, <span class="string">'v1'</span>, <
     <span class="comment">% w = v - v_x</span>
     <span class="comment">% iii) The distance of v from the component v_x that lies along u_hat is</span>
     <span class="comment">% basically the length of v_y, which can be computed as the norm of v_y</span>
-    v_x = u_hat'*v;
-    w = v - v_x*u_hat
-    w_hat = w/norm(w, 2);
-    v_y = w_hat'*v;
+    v_x = u_hat'*v*u_hat;
+    v_y = v - v_x;
     perp_dist = norm(v_y, 2);
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">
-w =
-
-     1
-     0
-
-
-v1_x =
-
-     1
-
-
-v1_y =
-
-     1
-
-
-w1_hat =
-
-     1
-     0
-
-
-v1_perp_dist =
-
-     1
-
-</pre><img vspace="5" hspace="5" src="Q1_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
@@ -137,23 +131,69 @@ clear; close all; clc;
 %%
 % Creating random vectors v1 and u1 using the randn:
 v1 = randn(2, 1);
-v1 = [1; 1];
 u1 = randn(2, 1);
-u1 = [0; 1]
 
 %%
-% Since u1_hat is supposed to be a unit vector, we compute u1_hat by taking
-% diving u1 by the norm of itself
+% Since u1_hat is supposed to be a unit vector, we compute u1_hat by
+% dividing u1 by the norm of itself
 u1_hat = u1/norm(u1, 2);
 
 %%
 % Next we compute the v1_x, v1_y, and v1_perp_dist using the inner_prod
 % function
-[v1_x, v1_y, w1_hat, v1_perp_dist] = inner_prod(u1_hat, v1)
-plot([u1_hat, v1, v1_x * u1_hat, v1_y * w1_hat])
-legend('u1_hat', 'v1', 'v1_x', 'v1_y')
+[v1_x, v1_y, v1_perp_dist] = inner_prod(u1_hat, v1);
+plotv([u1_hat, v1, v1_x, v1_y], '-o')
+axis equal
+legend('$\hat{u_1}$', '$v_1$', '$v_1x$', '$v_1y$', 'interpreter', 'latex')
+%axis([-1, 2, -1, 2])
 
-function [v_x, v_y, w_hat, perp_dist] = inner_prod(u_hat, v)
+%%
+% Let us begin by defining v2 and u2 in n = 4 dimensions.
+v2 = rand(4, 1);
+u2 = rand(4, 1);
+
+%%
+% Normalizing u2 by its norm to create a unit vector u2_hat
+u2_hat = u2 / norm(u2, 2);
+
+%%
+% Next we compute the v2_x, v2_y, and v2_perp_dist using the inner_prod
+% function
+[v2_x, v2_y, v2_perp_dist] = inner_prod(u2_hat, v2);
+
+%%
+% If v2_x lies in the same direction as u2_hat, then the cosine of the
+% angle between the two vectors should be 1.
+%%
+% Because cos(theta) = u.v/||u||.||v||
+%%
+% And since ||u2_hat|| = 1
+%%
+% Therefore, cos(theta) = u2_hat.v2_x/||v2_x||
+disp(['The cosine of angle between v2_x and u2_hat is ', num2str(v2_x'*u2_hat/norm(v2_x, 2))])
+
+%%
+% If v2_y is orthogonal to u2_hat, then the cosine of the angle between the 
+% two vectors should be 0.
+
+disp(['The cosine of angle between v2_y and u2_hat is ', num2str(round(v2_y'*u2_hat/norm(v2_y, 2), 10))])
+
+%%
+% Checking for the sum of the vectors v2_x and v2_y to add to v2
+v2_new = v2_x + v2_y;
+v2_new == v2
+
+%%
+% The sum of squared lengths of v2_x, v2_y, v2
+v2_x_len_sq = sum(v2_x.^2);
+v2_y_len_sq = sum(v2_y.^2);
+v2_len_sq = sum(v2.^2);
+
+%%
+% Check if the identity holds
+round(v2_len_sq - (v2_x_len_sq + v2_y_len_sq), 4) == 0
+%%
+function [v_x, v_y, perp_dist] = inner_prod(u_hat, v)
     % Given a vector v and a unit vector u_hat, this function computes:
     % i) v_x which is the component of v along u_hat. This can be computed
     % by taking the dot product of the two vectors.
@@ -162,10 +202,8 @@ function [v_x, v_y, w_hat, perp_dist] = inner_prod(u_hat, v)
     % w = v - v_x
     % iii) The distance of v from the component v_x that lies along u_hat is
     % basically the length of v_y, which can be computed as the norm of v_y 
-    v_x = u_hat'*v;
-    w = v - v_x*u_hat
-    w_hat = w/norm(w, 2);
-    v_y = w_hat'*v;
+    v_x = u_hat'*v*u_hat;
+    v_y = v - v_x;
     perp_dist = norm(v_y, 2);
 end
 ##### SOURCE END #####

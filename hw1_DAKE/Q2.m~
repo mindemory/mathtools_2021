@@ -49,9 +49,8 @@ u1 = [3, 2]'; u2 = [-1, 1]';
 v1 = 13; v2 = 3;
 %%
 % Checking if the system works:
-round(v1 - M * u1, 4) == 0
-round(v2 - M * u2, 4) == 0
-
+v1 == M * u1
+v2 == M * u2
 %% System 2:
 % The system S here converts the input 0 to a vector [3, -3]. Since the
 % transformation here is from a null vector of dimension 1 to an ouptut
