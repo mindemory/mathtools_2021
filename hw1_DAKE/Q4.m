@@ -1,4 +1,5 @@
 clear; close all; clc;
+%% Mrugank Dake
 
 %% 
 % The input vectors here are the intensities and the output vectors are the

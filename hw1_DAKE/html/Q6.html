@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q6</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q6.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q6</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q6.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,287 +67,188 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><p>The system is:</p><p>y = Mv</p><p>where y is the output vector, v is the input vector and M is the linear system</p><p>Using SVD, we have:</p><p>M = USV'</p><p>The null space of the matrix M is the rows of V' that limit the dimensions of the input vector that matter for the output. It is the diagonal elemnts of the S matrix that are 0 and hence the information present in the corresponding dimensions of the input vector are lost when the input vector is passed through the SVT.</p><p>The range space of the matrix M is the columns of U that map the output space. They are literally the "range" of the matrix M. The output vector can be thought of as a linear combination of the range-space of M. These are the columns of U that matter for the output. The range-space is determined by the rows of the S matrix that have non-zero diagonal elements.</p><p>The input vector for the animal is a vector of pressure measurements and the output vector is a vector of neuronal responses. If the null-space of the system is non-zero, it implies that there is a limit on the dimensions of the input vector that the creature can perceive. The rows of the input vector that belong to the null-space cannot be perceived since those pressure measurements are not transformed by the system the creature is using to map the input to the output neuronal responses.</p><pre class="codeinput">mtxExamples = load(<span class="string">'mtxExamples.mat'</span>);
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#7">Null space</a></li><li><a href="#8">Range space</a></li><li><a href="#9">Linear Tactile System</a></li><li><a href="#10">mtxExamples</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><p>The system is:</p><p>y = Mv</p><p>where y is the output vector, v is the input vector and M is the linear system</p><p>Using SVD, we have:</p><p>M = USV'</p><h2 id="7">Null space</h2><p>The null space of the matrix M is the rows of V' that limit the dimensions of the input vector that matter for the output. It is the diagonal elements of the S matrix that are 0 and hence the information present in the corresponding dimensions of the input vector are lost when the input vector is passed through the SV'.</p><h2 id="8">Range space</h2><p>The range space of the matrix M is the columns of U that span the output space. They are literally the "range" of the matrix M. The output vector can be thought of as a linear combination of the range space of M. These are the columns of U that matter for the output. The range space is determined by the rows of the S matrix that have non-zero diagonal elements.</p><h2 id="9">Linear Tactile System</h2><p>The input vector for the animal is a vector of pressure measurements and the output vector is a vector of neuronal responses. If the null-space of the system is non-zero, it implies that there is a limit on the dimensions of the input vector that the creature can perceive. The rows of the input vector that belong to the null-space cannot be perceived since those pressure measurements are not transformed by the system the creature is using to map the input to the output neuronal responses.</p><h2 id="10">mtxExamples</h2><pre class="codeinput">mtxExamples = load(<span class="string">'mtxExamples.mat'</span>);
+<span class="comment">% Creating an array of the fieldnames stored in mtxExamples. This helps in</span>
+<span class="comment">% indexing throught the mtxExamples</span>
 mtx_fields = fieldnames(mtxExamples);
-<span class="keyword">for</span> i = 1:size(mtx_fields, 1)
-    mtx = mtxExamples.(mtx_fields{i})
-    [U, S, V] = svd(mtx)
 
+<span class="keyword">for</span> i = 1:size(mtx_fields, 1)
+    <span class="comment">% Loading the matrix stored at i_th position in mtx_fields</span>
+    mtx = mtxExamples.(mtx_fields{i});
+    fprintf(<span class="string">'mtx%d \n'</span>, i)
+    <span class="comment">% Running SVD on the mtx to extract U, S, and V</span>
+    [U, S, V] = svd(mtx);
+
+    <span class="comment">% The null space is determined by the columns of the S matrix that are</span>
+    <span class="comment">% all 0s. The list of columns can be obtained by using find and all</span>
+    <span class="comment">% functions</span>
     null_cols = find(all(S&lt;10^-3, 1));
+
+    <span class="comment">% The next step is to determine if the nullspace exists. It exists if</span>
+    <span class="comment">% there are any elements in the null_cols array computed</span>
     <span class="keyword">if</span> size(null_cols, 2) &gt; 0
         fprintf(<span class="string">'There is a nullspace of size %d\n'</span>, size(null_cols, 2))
-        x =  V(:, null_cols) * randn(size(null_cols, 2), 1);
-        x
+        <span class="comment">% The input vector x that is spanned by the null-space rows of V'</span>
+        <span class="comment">% or the null-space columns of V will all be mapped to 0 in the</span>
+        <span class="comment">% output space. We can check for this as:</span>
+        x =  V(:, null_cols) * randn(size(null_cols, 2), 1)
         y = mtx * x
     <span class="keyword">else</span>
+        <span class="comment">% If null_cols is empty, then the nullspace does not exist for the</span>
+        <span class="comment">% given matrix</span>
         fprintf(<span class="string">'No nullspace exists for this matrix\n'</span>)
     <span class="keyword">end</span>
 
+    <span class="comment">% The range of the matrix is determined by the rows of the matrix S</span>
+    <span class="comment">% that have non-zero entries, which can be listed using find and any</span>
+    <span class="comment">% functions</span>
     range_rows = find(any(S&gt;10^-3, 2));
+
+    <span class="comment">% The output vector y will belong to the range-space if it spanned by</span>
+    <span class="comment">% the columns of U that belong to the range space</span>
     y_range = U(:, range_rows) * randn(size(range_rows, 1), 1)
+    <span class="comment">% We can compute the corresponding x for the output vector y by using</span>
+    <span class="comment">% the left pseudoinverse of the matrix. The resulting x can then be</span>
+    <span class="comment">% mapped back to produce the y_range_recomputed</span>
     x_range = pinv(mtx) * y_range;
     y_range_recomputed = mtx * x_range
 <span class="keyword">end</span>
-</pre><pre class="codeoutput">
-mtx =
-
-    0.3261    0.5131    0.0971
-   -0.0052   -0.0081   -0.0015
-
-
-U =
-
-   -0.9999    0.0158
-    0.0158    0.9999
-
-
-S =
-
-    0.6157         0         0
-         0    0.0000         0
-
-
-V =
-
-   -0.5296    0.8482   -0.0050
-   -0.8335   -0.5215   -0.1828
-   -0.1577   -0.0926    0.9831
-
+</pre><pre class="codeoutput">mtx1 
 There is a nullspace of size 2
 
 x =
 
-   -1.4987
-    1.3576
-   -2.1427
-
-
-y =
-
-   1.0e-15 *
-
-    0.4848
-   -0.0071
-
-
-y_range =
-
-    1.7134
-   -0.0271
-
-
-y_range_recomputed =
-
-    1.7134
-   -0.0271
-
-
-mtx =
-
-    8.1579   -2.8269
-    3.1450   -3.0517
-   -8.0673    3.9854
-
-
-U =
-
-   -0.6551    0.5260    0.5424
-   -0.3159   -0.8428    0.4357
-    0.6863    0.1141    0.7183
-
-
-S =
-
-   13.1081         0
-         0    1.6997
-         0         0
-
-
-V =
-
-   -0.9059    0.4235
-    0.4235    0.9059
-
-No nullspace exists for this matrix
-
-y_range =
-
-   -0.1706
-    0.5972
-   -0.2334
-
-
-y_range_recomputed =
-
-   -0.1706
-    0.5972
-   -0.2334
-
-
-mtx =
-
-   -4.0940    0.7809
-   -0.5921    0.1129
-
-
-U =
-
-   -0.9897   -0.1431
-   -0.1431    0.9897
-
-
-S =
-
-    4.2111         0
-         0    0.0000
-
-
-V =
-
-    0.9823    0.1874
-   -0.1874    0.9823
-
-There is a nullspace of size 1
-
-x =
-
-   -0.1349
-   -0.7074
-
-
-y =
-
-   1.0e-15 *
-
-   -0.1456
-   -0.0258
-
-
-y_range =
-
-   -0.0402
-   -0.0058
-
-
-y_range_recomputed =
-
-   -0.0402
-   -0.0058
-
-
-mtx =
-
-   -0.0631   -0.0709    0.0893
-   -0.0061   -0.0828    0.0416
-
-
-U =
-
-    0.8327   -0.5537
-    0.5537    0.8327
-
-
-S =
-
-    0.1536         0         0
-         0    0.0446         0
-
-
-V =
-
-   -0.3637    0.6697    0.6475
-   -0.6826   -0.6646    0.3039
-    0.6338   -0.3315    0.6988
-
-There is a nullspace of size 1
-
-x =
-
-   -0.4267
-   -0.2003
-   -0.4605
-
-
-y =
-
-   1.0e-17 *
-
-   -0.4646
-    0.3613
-
-
-y_range =
-
-   -0.8626
-    0.1585
-
-
-y_range_recomputed =
-
-   -0.8626
-    0.1585
-
-
-mtx =
-
-    3.2580    0.3765    3.4988
-   -2.1535   -0.2489   -2.3126
-   -1.1443   -0.1322   -1.2288
-
-
-U =
-
-   -0.8006   -0.5644   -0.2012
-    0.5292   -0.5084   -0.6794
-    0.2812   -0.6504    0.7057
-
-
-S =
-
-    5.9902         0         0
-         0    0.0000         0
-         0         0    0.0000
-
-
-V =
-
-   -0.6794    0.7253   -0.1113
-   -0.0785   -0.2226   -0.9717
-   -0.7296   -0.6514    0.2082
-
-There is a nullspace of size 2
-
-x =
-
-    0.2964
-   -2.5419
-   -0.0024
+   -0.2141
+    0.0380
+    0.5184
 
 
 y =
 
    1.0e-16 *
 
-   -0.4236
-    0.9744
-   -0.1684
+    0.6245
+   -0.0098
 
 
 y_range =
 
-   -0.2421
-    0.1600
-    0.0850
+    0.8925
+   -0.0141
 
 
 y_range_recomputed =
 
-   -0.2421
-    0.1600
-    0.0850
+    0.8925
+   -0.0141
 
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+mtx2 
+No nullspace exists for this matrix
+
+y_range =
+
+   -1.1860
+   -0.7060
+    1.3237
+
+
+y_range_recomputed =
+
+   -1.1860
+   -0.7060
+    1.3237
+
+mtx3 
+There is a nullspace of size 1
+
+x =
+
+    0.1962
+    1.0285
+
+
+y =
+
+   1.0e-15 *
+
+    0.2220
+    0.0416
+
+
+y_range =
+
+    0.2246
+    0.0325
+
+
+y_range_recomputed =
+
+    0.2246
+    0.0325
+
+mtx4 
+There is a nullspace of size 1
+
+x =
+
+   -0.1052
+   -0.0494
+   -0.1136
+
+
+y =
+
+   1.0e-17 *
+
+   -0.3469
+    0.0867
+
+
+y_range =
+
+    0.2669
+    0.8449
+
+
+y_range_recomputed =
+
+    0.2669
+    0.8449
+
+mtx5 
+There is a nullspace of size 2
+
+x =
+
+   -0.6420
+    1.7387
+    0.4107
+
+
+y =
+
+   1.0e-15 *
+
+   -0.2220
+    0.1110
+    0.2220
+
+
+y_range =
+
+    0.8789
+   -0.5809
+   -0.3087
+
+
+y_range_recomputed =
+
+    0.8789
+   -0.5809
+   -0.3087
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
@@ -361,22 +263,22 @@ clear; close all; clc;
 % Using SVD, we have:
 %%
 % M = USV'
-%%
+%% Null space
 % The null space of the matrix M is the rows of V' that limit the
 % dimensions of the input vector that matter for the output. It is the
-% diagonal elemnts of the S matrix that are 0 and hence the information
+% diagonal elements of the S matrix that are 0 and hence the information
 % present in the corresponding dimensions of the input vector are lost when
-% the input vector is passed through the SVT.
+% the input vector is passed through the SV'.
 
-%%
-% The range space of the matrix M is the columns of U that map the output
+%% Range space
+% The range space of the matrix M is the columns of U that span the output
 % space. They are literally the "range" of the matrix M. The output vector
-% can be thought of as a linear combination of the range-space of M. These
-% are the columns of U that matter for the output. The range-space is
+% can be thought of as a linear combination of the range space of M. These
+% are the columns of U that matter for the output. The range space is
 % determined by the rows of the S matrix that have non-zero diagonal
 % elements.
 
-%%
+%% Linear Tactile System
 % The input vector for the animal is a vector of pressure measurements and
 % the output vector is a vector of neuronal responses. If the null-space of
 % the system is non-zero, it implies that there is a limit on the
@@ -386,25 +288,50 @@ clear; close all; clc;
 % system the creature is using to map the input to the output neuronal
 % responses.
 
-%%
+%% mtxExamples
 mtxExamples = load('mtxExamples.mat');
+% Creating an array of the fieldnames stored in mtxExamples. This helps in
+% indexing throught the mtxExamples
 mtx_fields = fieldnames(mtxExamples);
+
 for i = 1:size(mtx_fields, 1)
-    mtx = mtxExamples.(mtx_fields{i})
-    [U, S, V] = svd(mtx)
+    % Loading the matrix stored at i_th position in mtx_fields
+    mtx = mtxExamples.(mtx_fields{i});
+    fprintf('mtx%d \n', i)
+    % Running SVD on the mtx to extract U, S, and V
+    [U, S, V] = svd(mtx);
     
+    % The null space is determined by the columns of the S matrix that are
+    % all 0s. The list of columns can be obtained by using find and all
+    % functions
     null_cols = find(all(S<10^-3, 1));
+    
+    % The next step is to determine if the nullspace exists. It exists if
+    % there are any elements in the null_cols array computed
     if size(null_cols, 2) > 0
         fprintf('There is a nullspace of size %d\n', size(null_cols, 2))
-        x =  V(:, null_cols) * randn(size(null_cols, 2), 1);
-        x
+        % The input vector x that is spanned by the null-space rows of V'
+        % or the null-space columns of V will all be mapped to 0 in the
+        % output space. We can check for this as:
+        x =  V(:, null_cols) * randn(size(null_cols, 2), 1)
         y = mtx * x
     else
+        % If null_cols is empty, then the nullspace does not exist for the
+        % given matrix
         fprintf('No nullspace exists for this matrix\n')
     end
-
+    
+    % The range of the matrix is determined by the rows of the matrix S
+    % that have non-zero entries, which can be listed using find and any
+    % functions
     range_rows = find(any(S>10^-3, 2));
+    
+    % The output vector y will belong to the range-space if it spanned by
+    % the columns of U that belong to the range space
     y_range = U(:, range_rows) * randn(size(range_rows, 1), 1)
+    % We can compute the corresponding x for the output vector y by using
+    % the left pseudoinverse of the matrix. The resulting x can then be
+    % mapped back to produce the y_range_recomputed
     x_range = pinv(mtx) * y_range;
     y_range_recomputed = mtx * x_range
 end

@@ -1,4 +1,5 @@
 clear; close all; clc;
+%% Mrugank Dake
 
 %%
 % Let S be a system that maps the input vectors to the output vectors. For

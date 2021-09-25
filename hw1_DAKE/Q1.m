@@ -1,5 +1,5 @@
 clear; close all; clc;
-
+%% Mrugank Dake
 %% 
 % The components of vector v along the direction of u_hat and along the 
 % direction perpendicular to u_hat can be computed by running the

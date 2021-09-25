@@ -1,4 +1,5 @@
 clear; close all; clc;
+%% Mrugank Dake
 
 %% a)
 % A random matrix of n vectors can be generated. In this case, n = 4.

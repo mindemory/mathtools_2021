@@ -45,7 +45,6 @@ mtx_fields = fieldnames(mtxExamples);
 for i = 1:size(mtx_fields, 1)
     % Loading the matrix stored at i_th position in mtx_fields
     mtx = mtxExamples.(mtx_fields{i});
-    fprintf('mtx%d \n', i)
     % Running SVD on the mtx to extract U, S, and V
     [U, S, V] = svd(mtx);
     
@@ -77,9 +76,6 @@ for i = 1:size(mtx_fields, 1)
     % The output vector y will belong to the range-space if it spanned by
     % the columns of U that belong to the range space
     y_range = U(:, range_rows) * randn(size(range_rows, 1), 1)
-    % We can compute the corresponding x for the output vector y by using
-    % the left pseudoinverse of the matrix. The resulting x can then be
-    % mapped back to produce the y_range_recomputed
     x_range = pinv(mtx) * y_range;
     y_range_recomputed = mtx * x_range
 end

@@ -5,7 +5,7 @@ clear; close all; clc;
 % GramSchmidt ortogonalization for N = 3
 N = 3;
 basis = gramSchmidt(N)
-rotate3d off
+rotate3d on
 for i = 1:N
     plot3([0 basis(i, 1)], [0 basis(i, 2)], [0 basis(i, 3)]);
     hold on;
@@ -28,18 +28,8 @@ basis1 = gramSchmidt(100);
 disp(sum(sum(round(basis1' - inv(basis1), 4))))
 
 %%
-% For the recursive GramSchmidt, the function inside the part inside the
-% for loop is added a function new_basis which loops into itself until the
-% matrix E created has the same number of columns as expected i.e. N
-E = recursive_gramSchmidt(50);
-disp(sum(sum(round(E' - inv(E), 4))))
-
-%%
-% Printing end just to get the output above. For some reason, the publish
-% is failing to output the last disp. And now weirdly enough this is
-% printing but not the one above. Damn!
-E_end = recursive_gramSchmidt(500);
-disp(sum(sum(round(E_end' - inv(E_end), 4))))
+E = recursive_gramSchmidt(5)
+E' - inv(E)
 %% Function
 function basis = gramSchmidt(N)
     % First start with a basis vector and normalize it. Then for each loop
@@ -62,12 +52,12 @@ function E = recursive_gramSchmidt(N)
     E = E/norm(E, 2);
     E = new_basis(E, N);
 end
-
 function E = new_basis(E, N)
     v = randn(N, 1);
     v = v - E * E' * v;
     E = [E v/norm(v, 2)];
     if size(E, 2) < N
+        disp('Check')
         E = new_basis(E, N);
     end
 end

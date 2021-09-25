@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q4</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q4.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q4</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,17 +67,18 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">a)</a></li><li><a href="#6">b)</a></li><li><a href="#14">c)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><p>The input vectors here are the intensities and the output vectors are the responses to the incident light produced by the retina. The weight vector here is the system that converts the input to the output.</p><pre class="codeinput">w = [1, 4, 3.5, 2, 1];
-</pre><h2 id="3">a)</h2><p>The weight matrix or rather the weight vector, in this case, operates on the input vector to compute the weighted average of the input vector. This is a linear operation and hence the system is linear.</p><p>The response (r) can be expressed in terms of the weight matrix (m) and the input vector (v) as:</p><p>r = w' * v</p><h2 id="6">b)</h2><p>Let the input vector that elicits the maximum response be u</p><p>The response for this input vector is given by:</p><p>r = w' * u</p><p>However, this is basically a dot product of the vectors w and u and can be re-written as:</p><p>r = w' * u = ||w|| * ||u|| * cos(theta), where theta is the angle between the two vectors</p><p>The response will be maximum for the given w and u, when cos(theta) is maximum i.e. when cos(theta) = 1 i.e. when theta = 0</p><p>Hence for the maximum response, w and u have to be collinear. Since u has to be a unit vector, we can compute u as the ratio of the vector w with its norm</p><p>Thus the unit-length stimulus vector that produces the largest response is:</p><pre class="codeinput">u = w/sqrt(sum(w.^2))
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Mrugank Dake</a></li><li><a href="#4">a)</a></li><li><a href="#7">b)</a></li><li><a href="#15">c)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">Mrugank Dake</h2><p>The input vectors here are the intensities and the output vectors are the responses to the incident light produced by the retina. The weight vector here is the system that converts the input to the output.</p><pre class="codeinput">w = [1, 4, 3.5, 2, 1];
+</pre><h2 id="4">a)</h2><p>The weight matrix or rather the weight vector, in this case, operates on the input vector to compute the weighted average of the input vector. This is a linear operation and hence the system is linear.</p><p>The response (r) can be expressed in terms of the weight matrix (m) and the input vector (v) as:</p><p>r = w' * v</p><h2 id="7">b)</h2><p>Let the input vector that elicits the maximum response be u</p><p>The response for this input vector is given by:</p><p>r = w' * u</p><p>However, this is basically a dot product of the vectors w and u and can be re-written as:</p><p>r = w' * u = ||w|| * ||u|| * cos(theta), where theta is the angle between the two vectors</p><p>The response will be maximum for the given w and u, when cos(theta) is maximum i.e. when cos(theta) = 1 i.e. when theta = 0</p><p>Hence for the maximum response, w and u have to be collinear. Since u has to be a unit vector, we can compute u as the ratio of the vector w with its norm</p><p>Thus the unit-length stimulus vector that produces the largest response is:</p><pre class="codeinput">u = w/sqrt(sum(w.^2))
 </pre><pre class="codeoutput">
 u =
 
     0.1709    0.6835    0.5981    0.3417    0.1709
 
-</pre><h2 id="14">c)</h2><p>Following the logic from (b), the smallest response will be produced by the stimulus vector with cos(theta) = 0 i.e. when theta = 90. However, since all the elements of the vector w are positive, any vector that is orthogonal to w will have at least one of the quantities &lt; 0. However, for the stimulus to be physically realizable, all the elements of the input stimulus vector have to be greater than 0, since the intensities are supposed to be positive. Therefore, the goal here is to try to find out a vector that is as close to being orthogonal to the weight vector as possible but the components are still greater than 0.</p><p>The vector should be as close to being orthogonal and hence the best candidate would be one of the basis vectors. Amongst the basis vectors, the vector that will be closest to being orthonormal to the weight vector is the one that lies along the component of weight vector i.e. smallest.</p><p>Hence the stimulus vectors that will produce the smallest responses in these neurons are: [1 0 0 0 0] and [0 0 0 0 1]</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+</pre><h2 id="15">c)</h2><p>Following the logic from (b), the smallest response will be produced by the stimulus vector with cos(theta) = 0 i.e. when theta = 90. However, since all the elements of the vector w are positive, any vector that is orthogonal to w will have at least one of the quantities &lt; 0. However, for the stimulus to be physically realizable, all the elements of the input stimulus vector have to be greater than 0, since the intensities are supposed to be positive. Therefore, the goal here is to try to find out a vector that is as close to being orthogonal to the weight vector as possible but the components are still greater than 0.</p><p>The vector should be as close to being orthogonal and hence the best candidate would be one of the basis vectors. Amongst the basis vectors, the vector that will be closest to being orthonormal to the weight vector is the one that lies along the component of weight vector i.e. smallest.</p><p>Hence the stimulus vectors that will produce the smallest responses in these neurons are: [1 0 0 0 0] and [0 0 0 0 1]</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
+%% Mrugank Dake
 
 %% 
 % The input vectors here are the intensities and the output vectors are the

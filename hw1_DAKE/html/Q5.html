@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q5</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q5.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q5</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-09-24"><meta name="DC.source" content="Q5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,25 +67,30 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#5">Function</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><p>GramSchmidt ortogonalization for N = 3</p><pre class="codeinput">N = 3;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Mrugank Dake</a></li><li><a href="#8">Function</a></li><li><a href="#9">Recursive Function</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">Mrugank Dake</h2><p>GramSchmidt ortogonalization for N = 3</p><pre class="codeinput">N = 3;
 basis = gramSchmidt(N)
-rotate3d <span class="string">on</span>
+rotate3d <span class="string">off</span>
 <span class="keyword">for</span> i = 1:N
     plot3([0 basis(i, 1)], [0 basis(i, 2)], [0 basis(i, 3)]);
     hold <span class="string">on</span>;
 <span class="keyword">end</span>
 title(<span class="string">'Basis vectors obtained using Gram-Schmidt'</span>)
-</pre><img vspace="5" hspace="5" src="Q5_01.png" alt=""> <p>The basis vector can be checked for orthonormaility by checking if the inverse of the matrix is the same as the transpose of the matrix. To account for error in the computation, we can use the round function. If the sum of all the elements of the difference between the transpose of the basis and inverse of the basis is 0, then the basis vectors are orthonormal.</p><pre class="codeinput">sum(sum(round(basis' - inv(basis), 4)))
-</pre><pre class="codeoutput">
-ans =
-
-     0
+</pre><img vspace="5" hspace="5" src="Q5_01.png" alt=""> <p>The basis vector can be checked for orthonormaility by checking if the inverse of the matrix is the same as the transpose of the matrix. To account for error in the computation, we can use the round function. If the sum of all the elements of the difference between the transpose of the basis and inverse of the basis is 0, then the basis vectors are orthonormal.</p><pre class="codeinput">disp(sum(sum(round(basis' - inv(basis), 4))))
+</pre><pre class="codeoutput">     0
 
 </pre><p>Checking for any N dimensional matrix. Here, N = 100 is checked for</p><pre class="codeinput">N1 = 100;
 basis1 = gramSchmidt(100);
-sum(sum(round(basis1' - inv(basis1), 4)))
-</pre><h2 id="5">Function</h2><pre class="codeinput"><span class="keyword">function</span> basis = gramSchmidt(N)
+disp(sum(sum(round(basis1' - inv(basis1), 4))))
+</pre><pre class="codeoutput">     0
+
+</pre><p>For the recursive GramSchmidt, the function inside the part inside the for loop is added a function new_basis which loops into itself until the matrix E created has the same number of columns as expected i.e. N</p><pre class="codeinput">E = recursive_gramSchmidt(50);
+disp(sum(sum(round(E' - inv(E), 4))))
+</pre><p>Printing end just to get the output above. For some reason, the publish is failing to output the last disp. And now weirdly enough this is printing but not the one above. Damn!</p><pre class="codeinput">E_end = recursive_gramSchmidt(500);
+disp(sum(sum(round(E_end' - inv(E_end), 4))))
+</pre><pre class="codeoutput">     0
+
+</pre><h2 id="8">Function</h2><pre class="codeinput"><span class="keyword">function</span> basis = gramSchmidt(N)
     <span class="comment">% First start with a basis vector and normalize it. Then for each loop</span>
     <span class="comment">% from 2:N, compute the projection of a random vector along each of the</span>
     <span class="comment">% bases vectors that are already computed. The difference between the</span>
@@ -101,19 +107,36 @@ sum(sum(round(basis1' - inv(basis1), 4)))
 </pre><pre class="codeoutput">
 basis =
 
-    0.8918    0.2373    0.3852
-   -0.0329    0.8832   -0.4678
-   -0.4512    0.4045    0.7955
+   -0.1075   -0.8020    0.5875
+   -0.9628   -0.0634   -0.2627
+   -0.2480    0.5939    0.7654
 
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+</pre><h2 id="9">Recursive Function</h2><pre class="codeinput"><span class="keyword">function</span> E = recursive_gramSchmidt(N)
+    E = randn(N, 1);
+    E = E/norm(E, 2);
+    E = new_basis(E, N);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> E = new_basis(E, N)
+    v = randn(N, 1);
+    v = v - E * E' * v;
+    E = [E v/norm(v, 2)];
+    <span class="keyword">if</span> size(E, 2) &lt; N
+        E = new_basis(E, N);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">     0
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
+%% Mrugank Dake
 
 %% 
 % GramSchmidt ortogonalization for N = 3
 N = 3;
 basis = gramSchmidt(N)
-rotate3d on
+rotate3d off
 for i = 1:N
     plot3([0 basis(i, 1)], [0 basis(i, 2)], [0 basis(i, 3)]);
     hold on;
@@ -126,14 +149,28 @@ title('Basis vectors obtained using Gram-Schmidt')
 % the sum of all the elements of the difference between the transpose of
 % the basis and inverse of the basis is 0, then the basis vectors are
 % orthonormal.
-sum(sum(round(basis' - inv(basis), 4)))
+disp(sum(sum(round(basis' - inv(basis), 4))))
 
 
 %%
 % Checking for any N dimensional matrix. Here, N = 100 is checked for
 N1 = 100;
 basis1 = gramSchmidt(100);
-sum(sum(round(basis1' - inv(basis1), 4)))
+disp(sum(sum(round(basis1' - inv(basis1), 4))))
+
+%%
+% For the recursive GramSchmidt, the function inside the part inside the
+% for loop is added a function new_basis which loops into itself until the
+% matrix E created has the same number of columns as expected i.e. N
+E = recursive_gramSchmidt(50);
+disp(sum(sum(round(E' - inv(E), 4))))
+
+%%
+% Printing end just to get the output above. For some reason, the publish
+% is failing to output the last disp. And now weirdly enough this is
+% printing but not the one above. Damn!
+E_end = recursive_gramSchmidt(500);
+disp(sum(sum(round(E_end' - inv(E_end), 4))))
 %% Function
 function basis = gramSchmidt(N)
     % First start with a basis vector and normalize it. Then for each loop
@@ -150,5 +187,20 @@ function basis = gramSchmidt(N)
     end
 end
 
+%% Recursive Function
+function E = recursive_gramSchmidt(N)
+    E = randn(N, 1);
+    E = E/norm(E, 2);
+    E = new_basis(E, N);
+end
+
+function E = new_basis(E, N)
+    v = randn(N, 1);
+    v = v - E * E' * v;
+    E = [E v/norm(v, 2)];
+    if size(E, 2) < N
+        E = new_basis(E, N);
+    end
+end
 ##### SOURCE END #####
 --></body></html>
