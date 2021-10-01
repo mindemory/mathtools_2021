@@ -1,0 +1,23 @@
+clear; clc; close all;
+
+%%
+load('colMatch.mat')
+
+light = rand(31, 1);
+primaries = P;
+[knobs] = humanColorMatcher(light, primaries);
+
+sum_of_primaries = mean(primaries, 2);
+figure(1);
+plot(wl, sum_of_primaries, 'k', 'DisplayName', 'primaries', ...
+    'LineWidth', 2)
+hold on;
+plot(wl, light, 'r', 'DisplayName', 'test light', ...
+    'LineWidth', 2)
+xlabel('Wavelength (nm)')
+ylabel('Intensity (AU)')
+title('Comparing test light and primaries spectra')
+legend('location','eastoutside')
+
+%%
+% Th
