@@ -65,4 +65,4 @@ legend('location','eastoutside')
 % The old_to_new matrix can be computed by substituting the corresponding
 % matrices in the formula:
 %%
-old_to_new = inv(Cones * eP) * (Cones * P);
+old_to_new = 
