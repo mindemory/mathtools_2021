@@ -4,19 +4,29 @@ clear; clc; close all;
 load('regress1.mat')
 
 figure(1)
+% Plotting the x and y variables as a scatterplot
 plot(x, y, 'r*', 'MarkerSize', 6, 'LineWidth', 2)
 xlabel('x')
 ylabel('y')
 title('Polynomial regression orders 0 to 5')
 hold on;
+
+% Initializing vectors: orders is a vector listing orders that need to be
+% sampled; colors is a vector of colors to be used for the line plots for
+% each order, X is initialized which will be the data matrix, errors is
+% initialized with zeros of the size of the orders vector
 orders = 0:5;
 X = [];
 Colors = ['k', 'b', 'g', 'm', 'c', 'y'];
 Errors = zeros(size(orders, 2), 1);
-%X = zeros(size(x, 1), orders + 1);
+
+% Creating a data matrix with columns x^i in ith loop. The beta optimal is
+% computed using SVD. The beta optimal are then used to derive the
+% predictions, the prediction errors, and the squared prediction errors.
+% The squared-errors are then appended to the Errors vector. Lastly, a plot
+% is created at each iteration that plots the fit of order i for the data.
 for i = orders
     X = [X x.^i];
-    %X(:, i+1) = x.^i;
     [U, S, V] = svd(X);
     betaOpt = V * pinv(S) * U' * y;
     predictions = X * betaOpt;

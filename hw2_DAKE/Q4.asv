@@ -1,0 +1,11 @@
+clear; clc; close all;
+
+%% a)
+load('windowedSpikes.mat')
+
+plot(data')
+xlabel('Time (ms)')
+ylabel('Voltage (V)')
+title('Windowed Spikes Visualization')
+%%
+pca(data)
