@@ -91,16 +91,16 @@ pred_knobs = H1 * eP * H2 * light
 </pre><pre class="codeoutput">
 act_knobs =
 
-    0.8698
-   -0.4468
-    0.8625
+    0.7906
+    0.3553
+    0.0472
 
 
 pred_knobs =
 
-    0.0277
-   -0.4627
-    0.8806
+   -0.0050
+    0.3404
+    0.0643
 
 </pre><p>As can be seen the predicted knob settings do not match the actual knob settings. This is the case because the new primaries are not linearly independent from each other. One way to check for this is by creating a plot of the new primaries:</p><pre class="codeinput">figure(2);
 plot(wl, eP)
@@ -108,7 +108,7 @@ legend(<span class="string">'eP1'</span>, <span class="string">'eP2'</span>, <sp
 xlabel(<span class="string">'Wavelength (nm)'</span>)
 ylabel(<span class="string">'Intensity (AU)'</span>)
 title(<span class="string">'Spectra of new primaries'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <img vspace="5" hspace="5" src="Q1_03.png" alt=""> <p>From the plot we can see that the eP3 curve exhibits two peaks that align very well with the peaks of eP1 and eP2. Therefore, it appears that eP3 is a linear combination of eP1 and eP2 vectors (or close to being a linear combination). However, the linear dependence is not prominent just by visualization.</p><p>Another way to check for the linear dependence of the three primaries is to look at the diagonal elements of the S matrix obtained upon SVD. Performing SVD on eP, we get:</p><pre class="codeinput">[eU, eS, eV] = svd(eP);
+</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <p>From the plot we can see that the eP3 curve exhibits two peaks that align very well with the peaks of eP1 and eP2. Therefore, it appears that eP3 is a linear combination of eP1 and eP2 vectors (or close to being a linear combination). However, the linear dependence is not prominent just by visualization.</p><p>Another way to check for the linear dependence of the three primaries is to look at the diagonal elements of the S matrix obtained upon SVD. Performing SVD on eP, we get:</p><pre class="codeinput">[eU, eS, eV] = svd(eP);
 diag(eS)
 </pre><pre class="codeoutput">
 ans =
@@ -123,38 +123,38 @@ legend(<span class="string">'L'</span>, <span class="string">'M'</span>, <span c
 xlabel(<span class="string">'Wavelength (nm)'</span>)
 ylabel(<span class="string">'Responsitivity of the cone (AU)'</span>)
 title(<span class="string">'Responsivity curves for the three cones'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_04.png" alt=""> <p>For the old primaries, the resulting light obtained by the combination of the primaries with the obtained knob settings from the color matching experiment are:</p><pre class="codeinput">prim_light = P * knobs;
+</pre><img vspace="5" hspace="5" src="Q1_03.png" alt=""> <p>For the old primaries, the resulting light obtained by the combination of the primaries with the obtained knob settings from the color matching experiment are:</p><pre class="codeinput">prim_light = P * knobs;
 </pre><p>We have to determine if the responses for the cones from the randomly generated test light and the combination of the primaries are the same.</p><pre class="codeinput">response_test_light = Cones * light
 response_prim_light = Cones * prim_light
 </pre><pre class="codeoutput">
 response_test_light =
 
-    4.4607
-    4.1678
-    3.0051
+    4.5820
+    3.4875
+    2.6311
 
 
 response_prim_light =
 
-    4.4607
-    4.1678
-    3.0051
+    4.5820
+    3.4875
+    2.6311
 
 </pre><p>As can be seen the responses from the cones for the primary lights with the knob settings obtained from the color matching experiment and the responses from the cones for the test light are exactly identical. This is an informal way of justifying that the cones provide a physical explanation of the color matching experiment.</p><p>The color matching experiment can be defined in terms of the C = Cones, t = test_light, P = primaries, and k = knob settings. The response of the cones to the test lights is the same as the response of the cones to the combination of the primaries. The response of the cones to the test light is Ct. The combination of primaries with the given knob settings is Pk and hence the response of the cones to the combination of the given primaries is CPk. Therefore, the color matching experiment can be summarized as:</p><p>Ct = CPk</p><p>Thus the knob settings for the color matching experiment can be obtained for any given test light as:</p><p>k = (CP)^-1*C*t</p><p>As shown earlier, the color matching matrix M = (CP)^-1*C and hence the result can be summarized as:</p><p>k = Mt</p><p>We can then write the code to compute the knob settings given the primaries and test light using the above procedure.</p><pre class="codeinput">knobs
 knobs_manual = inv(Cones * P) * Cones * light
 </pre><pre class="codeoutput">
 knobs =
 
-    0.8698
-   -0.4468
-    0.8625
+    0.7906
+    0.3553
+    0.0472
 
 
 knobs_manual =
 
-    0.8698
-   -0.4468
-    0.8625
+    0.7906
+    0.3553
+    0.0472
 
 </pre><p>These knob settings match the knob settings obtained from the humanColorMatcher function</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
