@@ -1,13 +1,29 @@
 clear; clc; close all;
 
 %% a)
+% load the data from colMatch.mat. Create a random test light of size 31*1
+% storing intensities from 400 to 700 nm. The primaries are stored in P.
+% The humanColorMatcher can then be run on the test light and the primaries
+% to obtain the three knob settings.
 load('colMatch.mat')
 
 light = rand(31, 1);
 primaries = P;
 [knobs] = humanColorMatcher(light, primaries);
 
-sum_of_primaries = mean(primaries, 2);
+%%
+% The sum of primaries is the weighted average of the three primaries by
+% the knob settings obtained from the humanColorMatcher. Plotting the spectra of sum
+% of primaries with the test light shows that the two spectra are not
+% identical. However, they did appear perceptually identical to the
+% humanColorMatcher. The reason for this is that the actual lights stay in
+% a higher dimensional space (in this case 31-dimensional). However, the
+% humans have only 3 cones and can perceive the projection of this higher
+% dimensional light onto the 3-dimensional space. Therefore, eventhough the
+% lights are spectrally distinguishable in the higher dimensional space,
+% their projection onto the lower dimensional space is indistinguishable to
+% humans. Such pairs of lights are called metamers.
+sum_of_primaries = primaries * knobs;
 figure(1);
 plot(wl, sum_of_primaries, 'k', 'DisplayName', 'primaries', ...
     'LineWidth', 0.5)
@@ -19,57 +35,48 @@ ylabel('Intensity (AU)')
 title('Comparing test light and primaries spectra')
 legend('location','eastoutside')
 
-%%
-% The spectra for the primaries is obtained by summing the primaries which
-% are linearly independent from each other. The test light, on the other
-% hand, can be any light which doesn't necessarily have to be a linear
-% combination of the primaries. The human color matching experiment
-% involves a linear transformation of the primaries from a higher
-% dimensional space, in this case, 31 dimensions, onto a lower dimensional
-% space, i.e. 3 dimensions owing to the three different type of cones
-% in humans. As a result, the perceived light is not a linear combination
-% of the primaries but instead related to the cone responses for the three
-% primaries and the test light. As long as, two lights can elicit similar
-% cone resposes, they will be appear identical to humans despite being
-% different spectrally. One way to think about it is that the human visual
-% system projects the wavelengths onto a 3-dimensional space and hence the
-% matching of the colors happens in this lower-dimensional space. Hence all
-% the sets of wavelengths that can produce the same responses in this
-% 3-dimensional space are bound to appear identical.
 
 %% b)
-% Let C = Cones, P_{old} = P, P_{new} = eP, k_{old} = l= knobs,
-% k_{new} = eknobs
+% Let H1 be the color-matching matrix in my lab and H2 be the
+% color-matching matrix in Dr. Evo's lab. The set of primaries for me are P
+% and the set of primaries for Dr. Evo are eP.
 %%
-% The old color matching equation is:
+% Let l be the random test light, then the color-matching experiment in Dr.
+% Evo's lab is:
 %%
-% Ct = CP_{old}k_{old}
+% eP * H2 * l ~ l
 %%
-% And the new color matching equation is:
+% Both sides of the equation are lights that appeared perceptually
+% identical in Dr. Evo's lab. Hence when these lights are tested in my lab,
+% they should appear identical too.
 %%
-% Ct = CP_{new}k_{new}
+% Hence we have:
+%% 
+% H1 * eP * H2 * l = H1 * l
 %%
-% Since the perception of both the old primaries with the old settings and
-% the new primaries with the new stting is the same, we can equate the
-% right-hand side of the two equations
+% Therefore, H1 * eP * H2 = H1
+%% 
+% Therefore, H2 = (H1 * eP)^-1 * H1
 %%
-% Hence, CP_{old}k_{old} = CP_{new}k_{new}
+% This equation computes the color-matching matrix in Dr. Evo's lab given
+% the color-matching matrix in my lab and the primaries used by Dr. Evo.
 %%
-% Given the invertibility of CP_{new}, we can create a new matrix
-% old_to_new as
+% The color-matching matrix in my lab can be computed by passing 31
+% different monochromatic test lights into the humanColorMatcher one at a
+% time to obtain values in each column of H1. This can be done in one step
+% by using an identity matrix of size 1. Using the derivation from above,
+% we can then compute H2
+H1 = humanColorMatcher(eye(31), P);
+H2 = pinv(H1 * eP) * H1;
+
 %%
-% old_to_new = inv(CP_{new}) * (CP_{old})
+% The goal of the next part is to determine if the predicted knob settings
+% and the actual knob settings are identical for a random test light.
+act_knobs = H1 * light
+pred_knobs = H1 * eP * H2 * light
+
 %%
-% Therefore, k_{new} = old_to_new * k_{old}
-%%
-% The old_to_new matrix can be computed by substituting the corresponding
-% matrices in the formula:
-%%
-old_to_new = inv(Cones * eP) * (Cones * P);
-eknobs_pred = old_to_new * knobs
-[eknobs_actual] = humanColorMatcher(light, eP)
-%%
-% As can be seen the predicted knob settings from the old_to_new matrix do
+% As can be seen the predicted knob settings do
 % not match the actual knob settings. This is the case because the new
 % primaries are not linearly independent from each other. One way to check
 % for this is by creating a plot of the new primaries:
@@ -79,6 +86,7 @@ legend('eP1', 'eP2', 'eP3')
 xlabel('Wavelength (nm)')
 ylabel('Intensity (AU)')
 title('Spectra of new primaries')
+
 %%
 % From the plot we can see that the eP3 curve exhibits two peaks that align
 % very well with the peaks of eP1 and eP2. Therefore, it appears that eP3
@@ -95,7 +103,9 @@ diag(eS)
 % The final element along the diagonal of S is almost 0. Hence the third
 % vector is a linear combination of the other two vectors. Thus, resulting
 % in linearly dependent primaries which violate the assumptions of the
-% color-matching experiment.
+% color-matching experiment. For H1 * eP to be invertible, the columns of
+% eP have to be linearly-independent.
+
 
 %% c)
 % Visualizng the Cones spectral sensitivies
@@ -148,7 +158,8 @@ response_prim_light = Cones * prim_light
 %%
 % We can then write the code to compute the knob settings given the
 % primaries and test light using the above procedure.
+knobs
 knobs_manual = inv(Cones * P) * Cones * light
 %%
-% These knob settings match the knob settins obtained from the
+% These knob settings match the knob settings obtained from the
 % humanColorMatcher function

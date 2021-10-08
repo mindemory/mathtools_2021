@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-02"><meta name="DC.source" content="Q2.m"><style type="text/css">
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-08"><meta name="DC.source" content="Q2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,23 +67,33 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
 </pre><h2 id="2">a)</h2><pre class="codeinput">load(<span class="string">'regress1.mat'</span>)
 
 figure(1)
+<span class="comment">% Plotting the x and y variables as a scatterplot</span>
 plot(x, y, <span class="string">'r*'</span>, <span class="string">'MarkerSize'</span>, 6, <span class="string">'LineWidth'</span>, 2)
 xlabel(<span class="string">'x'</span>)
 ylabel(<span class="string">'y'</span>)
 title(<span class="string">'Polynomial regression orders 0 to 5'</span>)
 hold <span class="string">on</span>;
+
+<span class="comment">% Initializing vectors: orders is a vector listing orders that need to be</span>
+<span class="comment">% sampled; colors is a vector of colors to be used for the line plots for</span>
+<span class="comment">% each order, X is initialized which will be the data matrix, errors is</span>
+<span class="comment">% initialized with zeros of the size of the orders vector</span>
 orders = 0:5;
 X = [];
 Colors = [<span class="string">'k'</span>, <span class="string">'b'</span>, <span class="string">'g'</span>, <span class="string">'m'</span>, <span class="string">'c'</span>, <span class="string">'y'</span>];
 Errors = zeros(size(orders, 2), 1);
-<span class="comment">%X = zeros(size(x, 1), orders + 1);</span>
+
+<span class="comment">% Creating a data matrix with columns x^i in ith loop. The beta optimal is</span>
+<span class="comment">% computed using SVD. The beta optimal are then used to derive the</span>
+<span class="comment">% predictions, the prediction errors, and the squared prediction errors.</span>
+<span class="comment">% The squared-errors are then appended to the Errors vector. Lastly, a plot</span>
+<span class="comment">% is created at each iteration that plots the fit of order i for the data.</span>
 <span class="keyword">for</span> i = orders
     X = [X x.^i];
-    <span class="comment">%X(:, i+1) = x.^i;</span>
     [U, S, V] = svd(X);
     betaOpt = V * pinv(S) * U' * y;
     predictions = X * betaOpt;
@@ -92,16 +102,15 @@ Errors = zeros(size(orders, 2), 1);
     Errors(i+1) = prediction_squared_error;
     plot(x, predictions, Colors(i+1), <span class="keyword">...</span>
         <span class="string">'DisplayName'</span>, [<span class="string">'poly reg order = '</span>, num2str(i), <span class="string">', sq error = '</span>, num2str(prediction_squared_error)], <span class="keyword">...</span>
-        <span class="string">'LineWidth'</span>, 2)
+        <span class="string">'LineWidth'</span>, 1.5)
 <span class="keyword">end</span>
 legend(<span class="string">'location'</span>, <span class="string">'north'</span>)
-
-figure(2);
-plot(orders, Errors, <span class="string">'r-o'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'MarkerSize'</span>, 5)
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <h2 id="3">b)</h2><pre class="codeinput">figure(2);
+plot(orders, Errors, <span class="string">'k-o'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'MarkerSize'</span>, 5)
 xlabel(<span class="string">'Order of Polynomial'</span>)
 ylabel(<span class="string">'Squared errors'</span>)
 title(<span class="string">'Squared errors as a function of degree of polynomial'</span>)
-</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <img vspace="5" hspace="5" src="Q2_02.png" alt=""> <p>The squared errors decrease monotonically as the order of the polynomial increases. However, this results in overfitting of the data. The goal of the regression is to model the data as closely as possible with as minimal parameters as we can. From the graph of the models, we see that the models with degree 0 and 1 are an underfit. On the other, models with degrees 4 and 5 are an overfit. Models 2 and 3 are relatively better. Model 3 has a lower error but seems to assume that the data flattens on the lower end of x, which might or might not be the case. Hence Model 2 is "best" fit in this case. Another way to look at this is to look at the datapoint that lies on the sigmoid slope of the square errors and degree. Again from this plot, we find that the "best" fit is Model 2.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <p>The squared errors decrease monotonically as the order of the polynomial increases. However, this results in overfitting of the data. The goal of the regression is to model the data as closely as possible with as minimal parameters as we can. From the graph of the models, we see that the models with degree 0, 1, and 2 are an underfit. Model 3 has a lower error but seems to assume that the data flattens on the lower end of x, which might or might not be the case. Models 4 and 5 are good fit to the data and exhibit similar squared-errors. Therefore, the model with the least order that has the best fit but also does not end up fitting the noise is a good model. The best model in this scenario is the polynomial of order 4.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; clc; close all;
 
@@ -109,19 +118,29 @@ clear; clc; close all;
 load('regress1.mat')
 
 figure(1)
+% Plotting the x and y variables as a scatterplot
 plot(x, y, 'r*', 'MarkerSize', 6, 'LineWidth', 2)
 xlabel('x')
 ylabel('y')
 title('Polynomial regression orders 0 to 5')
 hold on;
+
+% Initializing vectors: orders is a vector listing orders that need to be
+% sampled; colors is a vector of colors to be used for the line plots for
+% each order, X is initialized which will be the data matrix, errors is
+% initialized with zeros of the size of the orders vector
 orders = 0:5;
 X = [];
 Colors = ['k', 'b', 'g', 'm', 'c', 'y'];
 Errors = zeros(size(orders, 2), 1);
-%X = zeros(size(x, 1), orders + 1);
+
+% Creating a data matrix with columns x^i in ith loop. The beta optimal is
+% computed using SVD. The beta optimal are then used to derive the
+% predictions, the prediction errors, and the squared prediction errors.
+% The squared-errors are then appended to the Errors vector. Lastly, a plot
+% is created at each iteration that plots the fit of order i for the data.
 for i = orders
     X = [X x.^i];
-    %X(:, i+1) = x.^i;
     [U, S, V] = svd(X);
     betaOpt = V * pinv(S) * U' * y;
     predictions = X * betaOpt;
@@ -130,27 +149,28 @@ for i = orders
     Errors(i+1) = prediction_squared_error;
     plot(x, predictions, Colors(i+1), ...
         'DisplayName', ['poly reg order = ', num2str(i), ', sq error = ', num2str(prediction_squared_error)], ...
-        'LineWidth', 2)
+        'LineWidth', 1.5)
 end
 legend('location', 'north')
 
+%% b)
+
 figure(2);
-plot(orders, Errors, 'r-o', 'LineWidth', 2, 'MarkerSize', 5)
+plot(orders, Errors, 'k-o', 'LineWidth', 2, 'MarkerSize', 5)
 xlabel('Order of Polynomial')
 ylabel('Squared errors')
 title('Squared errors as a function of degree of polynomial')
-
 %%
 % The squared errors decrease monotonically as the order of the polynomial
 % increases. However, this results in overfitting of the data. The goal of
 % the regression is to model the data as closely as possible with as
 % minimal parameters as we can. From the graph of the models, we see that
-% the models with degree 0 and 1 are an underfit. On the other, models with
-% degrees 4 and 5 are an overfit. Models 2 and 3 are relatively better.
-% Model 3 has a lower error but seems to assume that the data flattens on
-% the lower end of x, which might or might not be the case. Hence Model 2
-% is "best" fit in this case. Another way to look at this is to look at the
-% datapoint that lies on the sigmoid slope of the square errors and degree.
-% Again from this plot, we find that the "best" fit is Model 2.
+% the models with degree 0, 1, and 2 are an underfit. Model 3 has a lower error 
+% but seems to assume that the data flattens on
+% the lower end of x, which might or might not be the case. Models 4 and 5
+% are good fit to the data and exhibit similar squared-errors. Therefore,
+% the model with the least order that has the best fit but also does not
+% end up fitting the noise is a good model. The best model in this scenario
+% is the polynomial of order 4.
 ##### SOURCE END #####
 --></body></html>
