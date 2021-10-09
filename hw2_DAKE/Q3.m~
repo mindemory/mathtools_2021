@@ -63,4 +63,4 @@ load('constrainedLS.mat')
 [U, S, V] = svd(data);
 w_tilde = S(1:2, :)*V'*w;
 w_tilde_hat = w_tilde/sqrt(sum(w_tilde.^2));
-beta_tilde = w_tilde_hat * 1/sqrt(sum(w_tilde.^2))
+beta_tilde = w_tilde_hat * w_tilde

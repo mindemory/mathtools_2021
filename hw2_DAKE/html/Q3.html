@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-08"><meta name="DC.source" content="Q3.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-08"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,7 +52,6 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
-span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,14 +66,73 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#25">b)</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
 </pre><h2 id="2">a)</h2><pre class="codeinput">load(<span class="string">'constrainedLS.mat'</span>)
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><p>The original optimization problem can be stated as:</p><p><img src="Q3_eq00843568460094992000.png" alt="$$min_{\beta} \sum_n(\beta^T d_n)^2$$, s.t. $$\beta^Tw = 1$$" style="width:147px;height:24px;"></p><p>Let D be the data matrix which has the data points as its rows and the beta is the vector of the parameters that we are interested in. Hence D*beta becomes a vector with nth row being beta^T * dn</p><p>Using the definition of the norm, we can then see that:</p><p><img src="Q3_eq08052270652043038672.png" alt="$$||D\beta||^2 = \sum_n (\beta^T d_n)^2$$" style="width:98px;height:24px;"></p><p>Thus, the optimization problem can be re-written in the matrix form as:</p><p><img src="Q3_eq14746547864958624784.png" alt="$$min_{\beta} ||D\beta||^2$$, s.t. $$\beta^Tw = 1$$" style="width:125px;height:13px;"></p><p>Now we can simplify the problem by performing SVD over the data matrix D. Doing so, we get:</p><p><img src="Q3_eq06134236201014904150.png" alt="$$D = USV^T$$" style="width:55px;height:11px;"></p><p>Substituting the SVD back into the matrix form of the optimization problem:</p><p><img src="Q3_eq08181483590731499112.png" alt="$$min_{\beta} ||USV^T\beta||^2$$, s.t. $$\beta^Tw = 1$$" style="width:147px;height:13px;"></p><p>Since U is a transformation matrix, we can ignore it for the minimization problem:</p><p><img src="Q3_eq06251742419693713291.png" alt="$$min_{\beta} ||SV^T\beta||^2$$, s.t. $$\beta^Tw = 1$$" style="width:138px;height:13px;"></p><p>Let <img src="Q3_eq06097227888905064991.png" alt="$$\beta^* = V^T\beta $$" style="width:48px;height:13px;">, and <img src="Q3_eq16216299767495698052.png" alt="$$w^* = V^Tw $$" style="width:50px;height:11px;"></p><p>The minimization problem then becomes:</p><p><img src="Q3_eq12303031374738581829.png" alt="$$min_{\beta^*} ||S\beta^*||^2$$, s.t. $$\beta^{*T}w^* = 1$$" style="width:139px;height:13px;"></p><p>Now S is a diagonal matrix of shape 300 * 2. Hence it has the first two rows that is a matrix of two elements along the diagonals s1, s2 with the other two elements being 0. Also all the remaining rows of S are zeros. Let <img src="Q3_eq10676367991786747732.png" alt="$$ S^* $$" style="width:11px;height:9px;"> be the matrix obtained by taking the first two non-zero rows of S and <img src="Q3_eq01539615368168972055.png" alt="$$ S^{\#} $$" style="width:13px;height:11px;"> be the inverse of <img src="Q3_eq10676367991786747732.png" alt="$$ S^* $$" style="width:11px;height:9px;">, then we have:</p><p><img src="Q3_eq10876877815938176214.png" alt="$$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t. $$\tilde{\beta}^{T}\tilde{w} = 1$$" style="width:116px;height:16px;"></p><p>where,</p><p><img src="Q3_eq11067865167704628638.png" alt="$$\tilde{\beta} = S^{\#}\beta^* $$, and $$\tilde{w} = S^* w^* $$" style="width:122px;height:13px;"></p><p>This can also be written in terms of the original beta and w:</p><p><img src="Q3_eq12278134707838578907.png" alt="$$\tilde{\beta} = S^{\#}V^T\beta $$, and $$\tilde{w} = S^* V^Tw $$" style="width:143px;height:13px;"></p><h2 id="25">b)</h2><p>Performing SVD on the original data:</p><pre class="codeinput">[U, S, V] = svd(data);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; clc; close all;
 
 %% a)
 load('constrainedLS.mat')
 
+%%
+% The original optimization problem can be stated as:
+%%
+% $$min_{\beta} \sum_n(\beta^T d_n)^2$$, s.t. $$\beta^Tw = 1$$
+%%
+% Let D be the data matrix which has the data points as its rows and the
+% beta is the vector of the parameters that we are interested in. Hence
+% D*beta becomes a vector with nth row being beta^T * dn
+%%
+% Using the definition of the norm, we can then see that:
+%%
+% $$||D\beta||^2 = \sum_n (\beta^T d_n)^2$$
+%%
+% Thus, the optimization problem can be re-written in the matrix form as:
+%%
+% $$min_{\beta} ||D\beta||^2$$, s.t. $$\beta^Tw = 1$$
+%%
+% Now we can simplify the problem by performing SVD over the data matrix D.
+% Doing so, we get:
+%%
+% $$D = USV^T$$
+%%
+% Substituting the SVD back into the matrix form of the optimization
+% problem:
+%%
+% $$min_{\beta} ||USV^T\beta||^2$$, s.t. $$\beta^Tw = 1$$
+%%
+% Since U is a transformation matrix, we can ignore it for the minimization
+% problem:
+%% 
+% $$min_{\beta} ||SV^T\beta||^2$$, s.t. $$\beta^Tw = 1$$
+%%
+% Let $$\beta^* = V^T\beta $$, and $$w^* = V^Tw $$
+%%
+% The minimization problem then becomes:
+%%
+% $$min_{\beta^*} ||S\beta^*||^2$$, s.t. $$\beta^{*T}w^* = 1$$
+%%
+% Now S is a diagonal matrix of shape 300 * 2. Hence it has the first two
+% rows that is a matrix of two elements along the diagonals s1, s2 with the
+% other two elements being 0. Also all the remaining rows of S are zeros.
+% Let $$ S^* $$ be the matrix obtained by taking the first two non-zero rows
+% of S and $$ S^{\#} $$ be the inverse of $$ S^* $$, then we have:
+%%
+% $$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t. $$\tilde{\beta}^{T}\tilde{w} = 1$$
+%%
+% where,
+%%
+% $$\tilde{\beta} = S^{\#}\beta^* $$, and $$\tilde{w} = S^* w^* $$
+%%
+% This can also be written in terms of the original beta and w:
+%%
+% $$\tilde{\beta} = S^{\#}V^T\beta $$, and $$\tilde{w} = S^* V^Tw $$
+
+%% b)
+% Performing SVD on the original data:
+%%
+[U, S, V] = svd(data);
 ##### SOURCE END #####
 --></body></html>

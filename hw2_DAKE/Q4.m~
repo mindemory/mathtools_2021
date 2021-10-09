@@ -36,21 +36,15 @@ title('Eigenvalues in descending order')
 PC1 =V(:,1);
 PC2 = V(:,2);
 
-projPC1 = centered_data * PC1;
-projPC2 = centered_data * PC2;
-%plot(PC1, PC2, 'k')
 figure(4);
+projPC1 = centered_data*PC1;
+projPC2 = centered_data*PC2;
+%plot(PC1, PC2, 'k')
+hold on;
 scatter(projPC1, projPC2, 'r', 'filled')
 xlabel('PC1')
 ylabel('PC2')
-title('PCA of spike waveforms')
+title('PCA analysis of spike waveforms')
 
 %%
-PC3 = V(:, 3);
-projPC3 = centered_data * PC3;
-figure(5);
-scatter3(projPC1, projPC2, projPC3, 'r', 'filled')
-xlabel('PC1')
-ylabel('PC2')
-zlabel('PC3')
-title('PCA of spike waveforms')
+
