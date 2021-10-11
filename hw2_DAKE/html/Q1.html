@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q1</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-08"><meta name="DC.source" content="Q1.m"><style type="text/css">
+      --><title>Q1</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-10"><meta name="DC.source" content="Q1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -91,16 +91,16 @@ pred_knobs = H1 * eP * H2 * light
 </pre><pre class="codeoutput">
 act_knobs =
 
-    0.7906
-    0.3553
-    0.0472
+    1.0504
+    0.4609
+    0.0155
 
 
 pred_knobs =
 
-   -0.0050
-    0.3404
-    0.0643
+   -0.0075
+    0.4410
+    0.0383
 
 </pre><p>As can be seen the predicted knob settings do not match the actual knob settings. This is the case because the new primaries are not linearly independent from each other. One way to check for this is by creating a plot of the new primaries:</p><pre class="codeinput">figure(2);
 plot(wl, eP)
@@ -129,32 +129,32 @@ response_prim_light = Cones * prim_light
 </pre><pre class="codeoutput">
 response_test_light =
 
-    4.5820
-    3.4875
-    2.6311
+    5.7854
+    4.3931
+    3.4581
 
 
 response_prim_light =
 
-    4.5820
-    3.4875
-    2.6311
+    5.7854
+    4.3931
+    3.4581
 
 </pre><p>As can be seen the responses from the cones for the primary lights with the knob settings obtained from the color matching experiment and the responses from the cones for the test light are exactly identical. This is an informal way of justifying that the cones provide a physical explanation of the color matching experiment.</p><p>The color matching experiment can be defined in terms of the C = Cones, t = test_light, P = primaries, and k = knob settings. The response of the cones to the test lights is the same as the response of the cones to the combination of the primaries. The response of the cones to the test light is Ct. The combination of primaries with the given knob settings is Pk and hence the response of the cones to the combination of the given primaries is CPk. Therefore, the color matching experiment can be summarized as:</p><p>Ct = CPk</p><p>Thus the knob settings for the color matching experiment can be obtained for any given test light as:</p><p>k = (CP)^-1*C*t</p><p>As shown earlier, the color matching matrix M = (CP)^-1*C and hence the result can be summarized as:</p><p>k = Mt</p><p>We can then write the code to compute the knob settings given the primaries and test light using the above procedure.</p><pre class="codeinput">knobs
 knobs_manual = inv(Cones * P) * Cones * light
 </pre><pre class="codeoutput">
 knobs =
 
-    0.7906
-    0.3553
-    0.0472
+    1.0504
+    0.4609
+    0.0155
 
 
 knobs_manual =
 
-    0.7906
-    0.3553
-    0.0472
+    1.0504
+    0.4609
+    0.0155
 
 </pre><p>These knob settings match the knob settings obtained from the humanColorMatcher function</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
