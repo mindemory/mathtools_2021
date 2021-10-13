@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-11"><meta name="DC.source" content="Q3.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-12"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,7 +52,6 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
-span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,87 +66,67 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#41">b)</a></li><li><a href="#57">c)</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#42">b)</a></li><li><a href="#58">c)</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
 </pre><h2 id="2">a)</h2><pre class="codeinput">load(<span class="string">'constrainedLS.mat'</span>)
-</pre><p>The original optimization problem can be stated as:</p><p><img src="Q3_eq07123310368397829787.png" alt="$min_{\vec{\beta}} \sum_n(\vec{\beta}^T \vec{d_n})^2$">, s.t. <img src="Q3_eq09663779667729532508.png" alt="$\vec{\beta}^T\vec{w} = 1$"></p><p>Let D be the data matrix which has the data points as its rows and beta is the vector of parameters that we are interested in. Hence <img src="Q3_eq14313525122008898472.png" alt="$$D\vec{\beta} $$"> becomes a vector with nth row being <img src="Q3_eq16380786823951483796.png" alt="$$\vec{\beta}^T \vec{d_n} $$"> or equivalently <img src="Q3_eq03677726814596081076.png" alt="$$\vec{d_n}^T \vec{\beta} $$"></p><p>Using the definition of the norm, we have:</p><p><img src="Q3_eq01234828430933268974.png" alt="$||D\vec{\beta}||^2 = \sum_n (\vec{\beta}^T \vec{d_n})^2$"></p><p>Thus, the optimization problem can be re-written in the matrix form as:</p><p><img src="Q3_eq10575343511923564538.png" alt="$min_{\vec{\beta}} ||D\vec{\beta}||^2$">, s.t. <img src="Q3_eq09663779667729532508.png" alt="$\vec{\beta}^T\vec{w} = 1$"></p><p>Now we can simplify the problem by performing SVD over the data matrix D. Doing so, we get:</p><p><img src="Q3_eq01404256479802272177.png" alt="$D = USV^T$"></p><p>Substituting the SVD back into the matrix form of the optimization problem:</p><p><img src="Q3_eq01799170159817410783.png" alt="$min_{\vec{\beta}} ||USV^T\vec{\beta}||^2$">, s.t. <img src="Q3_eq09663779667729532508.png" alt="$\vec{\beta}^T\vec{w} = 1$"></p><p>Since U is a transformation matrix, it is not relevant to the minimization problem:</p><p><img src="Q3_eq09549004578212582496.png" alt="$min_{\vec{\beta}} ||SV^T\vec{\beta}||^2$">, s.t. <img src="Q3_eq09663779667729532508.png" alt="$\vec{\beta}^T\vec{w} = 1$"></p><p>Let <img src="Q3_eq11911988911778130905.png" alt="$$\vec{\beta^*} = V^T\vec{\beta} $$"></p><p>Therefore,</p><p><img src="Q3_eq14940657186235510429.png" alt="$\vec{\beta} = V\vec{\beta^*}$"></p><p>The minimization problem then becomes:</p><p><img src="Q3_eq06347263543927660456.png" alt="$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$">, s.t. <img src="Q3_eq02104307838151712963.png" alt="$(V\vec{\beta^*})^T \vec{w} = 1$"></p><p><img src="Q3_eq06347263543927660456.png" alt="$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$">, s.t. <img src="Q3_eq16642034872760397834.png" alt="$\vec{\beta^*}^T V^T \vec{w} = 1$"></p><p>Let <img src="Q3_eq08923783834845410664.png" alt="$$\vec{w^*} = V^T \vec{w} $$"></p><p>Therefore,</p><p><img src="Q3_eq06347263543927660456.png" alt="$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$">, s.t. <img src="Q3_eq13766148097093169210.png" alt="$\vec{\beta^*}^T \vec{w^*} = 1$"></p><p>Now S is a diagonal matrix of shape 300 * 2. Hence it has the first two rows with non-zero diagonal elements. All the remaining rows of S are zeros. Therefore, the transformation of <img src="Q3_eq14564501750399376238.png" alt="$$\vec{\beta^*} $$"> by S creates a 300 dimensional vector with only two non-zero entries. Hence, the minimization problem can be simplified by considering only the first two rows of S. Let this matrix be called S*. The optimization problem can hence be restated as:</p><p><img src="Q3_eq04143736850734796579.png" alt="$min_{\vec{\beta^*}} ||S^*\vec{\beta^*}||^2$">, s.t. <img src="Q3_eq05159163262166206518.png" alt="$\vec{\beta^*}^{T}\vec{w^*} = 1$"></p><p>Let <img src="Q3_eq11096557501790372249.png" alt="$$\tilde{\beta} = S^{*} \vec{\beta^*} $$"></p><p>Therefore,</p><p><img src="Q3_eq05398591984986654244.png" alt="$\vec{\beta^*} = S^{*\#}\tilde{\beta}$"></p><p>Here <img src="Q3_eq10161477975986712719.png" alt="$$S^{*\#} $$"> is the pseudoinverse of <img src="Q3_eq11822258728136693671.png" alt="$$S^* $$"> and is an orthogonal matrix, since <img src="Q3_eq11822258728136693671.png" alt="$$S^* $$"> is a square matrix with non-zero diagonal elements and the off-diagonal elements being zero.</p><p>Thus, we have:</p><p><img src="Q3_eq14785601091150487712.png" alt="$\vec{\beta^*}^T = (S^{*\#}\tilde{\beta})^T =\tilde{\beta}^T S^{*\#}$"></p><p>The optimization problem now becomes:</p><p><img src="Q3_eq05130027646243925451.png" alt="$$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t. $$\tilde{\beta}^{T}S^{*\#}\vec{w^*} = 1$$"></p><p>Let <img src="Q3_eq08043611023958958513.png" alt="$$\tilde{w} = S^{*\#} \vec{w^*} $$"></p><p>Therefore,</p><p><img src="Q3_eq03758784790686567222.png" alt="$min_{\tilde{\beta}} ||\tilde{\beta}||^2$">, s.t. <img src="Q3_eq14521495228645495154.png" alt="$\tilde{\beta}^{T}\tilde{w} = 1$"></p><p>We can re-write <img src="Q3_eq17715549874495152721.png" alt="$$\tilde{\beta} $$"> and <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$"> in terms of <img src="Q3_eq04666978853629574678.png" alt="$$\vec{\beta} $$"> and <img src="Q3_eq13025417811621045447.png" alt="$$\vec{w} $$"></p><p><img src="Q3_eq01646469460408484843.png" alt="$\tilde{\beta} = S^* V^T \vec{\beta}$"></p><p><img src="Q3_eq01154461727818133541.png" alt="$\tilde{w} = S^{*\#} V^T \vec{w}$"></p><h2 id="41">b)</h2><p>Performing SVD on the original data:</p><pre class="codeinput">[U, S, V] = svd(data);
+</pre><p>The original optimization problem can be stated as:</p><p><img src="Q3_eq03280980933651444044.png" alt="$$min_{\vec{\beta}} \sum_n(\vec{\beta}^T \vec{d_n})^2 $$, s.t. $$\vec{\beta}^T\vec{w} = 1 $$" style="width:147px;height:24px;"></p><p>Let D be the data matrix which has the data points as its rows and beta is the vector of parameters that we are interested in. Hence <img src="Q3_eq14313525122008898472.png" alt="$$D\vec{\beta} $$" style="width:17px;height:14px;"> becomes a vector with nth row being <img src="Q3_eq16380786823951483796.png" alt="$$\vec{\beta}^T \vec{d_n} $$" style="width:24px;height:14px;"> or equivalently <img src="Q3_eq03677726814596081076.png" alt="$$\vec{d_n}^T \vec{\beta} $$" style="width:24px;height:16px;"></p><p>Using the definition of the norm, we have:</p><p><img src="Q3_eq02731599746925655018.png" alt="$$||D\vec{\beta}||^2 = \sum_n (\vec{\beta}^T \vec{d_n})^2$$" style="width:98px;height:24px;"></p><p>Thus, the optimization problem can be re-written in the matrix form as:</p><p><img src="Q3_eq13369169196400065840.png" alt="$$min_{\vec{\beta}} ||D\vec{\beta}||^2$$, s.t. $$\vec{\beta}^T\vec{w} =&#xA;1$$" style="width:125px;height:17px;"></p><p>Now we can simplify the problem by performing SVD over the data matrix D. Doing so, we get:</p><p><img src="Q3_eq06134236201014904150.png" alt="$$D = USV^T$$" style="width:55px;height:11px;"></p><p>Substituting the SVD back into the matrix form of the optimization problem:</p><p><img src="Q3_eq13776862309459805143.png" alt="$$min_{\vec{\beta}} ||USV^T\vec{\beta}||^2$$, s.t. $$\vec{\beta}^T\vec{w}&#xA;= 1$$" style="width:147px;height:17px;"></p><p>Since U is a transformation matrix, it is not relevant to the minimization problem:</p><p><img src="Q3_eq15661024787481904310.png" alt="$$min_{\vec{\beta}} ||SV^T\vec{\beta}||^2$$, s.t. $$\vec{\beta}^T\vec{w}&#xA;= 1$$" style="width:138px;height:17px;"></p><p>Let <img src="Q3_eq11911988911778130905.png" alt="$$\vec{\beta^*} = V^T\vec{\beta} $$" style="width:48px;height:14px;"></p><p>Therefore,</p><p><img src="Q3_eq06571847815205671467.png" alt="$$\vec{\beta} = V\vec{\beta^*}$$" style="width:41px;height:14px;"></p><p>The minimization problem then becomes:</p><p><img src="Q3_eq08232289706472868824.png" alt="$$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$$, s.t. $$(V\vec{\beta^*})^T&#xA;\vec{w} = 1$$" style="width:153px;height:17px;"></p><p><img src="Q3_eq04402391349901908585.png" alt="$$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$$, s.t. $$\vec{\beta^*}^T V^T&#xA;\vec{w} = 1$$" style="width:150px;height:19px;"></p><p>Let <img src="Q3_eq08923783834845410664.png" alt="$$\vec{w^*} = V^T \vec{w} $$" style="width:51px;height:11px;"></p><p>Therefore,</p><p><img src="Q3_eq08244561308836492380.png" alt="$$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$$, s.t. $$\vec{\beta^*}^T&#xA;\vec{w^*} = 1$$" style="width:140px;height:19px;"></p><p>Now S is a diagonal matrix of shape 300 * 2. Hence it has the first two rows with non-zero diagonal elements. All the remaining rows of S are zeros. Therefore, the transformation of <img src="Q3_eq14564501750399376238.png" alt="$$\vec{\beta^*} $$" style="width:11px;height:14px;"> by S creates a 300 dimensional vector with only two non-zero entries. Hence, the minimization problem can be simplified by considering only the first two rows of S. Let this matrix be called S*. The optimization problem can hence be restated as:</p><p><img src="Q3_eq02642221283987764817.png" alt="$$min_{\vec{\beta^*}} ||S^*\vec{\beta^*}||^2$$, s.t.&#xA;$$\vec{\beta^*}^{T}\vec{w^*} = 1$$" style="width:144px;height:19px;"></p><p>Let <img src="Q3_eq11096557501790372249.png" alt="$$\tilde{\beta} = S^{*} \vec{\beta^*} $$" style="width:44px;height:14px;"></p><p>Here, <img src="Q3_eq18140563145301134107.png" alt="$$S^{*} $$" style="width:11px;height:9px;"> is an orthogonal matrix with non-zero entries along the diagonal and zeros off-diagonal. Therefore,</p><p><img src="Q3_eq01281777809170892899.png" alt="$$\vec{\beta^*} = S^{*^{-1}}\tilde{\beta}$$" style="width:52px;height:14px;"></p><p>Here <img src="Q3_eq16475223314445778949.png" alt="$$S^{*^{-1}} $$" style="width:18px;height:12px;"> is the inverse of <img src="Q3_eq11822258728136693671.png" alt="$$S^* $$" style="width:11px;height:9px;">, and since <img src="Q3_eq11822258728136693671.png" alt="$$S^* $$" style="width:11px;height:9px;"> is an orthogonal matrix, we have:</p><p><img src="Q3_eq12931362010385231534.png" alt="$$S^{*^{-1}} = S^{*^T} $$" style="width:49px;height:12px;"></p><p>Therefore,</p><p><img src="Q3_eq00984928121584155681.png" alt="$$\vec{\beta^*}^T = (S^{*^{-1}}\tilde{\beta})^T =\tilde{\beta}^T S^{*}$$" style="width:112px;height:16px;"></p><p>The optimization problem now becomes:</p><p><img src="Q3_eq03041957311568860977.png" alt="$$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t. $$\tilde{\beta}^{T}S^{*^{-1}}\vec{w^*} = 1$$" style="width:139px;height:16px;"></p><p>Let <img src="Q3_eq16452974220601741790.png" alt="$$\tilde{w} = S^{*^{-1}} \vec{w^*} $$" style="width:54px;height:12px;"></p><p>Therefore,</p><p><img src="Q3_eq06548866742645111855.png" alt="$$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t.&#xA;$$\tilde{\beta}^{T}\tilde{w} = 1$$" style="width:116px;height:16px;"></p><p>We can re-write <img src="Q3_eq17715549874495152721.png" alt="$$\tilde{\beta} $$" style="width:7px;height:13px;"> and <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$" style="width:8px;height:8px;"> in terms of <img src="Q3_eq04666978853629574678.png" alt="$$\vec{\beta} $$" style="width:8px;height:14px;"> and <img src="Q3_eq13025417811621045447.png" alt="$$\vec{w} $$" style="width:8px;height:9px;"></p><p><img src="Q3_eq10035745453663283695.png" alt="$$\tilde{\beta} = S^* V^T \vec{\beta}$$" style="width:56px;height:14px;"></p><p><img src="Q3_eq01756899513840275713.png" alt="$$\tilde{w} = S^{*^{-1}} V^T \vec{w}$$" style="width:66px;height:12px;"></p><h2 id="42">b)</h2><p>Performing SVD on the original data:</p><pre class="codeinput">[U, S, V] = svd(data);
 Ss = S(1:2, :);
-</pre><p>The shortest vector <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$"> is the one that lies along the direction of <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$"> . Hence the angle between <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$"> and <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$"> is either <img src="Q3_eq04281240290789119141.png" alt="$$0^{\circ} $$"> or <img src="Q3_eq12136355362745401187.png" alt="$$180^{\circ} $$"></p><p>The constraint is basically a dot product of the vectors and hence can also be written as:</p><p><img src="Q3_eq16832405326209887930.png" alt="$$\tilde{\beta}^{T} \tilde{w} = ||\tilde{\beta}||.||\tilde{w}||cos \theta&#xA;= 1 $$"></p><p>For <img src="Q3_eq05834212592692801387.png" alt="$$\theta = 0^{\circ} $$">, we have <img src="Q3_eq14123797619277004296.png" alt="$$cos \theta = 1 $$">, and for <img src="Q3_eq09463773950418557206.png" alt="$$\theta = 180^{\circ} $$">, we have <img src="Q3_eq03823403778422144563.png" alt="$$cos \theta = -1 $$"></p><p>The constraint then becomes:</p><p><img src="Q3_eq04828270277835158274.png" alt="$$||\tilde{\beta}_{opt}||.||\tilde{w}|| = \pm 1 $$"></p><p>Therefore,</p><p><img src="Q3_eq02168286650468510573.png" alt="$||\tilde{\beta}_{opt}|| = \pm \frac{1}{||\tilde{w}||}$"></p><p>This gives the length of <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$">. This vector points in the same direction as <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$"> and hence the vector can be represented as:</p><p><img src="Q3_eq16479652659019260227.png" alt="$\tilde{\beta}_{opt} = \pm ||\tilde{\beta}_{opt}|| \frac{\tilde{w}}{||\tilde{w}||}$"></p><p>Substituting the length of <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$"> calculated above:</p><p><img src="Q3_eq08521360571136622307.png" alt="$\tilde{\beta}_{opt} = \pm \frac{\tilde{w}}{||\tilde{w}||^2}$"></p><p>Computing <img src="Q3_eq10795708595763370002.png" alt="$$\tilde{\beta}_{opt}$">$:</p><pre class="codeinput">w_tilde = pinv(Ss)*V'*w;
+</pre><p>The shortest vector <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$" style="width:17px;height:14px;"> is the one that lies along the direction of <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$" style="width:8px;height:8px;"> . Hence the angle between <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$" style="width:17px;height:14px;"> and <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$" style="width:8px;height:8px;"> is <img src="Q3_eq04281240290789119141.png" alt="$$0^{\circ} $$" style="width:9px;height:9px;"></p><p>The constraint is basically a dot product of the vectors and hence can also be written as:</p><p><img src="Q3_eq16832405326209887930.png" alt="$$\tilde{\beta}^{T} \tilde{w} = ||\tilde{\beta}||.||\tilde{w}||cos \theta&#xA;= 1 $$" style="width:119px;height:14px;"></p><p>Since <img src="Q3_eq05834212592692801387.png" alt="$$\theta = 0^{\circ} $$" style="width:29px;height:9px;">, we have <img src="Q3_eq14123797619277004296.png" alt="$$cos \theta = 1 $$" style="width:40px;height:8px;"></p><p>The constraint then becomes:</p><p><img src="Q3_eq05957166633105578360.png" alt="$$||\tilde{\beta}_{opt}||.||\tilde{w}|| = 1 $$" style="width:71px;height:14px;"></p><p>Therefore,</p><p><img src="Q3_eq17989562218989420267.png" alt="$$||\tilde{\beta}_{opt}|| = \frac{1}{||\tilde{w}||}$$" style="width:65px;height:26px;"></p><p>This gives the length of <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$" style="width:17px;height:14px;">. This vector points in the same direction as <img src="Q3_eq06611732901366278955.png" alt="$$\tilde{w} $$" style="width:8px;height:8px;"> and hence the vector can be represented as:</p><p><img src="Q3_eq09563853048537113154.png" alt="$$\tilde{\beta}_{opt} =||\tilde{\beta}_{opt}||&#xA;\frac{\tilde{w}}{||\tilde{w}||}$$" style="width:83px;height:26px;"></p><p>Substituting the length of <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$" style="width:17px;height:14px;"> calculated above:</p><p><img src="Q3_eq01839601619924981458.png" alt="$$\tilde{\beta}_{opt} = \frac{\tilde{w}}{||\tilde{w}||^2}$$" style="width:59px;height:26px;"></p><p>Computing <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$" style="width:17px;height:14px;">:</p><pre class="codeinput">w_tilde = inv(Ss)*V'*w;
 w_tilde_hat = w_tilde/sqrt(sum(w_tilde.^2));
-beta_tilde_optp = w_tilde_hat * 1/sqrt(sum(w_tilde.^2));
-beta_tilde_optn = - w_tilde_hat * 1/sqrt(sum(w_tilde.^2));
-</pre><p>Creating a matrix to plot <img src="Q3_eq10795708595763370002.png" alt="$$\tilde{\beta}_{opt}$">$</p><pre class="codeinput">beta_tilde_optp_fplot = [zeros(2, 1), beta_tilde_optp];
-beta_tilde_optn_fplot = [zeros(2, 1), beta_tilde_optn];
-w_tilde_fplot = [zeros(2, 1), w_tilde];
+beta_tilde_opt = w_tilde_hat * 1/sqrt(sum(w_tilde.^2));
+</pre><p>Creating a matrix to plot <img src="Q3_eq17640732332798045634.png" alt="$$\tilde{\beta}_{opt} $$" style="width:17px;height:14px;"></p><pre class="codeinput">beta_tilde_opt_fplot = [zeros(2, 1), beta_tilde_opt];
 
-slope_beta_tilde_optp = beta_tilde_optp(2)/beta_tilde_optp(1);
-slope_beta_tilde_optn = beta_tilde_optn(2)/beta_tilde_optn(1);
+slope_beta_tilde_opt = beta_tilde_opt(2)/beta_tilde_opt(1);
 
-slope_perp_p = -1/slope_beta_tilde_optp;
-slope_perp_n = -1/slope_beta_tilde_optn;
-intercept_perp_p = beta_tilde_optp(2) - slope_perp_p * beta_tilde_optp(1);
-intercept_perp_n = beta_tilde_optn(2) - slope_perp_n * beta_tilde_optn(1);
+slope_perp = -1/slope_beta_tilde_opt;
+intercept_perp = beta_tilde_opt(2) - slope_perp * beta_tilde_opt(1);
 
-data_transformed = U' * data;
+data_transformed = U(:, 1:2);
+<span class="comment">% data_transformed = data * V * inv(Ss);</span>
 
 figure(1);
-plot(beta_tilde_optp_fplot(1, :), beta_tilde_optp_fplot(2, :), <span class="string">'r-o'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
+plot(beta_tilde_opt_fplot(1, :), beta_tilde_opt_fplot(2, :), <span class="string">'r-o'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
     <span class="string">'DisplayName'</span>, <span class="string">'$\tilde{\beta}_{opt}$'</span>)
 hold <span class="string">on</span>;
-plot(w_tilde_fplot(1, :), w_tilde_fplot(2, :), <span class="string">'k-o'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'$\tilde{w}$'</span>)
 x_perp_p = xlim;
-y_perp_p = slope_perp_p * x_perp_p + intercept_perp_p * [1, 1];
+y_perp_p = slope_perp * x_perp_p + intercept_perp * [1, 1];
 plot(x_perp_p, y_perp_p, <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'perp line'</span>)
-<span class="comment">%plot(data_transformed(:, 1), data_transformed(:, 2), 'o')</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'constraint line'</span>)
+plot(data_transformed(:, 1), data_transformed(:, 2), <span class="string">'o'</span>)
 
 title(<span class="string">'Space of beta tilde'</span>)
 hl = legend(<span class="string">'show'</span>);
 set(hl, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>)
-
-figure(2);
-plot(beta_tilde_optn_fplot(1, :), beta_tilde_optn_fplot(2, :), <span class="string">'r-o'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'$\tilde{\beta}_{opt}$'</span>)
-hold <span class="string">on</span>;
-plot(w_tilde_fplot(1, :), w_tilde_fplot(2, :), <span class="string">'k-o'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'$\tilde{w}$'</span>)
-x_perp_n = xlim;
-y_perp_n = slope_perp_n * x_perp_n + intercept_perp_n * [1, 1];
-plot(x_perp_n, y_perp_n, <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'perp line'</span>)
-<span class="comment">%plot(data_transformed(:, 1), data_transformed(:, 2), 'o')</span>
-
-title(<span class="string">'Space of beta tilde'</span>)
-hl = legend(<span class="string">'show'</span>);
-set(hl, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>)
-</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <img vspace="5" hspace="5" src="Q3_02.png" alt=""> <h2 id="57">c)</h2><p>From the previous transformations we have:</p><p><img src="Q3_eq01646469460408484843.png" alt="$\tilde{\beta} = S^* V^T \vec{\beta}$"></p><p>Therefore,</p><p><img src="Q3_eq17850296200356377602.png" alt="$\vec{\beta} = (S^* V^T)^{-1} \tilde{\beta}$"></p><p>Therefore,</p><p><img src="Q3_eq01179698305447405401.png" alt="$\vec{\beta} = (V^T)^{-1} (S^*)^{-1} \tilde{\beta}$"></p><p>Therefore,</p><p><img src="Q3_eq06762818238955102559.png" alt="$\vec{\beta} = V S^{*\#} \tilde{\beta}$"></p><p>Computing <img src="Q3_eq04666978853629574678.png" alt="$$\vec{\beta} $$"> from <img src="Q3_eq17715549874495152721.png" alt="$$\tilde{\beta} $$"> we just computed, we get:</p><pre class="codeinput">beta_opt = V * pinv(Ss)*beta_tilde_optp;
+</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <h2 id="58">c)</h2><p>From the previous transformations we have:</p><p><img src="Q3_eq10035745453663283695.png" alt="$$\tilde{\beta} = S^* V^T \vec{\beta}$$" style="width:56px;height:14px;"></p><p>Therefore,</p><p><img src="Q3_eq08280474195244847186.png" alt="$$\vec{\beta} = (S^* V^T)^{-1} \tilde{\beta}$$" style="width:74px;height:14px;"></p><p>Therefore,</p><p><img src="Q3_eq08704695888491607779.png" alt="$$\vec{\beta} = (V^T)^{-1} (S^*)^{-1} \tilde{\beta}$$" style="width:93px;height:14px;"></p><p>Therefore,</p><p><img src="Q3_eq17506669964067027258.png" alt="$$\vec{\beta} = V S^{*^{-1}} \tilde{\beta}$$" style="width:57px;height:14px;"></p><p>Computing <img src="Q3_eq04666978853629574678.png" alt="$$\vec{\beta} $$" style="width:8px;height:14px;"> from <img src="Q3_eq17715549874495152721.png" alt="$$\tilde{\beta} $$" style="width:7px;height:13px;"> we just computed, we get:</p><pre class="codeinput">beta_opt = V * inv(Ss)*beta_tilde_opt;
 beta_opt_fplot = [zeros(2, 1), beta_opt];
 w_fplot = [zeros(2, 1), w];
-</pre><p>The original contraint line is perpendicular to the projection of <img src="Q3_eq03007921319120235727.png" alt="$$\vec{\beta}_{opt} $$"> on <img src="Q3_eq13025417811621045447.png" alt="$$\vec{w} $$"></p><p>The projection can be computed as:</p><p><img src="Q3_eq16981010158596683985.png" alt="$$\beta_{opt, proj} = \vec{\beta_{opt}}cos \theta $$"></p><p>where, <img src="Q3_eq01893715916487034068.png" alt="$$\phi $$"> is the angle between the two vectors, the cosine of which can be computed as:</p><p><img src="Q3_eq00760050311043423633.png" alt="$$cos \phi = \frac{\vec{\beta}_{opt}'&#xA;\vec{w}}{||\vec{\beta}_{opt}||.||\vec{w}||} $$"></p><pre class="codeinput">scalar_proj = beta_opt' * w / norm(w, 2);
+</pre><p>The original contraint line is perpendicular to the projection of <img src="Q3_eq03007921319120235727.png" alt="$$\vec{\beta}_{opt} $$" style="width:17px;height:14px;"> on <img src="Q3_eq13025417811621045447.png" alt="$$\vec{w} $$" style="width:8px;height:9px;"></p><p>The projection can be computed as:</p><p><img src="Q3_eq15295279621333313921.png" alt="$$\beta_{opt, proj} = \frac{\vec{\beta_{opt}} . \vec{w}}{||\vec{w}||} \frac{\vec{w}}{||\vec{w}||} $$" style="width:102px;height:29px;"></p><p>The slope of the constraint line is then -1 divided by the slope of the projection of beta_opt on w. The intercept of the constraint line can then be computed by passing the data point beta_opt through the linear regression model with slope just computed. This can then be used to plot the constraint line within the x limits of the plot.</p><p>For the total least squares problem, the optimization problem becomes:</p><p><img src="Q3_eq03780937349313150139.png" alt="$$min_{\hat{u}} ||D\hat{u}||^2$" style="width:57px;height:13px;">$, s.t. \hat{u}||^2 = 1</p><p>The minimization goal can be simplified by performing SVD:</p><p>Therefore,</p><p><img src="Q3_eq00830354458845948787.png" alt="$$||D\hat{u}||^2 = (D\hat{u})^T(D\hat{u}) = \hat{u}^TD^TD\hat{u} $$" style="width:159px;height:13px;"></p><p>Therefore,</p><p><img src="Q3_eq05744493360633751555.png" alt="$$||D\hat{u}||^2 = \hat{u}^T(USV^T)^T(USV^T)\hat{u}$$" style="width:150px;height:13px;"></p><p>Therefore,</p><p><img src="Q3_eq12427031729447795228.png" alt="$$||D\hat{u}||^2 = \hat{u}^TVS^TU^TUSV^T\hat{u} = \hat{u}^TVS^TSV^T\hat{u}$$" style="width:211px;height:13px;"></p><p>V is an orthogonal matrix involved in the transformation of the vector <img src="Q3_eq06277592174952575661.png" alt="$$\hat{u} $$" style="width:6px;height:8px;"> and hence we can define:</p><p><img src="Q3_eq11008634110046102069.png" alt="$$\hat{v} = V\hat{u} $$" style="width:35px;height:8px;"></p><p>And the optimization problem becomes:</p><p><img src="Q3_eq07753945954006485456.png" alt="$$min_{\hat{v}} \hat{v}^TS^TS\hat{v} $$, s.t. $$||\hat{v}|| = 1 $$" style="width:127px;height:13px;"></p><p><img src="Q3_eq02962125192571813931.png" alt="$$S^T S $$ is a square matrix with zero off-diagonal elements and the&#xA;diagonal elements being $$s_1^2 $$ and $$s_2^2 $$" style="width:470px;height:13px;"></p><p>Thus, the goal of minimization can be re-written as:</p><p><img src="Q3_eq06334646514676612922.png" alt="$$min_{\hat{v}} \hat{v}^TS^TS\hat{v} $$ = $$min_{\hat{v}} \sum_n s_n^2&#xA;v_n^2 $$" style="width:143px;height:24px;"></p><p><img src="Q3_eq06639883926901225360.png" alt="$$ = \sum_n s_2^2 v_n^2 $$" style="width:49px;height:24px;">, since <img src="Q3_eq17469622397628401587.png" alt="$$s_2 $$" style="width:9px;height:7px;"> is the smallest eigen value</p><p><img src="Q3_eq12451902071408280351.png" alt="$$ = s_2^2 \sum_n v_n^2 = s_2^2 ||\hat{v}||^2 = s_2^2 $$, since&#xA;$$||\hat{v}||^2 = 1 $$" style="width:197px;height:24px;"></p><p>Therefore, in the space of <img src="Q3_eq06277592174952575661.png" alt="$$\hat{u} $$" style="width:6px;height:8px;"> the goal is to pick the column in V that belongs to the smallest eigen value, in this case the second column of V.</p><pre class="codeinput">scalar_proj = beta_opt' * w / norm(w, 2);
 beta_opt_proj = scalar_proj * w / norm(w, 2);
 beta_opt_proj_fplot = [zeros(2, 1), beta_opt_proj];
-
 
 slope_beta_proj = beta_opt_proj(2)/beta_opt_proj(1);
 slope_perp_org = -1/slope_beta_proj;
 intercept_perp_org = beta_opt_proj(2) - slope_perp_org * beta_opt_proj(1);
-
+u_opt = V(:, 2);
+u_opt_fplot = [zeros(2, 1), u_opt];
 figure(2);
-plot(beta_opt_fplot(1, :), beta_opt_fplot(2, :), <span class="string">'r-'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'$\vec{\beta}_{opt}$'</span>)
+plot(data(:, 1), data(:, 2), <span class="string">'o'</span>)
 hold <span class="string">on</span>;
-plot(w_fplot(1, :), w_fplot(2, :), <span class="string">'k-'</span>, <span class="string">'MarkerSize'</span>, 5, <span class="keyword">...</span>
+plot(beta_opt_fplot(1, :), beta_opt_fplot(2, :), <span class="string">'r-'</span>, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\vec{\beta}_{opt}$'</span>)
+plot(u_opt_fplot(1, :), u_opt_fplot(2, :), <span class="string">'m-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'$\hat{u}$'</span>)
+
+plot(w_fplot(1, :), w_fplot(2, :), <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
     <span class="string">'DisplayName'</span>, <span class="string">'$\vec{w}$'</span>)
 
-plot(data(:, 1), data(:, 2), <span class="string">'o'</span>)
 x_perp_org = xlim;
 y_perp_org = slope_perp_org * x_perp_org + intercept_perp_org * [1, 1];
 plot(x_perp_org, y_perp_org, <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
-    <span class="string">'DisplayName'</span>, <span class="string">'perp line'</span>)
+    <span class="string">'DisplayName'</span>, <span class="string">'constraint line'</span>)
 title(<span class="string">'Original space'</span>)
 hl = legend(<span class="string">'show'</span>);
 set(hl, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>)
-</pre><img vspace="5" hspace="5" src="Q3_03.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="Q3_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; clc; close all;
 
@@ -157,7 +136,7 @@ load('constrainedLS.mat')
 %%
 % The original optimization problem can be stated as:
 %%
-% $min_{\vec{\beta}} \sum_n(\vec{\beta}^T \vec{d_n})^2$, s.t. $\vec{\beta}^T\vec{w} = 1$
+% $$min_{\vec{\beta}} \sum_n(\vec{\beta}^T \vec{d_n})^2 $$, s.t. $$\vec{\beta}^T\vec{w} = 1 $$
 %%
 % Let D be the data matrix which has the data points as its rows and
 % beta is the vector of parameters that we are interested in. Hence
@@ -166,43 +145,49 @@ load('constrainedLS.mat')
 %%
 % Using the definition of the norm, we have:
 %%
-% $||D\vec{\beta}||^2 = \sum_n (\vec{\beta}^T \vec{d_n})^2$
+% $$||D\vec{\beta}||^2 = \sum_n (\vec{\beta}^T \vec{d_n})^2$$
 %%
 % Thus, the optimization problem can be re-written in the matrix form as:
 %%
-% $min_{\vec{\beta}} ||D\vec{\beta}||^2$, s.t. $\vec{\beta}^T\vec{w} = 1$
+% $$min_{\vec{\beta}} ||D\vec{\beta}||^2$$, s.t. $$\vec{\beta}^T\vec{w} =
+% 1$$
 %%
 % Now we can simplify the problem by performing SVD over the data matrix D.
 % Doing so, we get:
 %%
-% $D = USV^T$
+% $$D = USV^T$$
 %%
 % Substituting the SVD back into the matrix form of the optimization
 % problem:
 %%
-% $min_{\vec{\beta}} ||USV^T\vec{\beta}||^2$, s.t. $\vec{\beta}^T\vec{w} = 1$
+% $$min_{\vec{\beta}} ||USV^T\vec{\beta}||^2$$, s.t. $$\vec{\beta}^T\vec{w}
+% = 1$$
 %%
 % Since U is a transformation matrix, it is not relevant to the minimization problem:
 %% 
-% $min_{\vec{\beta}} ||SV^T\vec{\beta}||^2$, s.t. $\vec{\beta}^T\vec{w} = 1$
+% $$min_{\vec{\beta}} ||SV^T\vec{\beta}||^2$$, s.t. $$\vec{\beta}^T\vec{w}
+% = 1$$
 %%
 % Let $$\vec{\beta^*} = V^T\vec{\beta} $$
 %%
 % Therefore,
 %%
-% $\vec{\beta} = V\vec{\beta^*}$
+% $$\vec{\beta} = V\vec{\beta^*}$$
 %%
 % The minimization problem then becomes:
 %%
-% $min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$, s.t. $(V\vec{\beta^*})^T \vec{w} = 1$
+% $$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$$, s.t. $$(V\vec{\beta^*})^T
+% \vec{w} = 1$$
 %% 
-% $min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$, s.t. $\vec{\beta^*}^T V^T \vec{w} = 1$
+% $$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$$, s.t. $$\vec{\beta^*}^T V^T
+% \vec{w} = 1$$
 %%
 % Let $$\vec{w^*} = V^T \vec{w} $$
 %%
 % Therefore,
 %%
-% $min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$, s.t. $\vec{\beta^*}^T \vec{w^*} = 1$
+% $$min_{\vec{\beta^*}} ||S\vec{\beta^*}||^2$$, s.t. $$\vec{\beta^*}^T
+% \vec{w^*} = 1$$
 %%
 % Now S is a diagonal matrix of shape 300 * 2. Hence it has the first two
 % rows with non-zero diagonal elements. All the remaining rows of S are zeros.
@@ -212,38 +197,42 @@ load('constrainedLS.mat')
 % first two rows of S. Let this matrix be called S*. The optimization
 % problem can hence be restated as:
 %%
-% $min_{\vec{\beta^*}} ||S^*\vec{\beta^*}||^2$, s.t. $\vec{\beta^*}^{T}\vec{w^*} = 1$
+% $$min_{\vec{\beta^*}} ||S^*\vec{\beta^*}||^2$$, s.t.
+% $$\vec{\beta^*}^{T}\vec{w^*} = 1$$
 %%
 % Let $$\tilde{\beta} = S^{*} \vec{\beta^*} $$
 %%
+% Here, $$S^{*} $$ is an orthogonal matrix with non-zero entries along the 
+% diagonal and zeros off-diagonal. Therefore,
+%%
+% $$\vec{\beta^*} = S^{*^{-1}}\tilde{\beta}$$
+%%
+% Here $$S^{*^{-1}} $$ is the inverse of $$S^* $$, and since $$S^* $$ is an
+% orthogonal matrix, we have:
+%% 
+% $$S^{*^{-1}} = S^{*^T} $$
+%%
 % Therefore,
 %%
-% $\vec{\beta^*} = S^{*\#}\tilde{\beta}$
-%%
-% Here $$S^{*\#} $$ is the pseudoinverse of $$S^* $$ and is an orthogonal
-% matrix, since $$S^* $$ is a square matrix with non-zero diagonal elements
-% and the off-diagonal elements being zero.
-%%
-% Thus, we have:
-%%
-% $\vec{\beta^*}^T = (S^{*\#}\tilde{\beta})^T =\tilde{\beta}^T S^{*\#}$
+% $$\vec{\beta^*}^T = (S^{*^{-1}}\tilde{\beta})^T =\tilde{\beta}^T S^{*}$$
 %%
 % The optimization problem now becomes:
 %%
-% $$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t. $$\tilde{\beta}^{T}S^{*\#}\vec{w^*} = 1$$
+% $$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t. $$\tilde{\beta}^{T}S^{*^{-1}}\vec{w^*} = 1$$
 %%
-% Let $$\tilde{w} = S^{*\#} \vec{w^*} $$
+% Let $$\tilde{w} = S^{*^{-1}} \vec{w^*} $$
 %%
 % Therefore,
 %%
-% $min_{\tilde{\beta}} ||\tilde{\beta}||^2$, s.t. $\tilde{\beta}^{T}\tilde{w} = 1$
+% $$min_{\tilde{\beta}} ||\tilde{\beta}||^2$$, s.t.
+% $$\tilde{\beta}^{T}\tilde{w} = 1$$
 %%
 % We can re-write $$\tilde{\beta} $$ and $$\tilde{w} $$ in terms of $$\vec{\beta} $$
 % and $$\vec{w} $$
 %%
-% $\tilde{\beta} = S^* V^T \vec{\beta}$
+% $$\tilde{\beta} = S^* V^T \vec{\beta}$$
 %%
-% $\tilde{w} = S^{*\#} V^T \vec{w}$
+% $$\tilde{w} = S^{*^{-1}} V^T \vec{w}$$
 
 %% b)
 % Performing SVD on the original data:
@@ -253,7 +242,7 @@ Ss = S(1:2, :);
 %%
 % The shortest vector $$\tilde{\beta}_{opt} $$ is the one that lies along the
 % direction of $$\tilde{w} $$ . Hence the angle between $$\tilde{\beta}_{opt} $$
-% and $$\tilde{w} $$ is either $$0^{\circ} $$ or $$180^{\circ} $$
+% and $$\tilde{w} $$ is $$0^{\circ} $$
 %%
 % The constraint is basically a dot product of the vectors and hence can
 % also be written as:
@@ -261,76 +250,53 @@ Ss = S(1:2, :);
 % $$\tilde{\beta}^{T} \tilde{w} = ||\tilde{\beta}||.||\tilde{w}||cos \theta
 % = 1 $$
 %%
-% For $$\theta = 0^{\circ} $$, we have $$cos \theta = 1 $$, and 
-% for $$\theta = 180^{\circ} $$, we have $$cos \theta = -1 $$
+% Since $$\theta = 0^{\circ} $$, we have $$cos \theta = 1 $$
 %%
 % The constraint then becomes:
 %%
-% $$||\tilde{\beta}_{opt}||.||\tilde{w}|| = \pm 1 $$
+% $$||\tilde{\beta}_{opt}||.||\tilde{w}|| = 1 $$
 %%
 % Therefore,
 %%
-% $||\tilde{\beta}_{opt}|| = \pm \frac{1}{||\tilde{w}||}$
+% $$||\tilde{\beta}_{opt}|| = \frac{1}{||\tilde{w}||}$$
 %%
 % This gives the length of $$\tilde{\beta}_{opt} $$. This vector points in
 % the same direction as $$\tilde{w} $$ and hence the vector can be
 % represented as:
 %%
-% $\tilde{\beta}_{opt} = \pm ||\tilde{\beta}_{opt}|| \frac{\tilde{w}}{||\tilde{w}||}$
+% $$\tilde{\beta}_{opt} =||\tilde{\beta}_{opt}||
+% \frac{\tilde{w}}{||\tilde{w}||}$$
 %%
 % Substituting the length of $$\tilde{\beta}_{opt} $$ calculated above:
 %%
-% $\tilde{\beta}_{opt} = \pm \frac{\tilde{w}}{||\tilde{w}||^2}$
+% $$\tilde{\beta}_{opt} = \frac{\tilde{w}}{||\tilde{w}||^2}$$
 %%
-% Computing $$\tilde{\beta}_{opt}$$:
-w_tilde = pinv(Ss)*V'*w;
+% Computing $$\tilde{\beta}_{opt} $$:
+w_tilde = inv(Ss)*V'*w;
 w_tilde_hat = w_tilde/sqrt(sum(w_tilde.^2));
-beta_tilde_optp = w_tilde_hat * 1/sqrt(sum(w_tilde.^2));
-beta_tilde_optn = - w_tilde_hat * 1/sqrt(sum(w_tilde.^2));
+beta_tilde_opt = w_tilde_hat * 1/sqrt(sum(w_tilde.^2));
 
 %%
-% Creating a matrix to plot $$\tilde{\beta}_{opt}$$
-beta_tilde_optp_fplot = [zeros(2, 1), beta_tilde_optp];
-beta_tilde_optn_fplot = [zeros(2, 1), beta_tilde_optn];
-w_tilde_fplot = [zeros(2, 1), w_tilde];
+% Creating a matrix to plot $$\tilde{\beta}_{opt} $$
+beta_tilde_opt_fplot = [zeros(2, 1), beta_tilde_opt];
 
-slope_beta_tilde_optp = beta_tilde_optp(2)/beta_tilde_optp(1);
-slope_beta_tilde_optn = beta_tilde_optn(2)/beta_tilde_optn(1);
+slope_beta_tilde_opt = beta_tilde_opt(2)/beta_tilde_opt(1);
 
-slope_perp_p = -1/slope_beta_tilde_optp;
-slope_perp_n = -1/slope_beta_tilde_optn;
-intercept_perp_p = beta_tilde_optp(2) - slope_perp_p * beta_tilde_optp(1);
-intercept_perp_n = beta_tilde_optn(2) - slope_perp_n * beta_tilde_optn(1);
+slope_perp = -1/slope_beta_tilde_opt;
+intercept_perp = beta_tilde_opt(2) - slope_perp * beta_tilde_opt(1);
 
-data_transformed = U' * data;
+data_transformed = U(:, 1:2);
+% data_transformed = data * V * inv(Ss);
 
 figure(1);
-plot(beta_tilde_optp_fplot(1, :), beta_tilde_optp_fplot(2, :), 'r-o', 'MarkerSize', 5, ...
+plot(beta_tilde_opt_fplot(1, :), beta_tilde_opt_fplot(2, :), 'r-o', 'MarkerSize', 5, ...
     'DisplayName', '$\tilde{\beta}_{opt}$')
 hold on;
-plot(w_tilde_fplot(1, :), w_tilde_fplot(2, :), 'k-o', 'MarkerSize', 5, ...
-    'DisplayName', '$\tilde{w}$')
 x_perp_p = xlim;
-y_perp_p = slope_perp_p * x_perp_p + intercept_perp_p * [1, 1];
+y_perp_p = slope_perp * x_perp_p + intercept_perp * [1, 1];
 plot(x_perp_p, y_perp_p, 'b', 'LineWidth', 2, ...
-    'DisplayName', 'perp line')
-%plot(data_transformed(:, 1), data_transformed(:, 2), 'o')
-
-title('Space of beta tilde')
-hl = legend('show');
-set(hl, 'Interpreter', 'latex')
-
-figure(2);
-plot(beta_tilde_optn_fplot(1, :), beta_tilde_optn_fplot(2, :), 'r-o', 'MarkerSize', 5, ...
-    'DisplayName', '$\tilde{\beta}_{opt}$')
-hold on;
-plot(w_tilde_fplot(1, :), w_tilde_fplot(2, :), 'k-o', 'MarkerSize', 5, ...
-    'DisplayName', '$\tilde{w}$')
-x_perp_n = xlim;
-y_perp_n = slope_perp_n * x_perp_n + intercept_perp_n * [1, 1];
-plot(x_perp_n, y_perp_n, 'b', 'LineWidth', 2, ...
-    'DisplayName', 'perp line')
-%plot(data_transformed(:, 1), data_transformed(:, 2), 'o')
+    'DisplayName', 'constraint line')
+plot(data_transformed(:, 1), data_transformed(:, 2), 'o')
 
 title('Space of beta tilde')
 hl = legend('show');
@@ -340,24 +306,24 @@ set(hl, 'Interpreter', 'latex')
 %% c)
 % From the previous transformations we have:
 %%
-% $\tilde{\beta} = S^* V^T \vec{\beta}$
+% $$\tilde{\beta} = S^* V^T \vec{\beta}$$
 %%
 % Therefore,
 %%
-% $\vec{\beta} = (S^* V^T)^{-1} \tilde{\beta}$
+% $$\vec{\beta} = (S^* V^T)^{-1} \tilde{\beta}$$
 %%
 % Therefore,
 %%
-% $\vec{\beta} = (V^T)^{-1} (S^*)^{-1} \tilde{\beta}$
+% $$\vec{\beta} = (V^T)^{-1} (S^*)^{-1} \tilde{\beta}$$
 %%
 % Therefore,
 %%
-% $\vec{\beta} = V S^{*\#} \tilde{\beta}$
+% $$\vec{\beta} = V S^{*^{-1}} \tilde{\beta}$$
 %%
 % Computing $$\vec{\beta} $$ from $$\tilde{\beta} $$ we just computed, we
 % get:
 %%
-beta_opt = V * pinv(Ss)*beta_tilde_optp;
+beta_opt = V * inv(Ss)*beta_tilde_opt;
 beta_opt_fplot = [zeros(2, 1), beta_opt];
 w_fplot = [zeros(2, 1), w];
 %%
@@ -366,34 +332,82 @@ w_fplot = [zeros(2, 1), w];
 %%
 % The projection can be computed as:
 %%
-% $$\beta_{opt, proj} = \vec{\beta_{opt}}cos \theta $$
+% $$\beta_{opt, proj} = \frac{\vec{\beta_{opt}} . \vec{w}}{||\vec{w}||} \frac{\vec{w}}{||\vec{w}||} $$
 %%
-% where, $$\phi $$ is the angle between the two vectors, the cosine of which
-% can be computed as:
+% The slope of the constraint line is then -1 divided by the slope of the
+% projection of beta_opt on w. The intercept of the constraint line can
+% then be computed by passing the data point beta_opt through the linear
+% regression model with slope just computed. This can then be used to plot
+% the constraint line within the x limits of the plot.
 %%
-% $$cos \phi = \frac{\vec{\beta}_{opt}'
-% \vec{w}}{||\vec{\beta}_{opt}||.||\vec{w}||} $$
+% For the total least squares problem, the optimization problem becomes:
+%%
+% $$min_{\hat{u}} ||D\hat{u}||^2$$, s.t. ||\hat{u}||^2 = 1
+%% 
+% The minimization goal can be simplified by performing SVD:
+%%
+% Therefore,
+%%
+% $$||D\hat{u}||^2 = (D\hat{u})^T(D\hat{u}) = \hat{u}^TD^TD\hat{u} $$
+%%
+% Therefore,
+%%
+% $$||D\hat{u}||^2 = \hat{u}^T(USV^T)^T(USV^T)\hat{u}$$
+%%
+% Therefore,
+%%
+% $$||D\hat{u}||^2 = \hat{u}^TVS^TU^TUSV^T\hat{u} = \hat{u}^TVS^TSV^T\hat{u}$$
+%%
+% V is an orthogonal matrix involved in the transformation of the vector
+% $$\hat{u} $$ and hence we can define:
+%%
+% $$\hat{v} = V\hat{u} $$
+%%
+% And the optimization problem becomes:
+%%
+% $$min_{\hat{v}} \hat{v}^TS^TS\hat{v} $$, s.t. $$||\hat{v}|| = 1 $$
+%%
+% $$S^T S $$ is a square matrix with zero off-diagonal elements and the
+% diagonal elements being $$s_1^2 $$ and $$s_2^2 $$
+%%
+% Thus, the goal of minimization can be re-written as:
+%%
+% $$min_{\hat{v}} \hat{v}^TS^TS\hat{v} $$ = $$min_{\hat{v}} \sum_n s_n^2
+% v_n^2 $$
+%%
+% $$ = \sum_n s_2^2 v_n^2 $$, since $$s_2 $$ is the smallest eigen value
+%%
+% $$ = s_2^2 \sum_n v_n^2 = s_2^2 ||\hat{v}||^2 = s_2^2 $$, since
+% $$||\hat{v}||^2 = 1 $$
+%%
+% Therefore, in the space of $$\hat{u} $$ the goal is to pick the column in
+% V that belongs to the smallest eigen value, in this case the second
+% column of V.
+%%
 scalar_proj = beta_opt' * w / norm(w, 2);
 beta_opt_proj = scalar_proj * w / norm(w, 2);
 beta_opt_proj_fplot = [zeros(2, 1), beta_opt_proj];
 
-
 slope_beta_proj = beta_opt_proj(2)/beta_opt_proj(1);
 slope_perp_org = -1/slope_beta_proj;
 intercept_perp_org = beta_opt_proj(2) - slope_perp_org * beta_opt_proj(1);
-
+u_opt = V(:, 2);
+u_opt_fplot = [zeros(2, 1), u_opt];
 figure(2);
-plot(beta_opt_fplot(1, :), beta_opt_fplot(2, :), 'r-', 'MarkerSize', 5, ...
-    'DisplayName', '$\vec{\beta}_{opt}$')
+plot(data(:, 1), data(:, 2), 'o')
 hold on;
-plot(w_fplot(1, :), w_fplot(2, :), 'k-', 'MarkerSize', 5, ...
+plot(beta_opt_fplot(1, :), beta_opt_fplot(2, :), 'r-', ...
+    'DisplayName', '$\vec{\beta}_{opt}$')
+plot(u_opt_fplot(1, :), u_opt_fplot(2, :), 'm-', 'LineWidth', 2, ...
+    'DisplayName', '$\hat{u}$')
+
+plot(w_fplot(1, :), w_fplot(2, :), 'k-', 'LineWidth', 2, ...
     'DisplayName', '$\vec{w}$')
 
-plot(data(:, 1), data(:, 2), 'o')
 x_perp_org = xlim;
 y_perp_org = slope_perp_org * x_perp_org + intercept_perp_org * [1, 1];
 plot(x_perp_org, y_perp_org, 'b', 'LineWidth', 2, ...
-    'DisplayName', 'perp line')
+    'DisplayName', 'constraint line')
 title('Original space')
 hl = legend('show');
 set(hl, 'Interpreter', 'latex')
