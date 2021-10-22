@@ -17,5 +17,4 @@ plot(n, G2, 'DisplayName', 'gaussian 2');
 plot(n, dog, 'DisplayName', 'dog');
 legend()
 
-%%
-fft(dog, 64)
+%
