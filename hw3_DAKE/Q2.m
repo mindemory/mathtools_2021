@@ -10,7 +10,7 @@ G2 = exp(-(n.^2)/(2*sig2^2));
 G1 = G1/sqrt(sum(G1.^2));
 G2 = G2/sqrt(sum(G2.^2));
 dog = G1-G2;
-norm(G2, 2)
+%norm(G2, 2)
 plot(n, G1, 'DisplayName', 'gaussian 1');
 hold on;
 plot(n, G2, 'DisplayName', 'gaussian 2');
@@ -18,4 +18,8 @@ plot(n, dog, 'DisplayName', 'dog');
 legend()
 
 %%
-fft(dog, 64)
+F_dog = fft(dog);
+F_dog_amp = abs(F_dog);
+figure();
+plot(n, F_dog_amp);
+title('Amplitude of fft')
