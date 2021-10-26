@@ -28,7 +28,7 @@ figure();
 %plot(abs(F_G1)); hold on; plot(abs(F_G2));
 %figure()
 plot(F_dog_amp);
-title('Amplitude of fft')
+title(sprintf('FFT with omega = %d', 64))
 
 %% b)
 [amp, freq] = max(F_dog_amp)
