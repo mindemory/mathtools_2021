@@ -35,10 +35,8 @@ title('FFTshift of signal')
 %%
 %IF_sig_shift = ifft(F_sig);
 %plot(time, IF_sig_shift);
-bandnames = ["Delta", "Theta", "Alpha", "Beta", "Merged"];
-for bname = bandnames
-    signalPart = bandWiseReconstruct(time, F_sig, bname);
-end
+signalPart = bandWiseReconstruct(time, F_sig, "Delta");
+
 %%
 ds_facts = [2, 3, 4];
 for fct = ds_facts
@@ -47,13 +45,10 @@ for fct = ds_facts
     sig_downsamp_pos(fct:fct:end) = 1;
     sig_upsamp = sig .* sig_downsamp_pos;
     F_sig_upsamp = fft(sig_upsamp);
-    %figure();
-    %plot(time, sig_upsamp);
-    figure();
     plot(f, abs(F_sig_upsamp));
     xlabel('Frequency (Hz)')
     ylabel('Amplitiude')
-    title(['FFT of signal sampled at k = ', num2str(fct)])
+    title(['FFT of signal sampled at k = ')
 
     
 end
@@ -68,8 +63,7 @@ function signalPart = bandWiseReconstruct(time, Fsig, bandname)
     %size(bvec)
     FsigPart = Fsig .* bvec;
     signalPart = ifft(FsigPart);
-    figure()
-    plot(time, real(signalPart), 'ro-')
+    plot(time, real(signalPart), 'ro-', 'LineWidth', 2)
     xlabel('Time (s)')
     ylabel('Voltage (V)')
     title(['Reconstructed EEG Signal at ', bandname])
