@@ -78,5 +78,3 @@ for i = 1:length(input_freqs)
             input_freqs(i))     
     end
 end
-
-%% c)
