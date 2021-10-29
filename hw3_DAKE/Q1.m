@@ -1,14 +1,21 @@
 clear; clc; close all;
 
 %% a)
-impulse_pos = [1, 2, 4, 8, 64];
-impulse = cell(length(impulse_pos), 1);
-output = cell(length(impulse_pos), 3);
-N = 64;
+impulse_pos = [1, 2, 4, 8, 64]; % The position of the impulses
+impulse = cell(length(impulse_pos), 1); % initializing inputs for impulses
+output = cell(length(impulse_pos), 3); % initializing outputs for impulses
+N = 64; % length of the input column vector
 
+%%
+% Creating impulse vectors with impulses at position determined by the
+% impulse_pos(i) and then computing the output response by passing the
+% input impulse through each system. Plotting the output through each
+% system and overlaying it over the impulse vector. Repeating it for each
+% impulse and creating a new figure for each of them
 for i = 1:length(impulse_pos)
     impulse{i} = zeros(N, 1);
     impulse{i}(impulse_pos(i)) = 1;
+    
     figure();
     for j = 1:3
         fname = str2func(sprintf('unknownSystem%d', j));   
@@ -25,13 +32,32 @@ for i = 1:length(impulse_pos)
     ylabel('Spike count')
 end
 
-sc2 = randi(10);
-sc3 = randi(100);
-comb_impulse = sc2 * impulse{2} + sc3 * impulse{3};
-comb_output = cell(1, 3);
-impulse_shift_by = randi(10);
-shift_impulse = circshift(impulse{2}, impulse_shift_by);
-shift_output = cell(1, 3);
+%%
+% To check for linearlity we have to determine if the system exhibits
+% superposition and scaling. First, random weights are chosen for any two
+% inputs (here, impulses at postion 2 and 4 are taken). The combined
+% impulse is then combuted by scaling each impulse by its weight and then
+% summing the scales impulses. If the system were to exhibit linearity,
+% then the output of the system for input impulses scaled and added should
+% be the same as the sum of the outputs for each impulse scaled by the same
+% amount.
+%%
+% To check for shift-invariance, we have to determine if the output of the
+% system shifts by the same amount as the shift in the input. First, a
+% random shift is chosen for any one input (here, impulse at position 2 is
+% taken). The shifted impulse is then computed by using the circshift
+% function on the input and shifting it by the randomly chosen shift
+% factor. If the system were to exhibit shift-invariance, then the output
+% of the system for input impulse shifted should be the same as the output
+% of the impulse shifted by the same amount.
+%%
+sc2 = randi(10); % Weight for impulse at position 2
+sc3 = randi(100); % Weight for impulse at position 4
+comb_impulse = sc2 * impulse{2} + sc3 * impulse{3}; % Scaled and combined input
+comb_output = cell(1, 3); % Initializing scaled outputs
+impulse_shift_by = randi(10); % Scale factor for the input
+shift_impulse = circshift(impulse{2}, impulse_shift_by); % Creating the shifted input
+shift_output = cell(1, 3); % Initializing shifted output
 
 for j = 1:3
     fname = str2func(sprintf('unknownSystem%d', j));   
@@ -42,8 +68,10 @@ for j = 1:3
     %    'LineWidth', 1)
     %hold on;
     %plot(comb_output{1, j}, 'DisplayName', 'Combined Input', 'LineWidth', 2)
-    lin_check = abs(sum(comb_output{1, j} - (sc2 * output{2, j} + sc3 * output{3, j}), 1)) < 0.0001;
-    shift_check = abs(sum(shift_output{1, j} - circshift(output{2, j}, impulse_shift_by))) < 0.001;
+    
+    lin_check = abs(sum(comb_output{1, j} - (sc2 * output{2, j} + sc3 * output{3, j}), 1)) < 0.0001; % Checking for linearity
+    shift_check = abs(sum(shift_output{1, j} - circshift(output{2, j}, impulse_shift_by))) < 0.001; % Checking for shift-invariance
+    
     if lin_check
         if shift_check
             sprintf('System %d is linear and shift-invariant', j)
@@ -59,6 +87,11 @@ for j = 1:3
     end
     
 end
+%%
+% We can see that of the three systems, System 1 and 2 are linear. Also,
+% Systems 2 and 3 are shift-invariant but System 1 is not. Hence we can
+% conclude that of the three systems, only System 2 is linear
+% shift-invariant and will be used for further analyses.
 
 %% b)
 input_freqs = [2, 4, 8, 16];
