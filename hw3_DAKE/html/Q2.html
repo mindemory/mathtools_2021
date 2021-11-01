@@ -1,0 +1,305 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-01"><meta name="DC.source" content="Q2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#5">b)</a></li><li><a href="#12">c)</a></li><li><a href="#14">d)</a></li><li><a href="#15">Function to create convolution matrix</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+</pre><h2 id="2">a)</h2><pre class="codeinput">sig1 = 1.5;
+sig2 = 3.5;
+n = linspace(-max(sig1, sig2)*2, max(sig1, sig2)*2, 15);
+
+G1 = exp(-(n.^2)/(2*sig1^2)); <span class="comment">% Creating a Gaussian of sigma = 1.5</span>
+G2 = exp(-(n.^2)/(2*sig2^2)); <span class="comment">% Creating a Gaussian of sigma = 3.5</span>
+
+<span class="comment">% Normalizing the Guassians so that they sum to 1</span>
+G1 = G1/sum(G1);
+G2 = G2/sum(G2);
+dog = G1-G2; <span class="comment">% Computing the difference of gaussians</span>
+
+plot(n, G1, <span class="string">'DisplayName'</span>, <span class="string">'gaussian 1'</span>);
+hold <span class="string">on</span>;
+plot(n, G2, <span class="string">'DisplayName'</span>, <span class="string">'gaussian 2'</span>);
+plot(n, dog, <span class="string">'DisplayName'</span>, <span class="string">'dog'</span>);
+xlabel(<span class="string">'n'</span>)
+ylabel(<span class="string">'y(n)'</span>)
+title(<span class="string">'Guassians and DOG filter'</span>)
+legend()
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <pre class="codeinput">F_dog = fft(dog, 64); <span class="comment">% Computing fft of the dog filter</span>
+F_dog_amp = abs(F_dog); <span class="comment">% Computing the amplitude of the filter</span>
+figure();
+freq = 0:length(F_dog) - 1;
+plot(freq, F_dog_amp);
+xlabel(<span class="string">'Frequency'</span>)
+ylabel(<span class="string">'Amplitude'</span>)
+title(<span class="string">'FFT of dog filter'</span>)
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <p>From the fft, we can see that the filter has a high value for a range of frequencies and is close to 0 at other frequencies. Therefore, this is a band-pass filter that allows frequencies between 0 - 20 Hz to pass through.</p><h2 id="5">b)</h2><p>The maximum amplitude will be obtained for the sinusoid that has frequency at the peak of the F_dog_amp. We can see that the max of F_dog_amp has a peak at 6 Hz and hence the sinusoid that will produce the maximum frequency will be the one of 6 Hz.</p><pre class="codeinput">[maxamp, maxfreq1_ind] = max(F_dog_amp);
+maxfreq_ind = maxfreq1_ind -1;
+maxfreq = maxfreq_ind / 64;
+</pre><p>The period of the sinusoid is the inverse of the frequency.</p><pre class="codeinput">period = 1/maxfreq;
+</pre><p>Creating the sinewave of maxfreq:</p><pre class="codeinput">sine_wave = cos(2 * pi * n * maxfreq);
+figure()
+plot(n, sine_wave * max(dog)); hold <span class="string">on</span>;
+plot(n, dog)
+xlabel(<span class="string">'Time (s)'</span>)
+title(<span class="string">'sin wave of maxfreq'</span>)
+</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <p>We can see here that the osciallations in the filter matches those in the sinewave.</p><p>The frequency of sinusoids that will produce 25% of the amplitude are the ones that are 25% of the maximum amplitude of fft of dog. This can be computed by subtracting 25% of the maximum amplitude from the F_dog_amp_half and then computing the absolute value. This will basically compute the difference in the amplitudes of F_dog_amp_half from each of the other amplitudes. The absolute value will ensure that the difference is kept positive. We can then sort the absolute differences and the first two values of the F_dog_amp_half will be the amplitudes with 25% of the maximum amplitude. Here, F_dog_amp_half takes the first half of the frequency range to ensure that the same frequency isn't counted twice.</p><pre class="codeinput">F_dog_amp_half = F_dog_amp(1:length(F_dog_amp)/2);
+amp25_diff = abs(F_dog_amp_half - .25 * maxamp);
+[amp25_diff_sorted, amp25_index] = sort(amp25_diff);
+
+lowfreq1_ind = amp25_index(1);
+lowfreq_ind = lowfreq1_ind - 1;
+lowfreq = lowfreq_ind / 64;
+highfreq1_ind = amp25_index(2);
+highfreq_ind = highfreq1_ind - 1;
+highfreq = highfreq_ind / 64;
+lowamp = F_dog_amp_half(lowfreq1_ind);
+highamp = F_dog_amp_half(highfreq1_ind);
+</pre><p>Hence we can say that the sinusoids of lowfreq and highfreq will produce 25% of the maximum amplitude when passed throught the filter</p><h2 id="12">c)</h2><p>The amplitude of the convolved signals with the filter should be approximately consistent with the amplitudes obtained in (b). We can see here that it is indeed the case.</p><pre class="codeinput">sin_freqs = [lowfreq, maxfreq, highfreq];
+filt_amps = [lowamp, maxamp, highamp];
+tt = 0 : 63;
+conv_dog = createConvMat(dog, length(tt)); <span class="comment">% Creating convolution matrix of size 64 * 64 from dog filter</span>
+
+<span class="keyword">for</span> ff = 1:length(sin_freqs)
+    sin_wav = sin(2 * pi * tt * sin_freqs(ff)); <span class="comment">% Creating unit-amplitude sine waves</span>
+    conv_sin = conv_dog * sin_wav'; <span class="comment">% Computing convolution of dog filter with sin wave</span>
+    amp_conv_sin = max(conv_sin); <span class="comment">% Computing the amplitude of the convolved signal</span>
+    disp([<span class="string">'Amplitude obtained by convolution is: '</span>,num2str(amp_conv_sin)])
+    disp([<span class="string">'Amplitude obtained from fft of dog is: '</span>, num2str(filt_amps(ff))])
+<span class="keyword">end</span>
+</pre><h2 id="14">d)</h2><p>In order to verify the convolution theorem, we basically have to check that the product of the fft of dog filter and the fft of the sinusoid is the same as convolving the dog filter with the sinusoid</p><pre class="codeinput"><span class="keyword">for</span> ff = 1:length(sin_freqs)
+    sin_wav = sin(2 * pi * tt * sin_freqs(ff)/64); <span class="comment">% Creating unit-amplitude sine waves</span>
+    fft_sin = fft(sin_wav); <span class="comment">% Computing fft of sine wave</span>
+    fft_prod = fft_sin .* F_dog; <span class="comment">% Taking products of fft of sine wave and fft of dog filter</span>
+    ifft_prod = ifft(fft_prod); <span class="comment">% Computing ifft of the product</span>
+    conv_sin = conv_dog * sin_wav'; <span class="comment">% Computing convolution of dog filter with sin wave</span>
+    <span class="keyword">if</span> sum(imag(ifft_prod) == 0)/64 <span class="comment">% Checking if imaginary parts of ifft are zero</span>
+        disp(<span class="string">'All imaginary parts of ifft are 0'</span>)
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> sum(abs(real(ifft_prod) - conv_sin') &lt; 0.01)/64 <span class="comment">% Checking if the real parts of ifft are close to the convolution</span>
+        disp(<span class="string">'Real part of the ifft is the same as convolution of sin wave with dog'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">All imaginary parts of ifft are 0
+Real part of the ifft is the same as convolution of sin wave with dog
+All imaginary parts of ifft are 0
+Real part of the ifft is the same as convolution of sin wave with dog
+All imaginary parts of ifft are 0
+Real part of the ifft is the same as convolution of sin wave with dog
+</pre><h2 id="15">Function to create convolution matrix</h2><pre class="codeinput"><span class="keyword">function</span> X = createConvMat(x, M)
+    dim_X = M; <span class="comment">% Since the size of X is M * M</span>
+    x(dim_X) = 0; <span class="comment">% Padding zeros to x to make it of the length M</span>
+    X = zeros(dim_X, M); <span class="comment">% Initializing X matrix</span>
+    <span class="keyword">for</span> i = 1:M
+        X(:, i) = circshift(x, i - 1); <span class="comment">% Adding the padded x vector to x column by shifting it down by 1 unit for each column</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Amplitude obtained by convolution is: 0.13725
+Amplitude obtained from fft of dog is: 0.13725
+Amplitude obtained by convolution is: 0.5641
+Amplitude obtained from fft of dog is: 0.5641
+Amplitude obtained by convolution is: 0.1277
+Amplitude obtained from fft of dog is: 0.1277
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; clc; close all;
+
+%% a)
+sig1 = 1.5;
+sig2 = 3.5;
+n = linspace(-max(sig1, sig2)*2, max(sig1, sig2)*2, 15);
+
+G1 = exp(-(n.^2)/(2*sig1^2)); % Creating a Gaussian of sigma = 1.5
+G2 = exp(-(n.^2)/(2*sig2^2)); % Creating a Gaussian of sigma = 3.5
+
+% Normalizing the Guassians so that they sum to 1
+G1 = G1/sum(G1);
+G2 = G2/sum(G2);
+dog = G1-G2; % Computing the difference of gaussians
+
+plot(n, G1, 'DisplayName', 'gaussian 1');
+hold on;
+plot(n, G2, 'DisplayName', 'gaussian 2');
+plot(n, dog, 'DisplayName', 'dog');
+xlabel('n')
+ylabel('y(n)')
+title('Guassians and DOG filter')
+legend()
+
+%%
+F_dog = fft(dog, 64); % Computing fft of the dog filter 
+F_dog_amp = abs(F_dog); % Computing the amplitude of the filter
+figure();
+freq = 0:length(F_dog) - 1;
+plot(freq, F_dog_amp);
+xlabel('Frequency')
+ylabel('Amplitude')
+title('FFT of dog filter')
+
+%%
+% From the fft, we can see that the filter has a high value for a range of
+% frequencies and is close to 0 at other frequencies. Therefore, this is a
+% band-pass filter that allows frequencies between 0 - 20 Hz to pass
+% through.
+
+%% b)
+% The maximum amplitude will be obtained for the sinusoid that has
+% frequency at the peak of the F_dog_amp. We can see that the max of
+% F_dog_amp has a peak at 6 Hz and hence the sinusoid that will produce the
+% maximum frequency will be the one of 6 Hz.
+%%
+[maxamp, maxfreq1_ind] = max(F_dog_amp);
+maxfreq_ind = maxfreq1_ind -1;
+maxfreq = maxfreq_ind / 64;
+%%
+% The period of the sinusoid is the inverse of the frequency. 
+period = 1/maxfreq;
+%%
+% Creating the sinewave of maxfreq:
+sine_wave = cos(2 * pi * n * maxfreq);
+figure()
+plot(n, sine_wave * max(dog)); hold on;
+plot(n, dog)
+xlabel('Time (s)')
+title('sin wave of maxfreq')
+%%
+% We can see here that the osciallations in the filter matches those in the sinewave.
+%%
+% The frequency of sinusoids that will produce 25% of the amplitude are the
+% ones that are 25% of the maximum amplitude of fft of dog. This can be
+% computed by subtracting 25% of the maximum amplitude from the F_dog_amp_half
+% and then computing the absolute value. This will basically compute the
+% difference in the amplitudes of F_dog_amp_half from each of the other
+% amplitudes. The absolute value will ensure that the difference is kept
+% positive. We can then sort the absolute differences and the first two
+% values of the F_dog_amp_half will be the amplitudes with 25% of the maximum
+% amplitude. Here, F_dog_amp_half takes the first half of the frequency
+% range to ensure that the same frequency isn't counted twice.
+F_dog_amp_half = F_dog_amp(1:length(F_dog_amp)/2);
+amp25_diff = abs(F_dog_amp_half - .25 * maxamp);
+[amp25_diff_sorted, amp25_index] = sort(amp25_diff);
+
+lowfreq1_ind = amp25_index(1);
+lowfreq_ind = lowfreq1_ind - 1;
+lowfreq = lowfreq_ind / 64;
+highfreq1_ind = amp25_index(2);
+highfreq_ind = highfreq1_ind - 1;
+highfreq = highfreq_ind / 64;
+lowamp = F_dog_amp_half(lowfreq1_ind);
+highamp = F_dog_amp_half(highfreq1_ind);
+
+%%
+% Hence we can say that the sinusoids of lowfreq and highfreq will produce
+% 25% of the maximum amplitude when passed throught the filter
+
+%% c)
+% The amplitude of the convolved signals with the filter should be
+% approximately consistent with the amplitudes obtained in (b). We can see
+% here that it is indeed the case.
+%%
+sin_freqs = [lowfreq, maxfreq, highfreq];
+filt_amps = [lowamp, maxamp, highamp];
+tt = 0 : 63;
+conv_dog = createConvMat(dog, length(tt)); % Creating convolution matrix of size 64 * 64 from dog filter
+
+for ff = 1:length(sin_freqs) 
+    sin_wav = sin(2 * pi * tt * sin_freqs(ff)); % Creating unit-amplitude sine waves
+    conv_sin = conv_dog * sin_wav'; % Computing convolution of dog filter with sin wave
+    amp_conv_sin = max(conv_sin); % Computing the amplitude of the convolved signal
+    disp(['Amplitude obtained by convolution is: ',num2str(amp_conv_sin)])
+    disp(['Amplitude obtained from fft of dog is: ', num2str(filt_amps(ff))])
+end
+
+%% d)
+% In order to verify the convolution theorem, we basically have to check that
+% the product of the fft of dog filter and the fft of the sinusoid is the
+% same as convolving the dog filter with the sinusoid
+for ff = 1:length(sin_freqs)
+    sin_wav = sin(2 * pi * tt * sin_freqs(ff)/64); % Creating unit-amplitude sine waves
+    fft_sin = fft(sin_wav); % Computing fft of sine wave
+    fft_prod = fft_sin .* F_dog; % Taking products of fft of sine wave and fft of dog filter
+    ifft_prod = ifft(fft_prod); % Computing ifft of the product
+    conv_sin = conv_dog * sin_wav'; % Computing convolution of dog filter with sin wave
+    if sum(imag(ifft_prod) == 0)/64 % Checking if imaginary parts of ifft are zero
+        disp('All imaginary parts of ifft are 0')
+    end
+    if sum(abs(real(ifft_prod) - conv_sin') < 0.01)/64 % Checking if the real parts of ifft are close to the convolution
+        disp('Real part of the ifft is the same as convolution of sin wave with dog')
+    end
+end
+%% Function to create convolution matrix
+function X = createConvMat(x, M)
+    dim_X = M; % Since the size of X is M * M
+    x(dim_X) = 0; % Padding zeros to x to make it of the length M
+    X = zeros(dim_X, M); % Initializing X matrix
+    for i = 1:M
+        X(:, i) = circshift(x, i - 1); % Adding the padded x vector to x column by shifting it down by 1 unit for each column
+    end
+end
+
+
+##### SOURCE END #####
+--></body></html>

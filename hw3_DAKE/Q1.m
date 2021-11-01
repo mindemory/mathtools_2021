@@ -120,5 +120,28 @@ for i = 1:length(input_freqs)
 end
 
 %% c)
-coswave = cos(2 * pi * n/N);
-sinwave = sin(2 * pi * n/N);
+r = output{1, 2}; % Impulse response vector
+r_tilde = fft(r); % FFT of impulse response
+for i = 1:length(input_freqs)
+    f = pi * input_freqs(i) * n / N; % Array of frequencies
+    input_sinusoid = sin(f); % Computing the input sinusoid
+    input_cosoid = cos(f); % Computing the input cosoid
+    output_sinusoid = unknownSystem2(input_sinusoid); % Computing output sinusoid by passing through unknownSystem2
+    cr = r' * input_cosoid; % Taking dot product of impulse response and cosoid
+    sr = r' * input_sinusoid; % Takind dot product of impulse response and sinusoid
+    Ar = sqrt(cr^2 + sr^2); % Computing the amplitude of the signal
+    phase = atan(sr/cr); % Computing the phase of the signal
+    
+    if Ar - abs(r_tilde(input_freqs(i)/2 +1)) <= 0.01
+        disp('Amplitude of sinusoid and fft of impulse response are equal')
+    end
+    
+    if phase + angle(r_tilde(input_freqs(i)/2 +1)) <= 0.01
+        disp('Phase of sinusoid and fft of impulse response are equal')
+    end
+    
+end
+
+%%
+% Overall we can say that all the steps guarantee that System2 is linear
+% and shift-invariant.
