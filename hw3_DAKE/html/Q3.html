@@ -1,0 +1,293 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-10-31"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">a)</a></li><li><a href="#8">b)</a></li><li><a href="#29">c)</a></li><li><a href="#32">Function</a></li></ul></div><pre class="codeinput">clear; clc; close <span class="string">all</span>;
+</pre><p>Loading the data and plotting the input signal x(n) and the MRI response vector r(n):</p><pre class="codeinput">load(<span class="string">'hrfDeconv.mat'</span>)
+subplot(2, 1, 1);
+stem(x, <span class="string">'filled'</span>)
+xlabel(<span class="string">'Time (s)'</span>)
+title(<span class="string">'Input vector x(n)'</span>)
+subplot(2, 1, 2);
+plot(r)
+xlabel(<span class="string">'Time (s)'</span>)
+title(<span class="string">'Response vector r(n)'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <h2 id="3">a)</h2><p>The convolution matrix is obtained from createConvMat by passing the vector x and the size of the columns of X (i.e. M). The function does so by creating a matrix with x as its columns shifted down by 1 unit across each column and having 0s padded for the x to make it of size N + M - 1</p><pre class="codeinput">N = length(x); <span class="comment">% length of the input_vector</span>
+M = length(r) + 1 - N; <span class="comment">% Since length(r) = N + M - 1</span>
+X = createConvMat(x, M);
+</pre><p>Creating 10 random haemodynamic response vectors and passing through the conv function with x or by convolving them using the pre-computed X matrix and checking if the response vectors obtained by both the methods are the same</p><pre class="codeinput"><span class="keyword">for</span> i = 1:10
+    <span class="comment">% Creating random hemodynamic responses</span>
+    h = rand(15, 1);
+    <span class="comment">% Computing the response vectors for the haemodynamic response obtained</span>
+    <span class="comment">% from the manually computed X matrix</span>
+    r_X = X * h;
+    <span class="comment">% Computing the response vectors for the haemodynamic response obtained</span>
+    <span class="comment">% from the conv function</span>
+    r_mat = conv(x, h);
+    <span class="comment">% Checking for the equality of the computed response vectors</span>
+    <span class="keyword">if</span> isequal(r_X, r_mat)
+        disp([num2str(i), <span class="string">': Response through X and conv function are the same'</span>]);
+    <span class="keyword">else</span>
+        disp(<span class="string">'Response through X and conv function are different'</span>);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">1: Response through X and conv function are the same
+2: Response through X and conv function are the same
+3: Response through X and conv function are the same
+4: Response through X and conv function are the same
+5: Response through X and conv function are the same
+6: Response through X and conv function are the same
+7: Response through X and conv function are the same
+8: Response through X and conv function are the same
+9: Response through X and conv function are the same
+10: Response through X and conv function are the same
+</pre><p>The response vectors are the same for all the 10 random impulse vectors, which implies that the conv function on x and h is the same as multipling h with the matrix X i.e. to say X matrix reliably captures the convolution operation.</p><p>Visualizing the matrix X as an image</p><pre class="codeinput">figure();
+imagesc(X)
+</pre><img vspace="5" hspace="5" src="Q3_02.png" alt=""> <h2 id="8">b)</h2><p>We have to solve the minimization problem:</p><p><img src="Q3_eq07902058451687312023.png" alt="$$h_{opt} = arg min_h ||r - Xh||^2 $$"></p><p>Performing svd on X, we have X = USV'. Hence, the optimization problem can be re-written as:</p><p><img src="Q3_eq08011683882915192456.png" alt="$$h_{opt} = arg min_h ||r - USV'h||^2 $$"></p><p>Taking U' on both sides, we have:</p><p><img src="Q3_eq06026817823157944231.png" alt="$$h_{opt} = arg min_h ||U'r - SV'h||^2 $$"></p><p>Let <img src="Q3_eq10818711703146975238.png" alt="$$h^* = V'h $$"> and <img src="Q3_eq04028711533698298283.png" alt="$$r^* = U'r $$">, the optimization problem then becomes:</p><p><img src="Q3_eq11421686219532307041.png" alt="$$h_{opt} = arg min_{h^*} ||r^* - Sh^*||^2 $$"></p><p>Since the length of <img src="Q3_eq14639951092810514529.png" alt="$$h^* $$"> is less than the length of <img src="Q3_eq07895227888641065235.png" alt="$$r^* $$">, the matrix S is a diagonal matrix with diagonal elements for the first M rows being non-zeros and the remaining rows being 0. Hence the optimization can only happen for the first M rows and the other errors cannot be minimized. Specifically the objective function will be minimum when:</p><p><img src="Q3_eq08526256070600727035.png" alt="$$r^* = Sh^* $$"></p><p>Hence we have:</p><p><img src="Q3_eq13204221998450184803.png" alt="$$h_{opt}^* = S^{\#} r^* $$"></p><p>where, <img src="Q3_eq12219396214963216587.png" alt="$$S^{\#} $$"> is the pseudo-inverse of S</p><p>Because <img src="Q3_eq10818711703146975238.png" alt="$$h^* = V'h $$">, we have <img src="Q3_eq00014933178322819843.png" alt="$$h_{opt}^* = V'h_{opt} $$"></p><p>Similarly, we also have <img src="Q3_eq04028711533698298283.png" alt="$$r^* = U'r $$">, substituting both in the optimal solution we get:</p><p><img src="Q3_eq12433740196480523645.png" alt="$$V'h_{opt} = S^{\#} U'r $$"></p><p>Therefore,</p><p><img src="Q3_eq15767171258562551228.png" alt="$$h_{opt} = VS^{\#} U'r $$"></p><p>Using this equation, h_opt can be computed from the svd of X and r</p><pre class="codeinput">[U, S, V] = svd(X);
+Spinv = 1./S'; <span class="comment">% Taking the reciprocal of elements of transformed S which is Sinv</span>
+Spinv(isinf(Spinv)) = 0; <span class="comment">% Making all the nan values in Sinv to 0, thus getting S#</span>
+h_opt = V * Spinv * U' * r; <span class="comment">% Computing h_opt using derivation above</span>
+time_h = 0: length(h)-1;
+figure()
+plot(time_h, h_opt);
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'BOLD-response'</span>)
+title(<span class="string">'Haemodynamic Response Function (HRF)'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_03.png" alt=""> <p>The h_opt depicts the BOLD response for an impulse and we can see a delayed BOLD response by 4 seconds which lasts for about 2-4 seconds. This aligns with the BOLD responses seen in MRI where the activity phase-locked to the stimulus creates a response with a delayed by about 4 seconds.</p><h2 id="29">c)</h2><p>Computing the fftshift and visualizng the power of the fft:</p><pre class="codeinput">figure()
+F_h_opt = fftshift(fft(h_opt)); <span class="comment">% Computing shifted fft of the HRF</span>
+pow_h_opt = abs(F_h_opt).^2; <span class="comment">% Computing power of the fft</span>
+fshift = ceil(-length(pow_h_opt)/2: length(pow_h_opt)/2-1);
+plot(fshift, pow_h_opt);
+title(<span class="string">'HRF Power spectrum'</span>)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Power'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_04.png" alt=""> <p>From the graph, we can see that the filter has a high power for low frequencies and power decreases with increase in frequency. Therefore, this filter will allow low frequency signals to pass through and suppress high-frequency signals. Therefore, this is a low-pass filter. Specifically, this filter will pass frequencies from 0-2 Hz and suppress the rest.</p><h2 id="32">Function</h2><pre class="codeinput"><span class="keyword">function</span> X = createConvMat(x, M)
+    dim_X = length(x) + M - 1; <span class="comment">% Since the size of X is N + M - 1 * M</span>
+    x(dim_X) = 0; <span class="comment">% Padding zeros to x to make it of the length N + M - 1</span>
+    X = zeros(dim_X, M); <span class="comment">% Initializing X matrix</span>
+    <span class="keyword">for</span> i = 1:M
+        X(:, i) = circshift(x, i - 1); <span class="comment">% Adding the padded x vector to x column by shifting it down by 1 unit for each column</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; clc; close all;
+
+%%
+% Loading the data and plotting the input signal x(n) and the MRI response
+% vector r(n):
+load('hrfDeconv.mat')
+subplot(2, 1, 1);
+stem(x, 'filled')
+xlabel('Time (s)')
+title('Input vector x(n)')
+subplot(2, 1, 2);
+plot(r)
+xlabel('Time (s)')
+title('Response vector r(n)')
+
+%% a)
+% The convolution matrix is obtained from createConvMat by passing the
+% vector x and the size of the columns of X (i.e. M). The function does so
+% by creating a matrix with x as its columns shifted down by 1 unit across
+% each column and having 0s padded for the x to make it of size N + M - 1
+%%
+N = length(x); % length of the input_vector
+M = length(r) + 1 - N; % Since length(r) = N + M - 1
+X = createConvMat(x, M); 
+
+%%
+% Creating 10 random haemodynamic response vectors and passing through the
+% conv function with x or by convolving them using the pre-computed X
+% matrix and checking if the response vectors obtained by both the methods
+% are the same
+for i = 1:10
+    % Creating random hemodynamic responses
+    h = rand(15, 1);
+    % Computing the response vectors for the haemodynamic response obtained
+    % from the manually computed X matrix
+    r_X = X * h;
+    % Computing the response vectors for the haemodynamic response obtained
+    % from the conv function
+    r_mat = conv(x, h);
+    % Checking for the equality of the computed response vectors
+    if isequal(r_X, r_mat)
+        disp([num2str(i), ': Response through X and conv function are the same']);
+    else
+        disp('Response through X and conv function are different');
+    end
+end
+
+%%
+% The response vectors are the same for all the 10 random impulse vectors,
+% which implies that the conv function on x and h is the same as multipling
+% h with the matrix X i.e. to say X matrix reliably captures the
+% convolution operation.
+
+%%
+% Visualizing the matrix X as an image
+figure();
+imagesc(X)
+
+%% b)
+% We have to solve the minimization problem:
+%%
+% $$h_{opt} = arg min_h ||r - Xh||^2 $$
+%%
+% Performing svd on X, we have X = USV'. Hence, the optimization problem
+% can be re-written as:
+%%
+% $$h_{opt} = arg min_h ||r - USV'h||^2 $$
+%%
+% Taking U' on both sides, we have:
+%%
+% $$h_{opt} = arg min_h ||U'r - SV'h||^2 $$
+%%
+% Let $$h^* = V'h $$ and $$r^* = U'r $$, the optimization problem then
+% becomes:
+%%
+% $$h_{opt} = arg min_{h^*} ||r^* - Sh^*||^2 $$
+%%
+% Since the length of $$h^* $$ is less than the length of $$r^* $$, the
+% matrix S is a diagonal matrix with diagonal elements for the first M rows
+% being non-zeros and the remaining rows being 0. Hence the optimization
+% can only happen for the first M rows and the other errors cannot be
+% minimized. Specifically the objective function will be minimum when:
+%%
+% $$r^* = Sh^* $$
+%%
+% Hence we have:
+%%
+% $$h_{opt}^* = S^{\#} r^* $$
+%%
+% where, $$S^{\#} $$ is the pseudo-inverse of S
+%%
+% Because $$h^* = V'h $$, we have $$h_{opt}^* = V'h_{opt} $$
+%%
+% Similarly, we also have $$r^* = U'r $$, substituting both in the optimal
+% solution we get:
+%%
+% $$V'h_{opt} = S^{\#} U'r $$
+%%
+% Therefore,
+%%
+% $$h_{opt} = VS^{\#} U'r $$
+%%
+% Using this equation, h_opt can be computed from the svd of X and r
+%%
+
+[U, S, V] = svd(X);
+Spinv = 1./S'; % Taking the reciprocal of elements of transformed S which is Sinv
+Spinv(isinf(Spinv)) = 0; % Making all the nan values in Sinv to 0, thus getting S#
+h_opt = V * Spinv * U' * r; % Computing h_opt using derivation above
+time_h = 0: length(h)-1;
+figure()
+plot(time_h, h_opt);
+xlabel('Time (s)')
+ylabel('BOLD-response')
+title('Haemodynamic Response Function (HRF)')
+
+%%
+% The h_opt depicts the BOLD response for an impulse and we can see a
+% delayed BOLD response by 4 seconds which lasts for about 2-4 seconds.
+% This aligns with the BOLD responses seen in MRI where the activity
+% phase-locked to the stimulus creates a response with a delayed by about 4
+% seconds.
+
+%% c)
+% Computing the fftshift and visualizng the power of the fft:
+%%
+figure()
+F_h_opt = fftshift(fft(h_opt)); % Computing shifted fft of the HRF
+pow_h_opt = abs(F_h_opt).^2; % Computing power of the fft
+fshift = ceil(-length(pow_h_opt)/2: length(pow_h_opt)/2-1);
+plot(fshift, pow_h_opt);
+title('HRF Power spectrum')
+xlabel('Frequency (Hz)')
+ylabel('Power')
+%%
+% From the graph, we can see that the filter has a high power for low
+% frequencies and power decreases with increase in frequency. Therefore,
+% this filter will allow low frequency signals to pass through and suppress
+% high-frequency signals. Therefore, this is a low-pass filter.
+% Specifically, this filter will pass frequencies from 0-2 Hz and suppress
+% the rest.
+
+%% Function
+function X = createConvMat(x, M)
+    dim_X = length(x) + M - 1; % Since the size of X is N + M - 1 * M
+    x(dim_X) = 0; % Padding zeros to x to make it of the length N + M - 1
+    X = zeros(dim_X, M); % Initializing X matrix
+    for i = 1:M
+        X(:, i) = circshift(x, i - 1); % Adding the padded x vector to x column by shifting it down by 1 unit for each column
+    end
+end
+
+
+##### SOURCE END #####
+--></body></html>

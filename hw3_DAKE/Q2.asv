@@ -22,7 +22,7 @@ title('Guassians and DOG filter')
 legend()
 
 S1 = 0: .1: 5;
-S2 = 0: .1: 5;
+S2
 
 %%
 F_dog = fft(dog, 64);
