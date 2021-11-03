@@ -1,0 +1,9 @@
+clear; close all; clc;
+
+%%
+p = rand(10, 1);
+sum p
+
+
+% function samples = randp(p, num)
+% end
