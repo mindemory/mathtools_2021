@@ -76,6 +76,7 @@ for i = 1:4
     xlabel('Integers')
     ylabel('Frequency of Occurrence')
 end
+figure();
 
 %%
 function samples = randp(p, num)

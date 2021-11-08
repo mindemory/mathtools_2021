@@ -1,0 +1,275 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-07"><meta name="DC.source" content="Q2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#4">b)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><pre class="codeinput">p = rand(10, 1);
+p = p/sum(p);
+samp_size = 1000;
+samples = randp(p, samp_size);
+figure();
+histogram(samples, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
+hold <span class="string">on</span>;
+plot(p * samp_size, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'DisplayName'</span>, <span class="string">'pdf'</span>)
+xlabel(<span class="string">'Integers'</span>)
+ylabel(<span class="string">'Frequency of Occurrence'</span>)
+legend(<span class="string">'Location'</span>, <span class="string">'northwest'</span>);
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <pre class="codeinput">samp_sizes = [10^2, 10^3, 10^4, 10^5];
+figure()
+<span class="keyword">for</span> i = 1:4
+    samp_size = samp_sizes(i);
+    samples = randp(p, samp_size);
+    subplot(2, 2, i);
+    histogram(samples, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
+    hold <span class="string">on</span>;
+    plot(p * samp_size, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'DisplayName'</span>, <span class="string">'pdf'</span>)
+    title(sprintf(<span class="string">'Sample size %d'</span>, samp_size));
+    xlabel(<span class="string">'Integers'</span>)
+    ylabel(<span class="string">'Frequency of Occurrence'</span>)
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <h2 id="4">b)</h2><pre class="codeinput">p_size = randi([2, 20], 1);
+q_size = randi([2, 30], 1);
+p = rand(p_size, 1);
+p = p/sum(p);
+q = rand(q_size, 1);
+q = q/sum(q);
+r = psum(p, q);
+</pre><pre class="codeinput">p = [1:6]/sum(1:6);
+samp_size = 1000;
+samp_r = zeros(samp_size, 1);
+n_rolls = 4;
+<span class="keyword">for</span> i = 1:n_rolls
+    <span class="keyword">if</span> i == 1
+        r = p;
+    <span class="keyword">else</span>
+        r = psum(r, p);
+    <span class="keyword">end</span>
+    samp_r = samp_r + randp(p, samp_size);
+<span class="keyword">end</span>
+<span class="comment">%samp_r = randp(p, 10000) + randp(p, 10000) + randp(p, 10000) + randp(p, 10000);</span>
+figure();
+histogram(samp_r, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
+hold <span class="string">on</span>;
+plot(r * samp_size, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'DisplayName'</span>, <span class="string">'pdf'</span>);
+xlabel(<span class="string">'Sum of rolls'</span>)
+ylabel(<span class="string">'Frequency of Occurrence'</span>)
+legend(<span class="string">'Location'</span>, <span class="string">'northwest'</span>);
+</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <pre class="codeinput">samp_sizes = [10^2, 10^3, 10^4, 10^5];
+figure()
+<span class="keyword">for</span> i = 1:4
+    samp_size = samp_sizes(i);
+    samp_r = zeros(samp_size, 1);
+    <span class="keyword">for</span> j = 1:n_rolls
+        samp_r = samp_r + randp(p, samp_size);
+    <span class="keyword">end</span>
+    subplot(2, 2, i);
+    histogram(samp_r, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
+    hold <span class="string">on</span>;
+    plot(r * samp_size, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'DisplayName'</span>, <span class="string">'pdf'</span>)
+    title(sprintf(<span class="string">'Sample size %d'</span>, samp_size));
+    xlabel(<span class="string">'Integers'</span>)
+    ylabel(<span class="string">'Frequency of Occurrence'</span>)
+<span class="keyword">end</span>
+figure();
+</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <pre class="codeinput"><span class="keyword">function</span> samples = randp(p, num)
+    cdf_p = zeros(size(p));
+    cdf_p(1) = p(1);
+
+    <span class="keyword">for</span> i = 2:length(p)
+        cdf_p(i) = p(i) + cdf_p(i-1);
+    <span class="keyword">end</span>
+
+    samples = zeros(num, 1);
+    rand_probs = rand(num, 1);
+
+    <span class="keyword">for</span> i = 1:num
+        samples(i) = find(cdf_p &gt; rand_probs(i), 1 );
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> r = psum(p, q)
+    p_size = length(p);
+    q_size = length(q);
+    r_size = p_size + q_size;
+    p(r_size) = 0;
+    p = circshift(p, 1);
+    q(r_size) = 0;
+    r = real(ifft(fft(p) .* fft(q)));
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+p = rand(10, 1);
+p = p/sum(p);
+samp_size = 1000;
+samples = randp(p, samp_size);
+figure();
+histogram(samples, 'DisplayName', 'sample dist');
+hold on;
+plot(p * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf')
+xlabel('Integers')
+ylabel('Frequency of Occurrence')
+legend('Location', 'northwest');
+
+%%
+samp_sizes = [10^2, 10^3, 10^4, 10^5];
+figure()
+for i = 1:4
+    samp_size = samp_sizes(i);
+    samples = randp(p, samp_size);
+    subplot(2, 2, i);
+    histogram(samples, 'DisplayName', 'sample dist');
+    hold on;
+    plot(p * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf')
+    title(sprintf('Sample size %d', samp_size));
+    xlabel('Integers')
+    ylabel('Frequency of Occurrence')
+end
+
+%% b)
+p_size = randi([2, 20], 1);
+q_size = randi([2, 30], 1);
+p = rand(p_size, 1);
+p = p/sum(p);
+q = rand(q_size, 1);
+q = q/sum(q);
+r = psum(p, q);
+
+%%
+p = [1:6]/sum(1:6);
+samp_size = 1000;
+samp_r = zeros(samp_size, 1);
+n_rolls = 4;
+for i = 1:n_rolls
+    if i == 1
+        r = p;
+    else
+        r = psum(r, p);
+    end
+    samp_r = samp_r + randp(p, samp_size);
+end
+%samp_r = randp(p, 10000) + randp(p, 10000) + randp(p, 10000) + randp(p, 10000);
+figure();
+histogram(samp_r, 'DisplayName', 'sample dist');
+hold on;
+plot(r * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf');
+xlabel('Sum of rolls')
+ylabel('Frequency of Occurrence')
+legend('Location', 'northwest');
+
+%%
+samp_sizes = [10^2, 10^3, 10^4, 10^5];
+figure()
+for i = 1:4
+    samp_size = samp_sizes(i);
+    samp_r = zeros(samp_size, 1);
+    for j = 1:n_rolls
+        samp_r = samp_r + randp(p, samp_size);
+    end
+    subplot(2, 2, i);
+    histogram(samp_r, 'DisplayName', 'sample dist');
+    hold on;
+    plot(r * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf')
+    title(sprintf('Sample size %d', samp_size));
+    xlabel('Integers')
+    ylabel('Frequency of Occurrence')
+end
+figure();
+
+%%
+function samples = randp(p, num)
+    cdf_p = zeros(size(p));
+    cdf_p(1) = p(1);
+    
+    for i = 2:length(p)
+        cdf_p(i) = p(i) + cdf_p(i-1);
+    end
+    
+    samples = zeros(num, 1);
+    rand_probs = rand(num, 1);
+    
+    for i = 1:num
+        samples(i) = find(cdf_p > rand_probs(i), 1 );
+    end
+    
+end
+
+function r = psum(p, q)
+    p_size = length(p);
+    q_size = length(q);
+    r_size = p_size + q_size;
+    p(r_size) = 0;
+    p = circshift(p, 1);
+    q(r_size) = 0;
+    r = real(ifft(fft(p) .* fft(q)));
+end
+##### SOURCE END #####
+--></body></html>
