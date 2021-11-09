@@ -1,0 +1,145 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-08"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><pre class="codeinput">mu = [4, 5];
+cy = [8, -5; -5, 4];
+num = 1000;
+samples = nRandn(mu, cy, num);
+<span class="comment">%scatter(samples(:, 1), samples(:, 2))</span>
+</pre><h2 id="3">b)</h2><pre class="codeinput">u_vec = rand(2, 1);
+u_vec = u_vec/sqrt(sum(u_vec.^2));
+samp_proj = u_vec' * samples;
+
+angs = linspace(0, 2*pi, 48);
+<span class="keyword">for</span> i = 1:length(angs)
+    u_vec = [cos(angs(i)), sin(angs(i))];
+    samp_proj = u_vec * samples;
+    mu_proj_pred = u_vec * mu';
+    var_proj_pred = u_vec * cy * u_vec';
+    mu_proj_act = mean(samp_proj);
+    var_proj_act = var(samp_proj);
+    <span class="keyword">if</span> abs(mu_proj_pred - mu_proj_act) &lt; 0.01
+        sprintf(<span class="string">'Means are equal for angle %d'</span>, angs(i));
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> abs(var_proj_pred - var_proj_act) &lt; 0.01
+        sprintf(<span class="string">'Variances are equal for angle %d'</span>, angs(i));
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">function</span> samples = nRandn(mean, cov, num)
+    N = length(mean);
+    [V, D] = eig(cov);
+    M = V * sqrt(D);
+    samp = randn(N, num);
+    samples = repmat(mean', 1, num) + M * samp;
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+mu = [4, 5];
+cy = [8, -5; -5, 4];
+num = 1000;
+samples = nRandn(mu, cy, num);
+%scatter(samples(:, 1), samples(:, 2))
+
+%% b)
+u_vec = rand(2, 1);
+u_vec = u_vec/sqrt(sum(u_vec.^2));
+samp_proj = u_vec' * samples;
+
+angs = linspace(0, 2*pi, 48);
+for i = 1:length(angs)
+    u_vec = [cos(angs(i)), sin(angs(i))];
+    samp_proj = u_vec * samples;
+    mu_proj_pred = u_vec * mu';
+    var_proj_pred = u_vec * cy * u_vec';
+    mu_proj_act = mean(samp_proj);
+    var_proj_act = var(samp_proj);
+    if abs(mu_proj_pred - mu_proj_act) < 0.01
+        sprintf('Means are equal for angle %d', angs(i));
+    end
+    if abs(var_proj_pred - var_proj_act) < 0.01
+        sprintf('Variances are equal for angle %d', angs(i));
+    end
+    
+end
+
+%%
+function samples = nRandn(mean, cov, num)
+    N = length(mean);
+    [V, D] = eig(cov);
+    M = V * sqrt(D);
+    samp = randn(N, num);
+    samples = repmat(mean', 1, num) + M * samp;
+end
+##### SOURCE END #####
+--></body></html>
