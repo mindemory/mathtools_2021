@@ -157,8 +157,41 @@ clear; close all; clc;
 %%
 % Therefore,
 %%
-% $P(Bbm|B1c \cap B2c \cap ... \cap Bnc) = \frac{1/2^N}{1 + 1/2^N}$
+% $P(Bbm|B1c \cap B2c \cap ... \cap Bnc) = \frac{1/2)^N}{(1)^N + (1/2)^N}$
+
+
+%%
+% The probability of one child having brown eyes is independent of the
+% other. Hence we have:
+%%
+% $P(B1c \cap B2c \cap ... \cap BNc) = P(B1c) \times P(B2c) \times ... \times P(BNc)$
+%%
+% And we also have:
+%%
+% $P(B1c \cap B2c \cap ... \cap BNc|Bbm) = P(B1c|Bbm) \times P(B2c|Bbm) \times ... \times P(BNc|Bbm)$
+%%
+% Since $$P(B1c) = P(B2c) = ... = P(BNc) = P(Bc) $$, and $$P(B1c|Bbm) =
+% P(B2c|Bbm) = ... = P(BNc|Bbm) = P(Bc|Bbm) $$,
+%%
+% We have:
+%%
+% $P(B1c \cap B2c \cap ... \cap BNc) = [P(Bc)]^N$
+%%
+% and
+%%
+% $P(B1c \cap B2c \cap ... \cap BNc|Bbm) = [P(Bc|m)]^N$
+%%
+% Substituting this back into the formula, we get:
+%%
+% $P(Bbm|B1c \cap B2c \cap ... \cap BNc) = \frac{[P(Bc|Bbm)]^N\times P(Bbm)}{[P(Bc)]^N}$
 %%
 % Therefore,
 %%
-% $P(Bbm|B1c \cap B2c \cap ... \cap Bnc) = \frac{1}{2^N + 1}$
+% $P(Bbm|B1c \cap B2c \cap ... \cap BNc) = \frac{P(Bc|Bbm)}{P(Bc)}^N\times P(Bbm)$
+%%
+% Because $$P(Bc|Bbm) = 1/2 $$, $$P(Bc) = 3/4 $$, and $$P(Bbm) = 1/2 $$, we
+% have:
+%%
+% $P(Bbm|B1c \cap B2c \cap ... \cap BNc) = \frac{1/2}{3/4}^N\times 1/2$
+%%
+% $P(Bbm|B1c \cap B2c \cap ... \cap BNc) = \frac{2}{3}^N\times \frac{1}{2}$

@@ -59,11 +59,11 @@ for i = 1:n_rolls
     if i == 1
         r = p; % Initilalize r to be p for just 1 run of the die
     else
-        r = psum(r, p); % Compute r by convolving r with p
+        r = psum(r, p); % Compute r by vo
     end
-    samp_r = samp_r + randp(p, samp_size); % Draw samples with pdf p in each loop and add it to the samples.
+    samp_r = samp_r + randp(p, samp_size);
 end
-
+%samp_r = randp(p, 10000) + randp(p, 10000) + randp(p, 10000) + randp(p, 10000);
 figure();
 histogram(samp_r, 'DisplayName', 'sample dist');
 hold on;

@@ -12,6 +12,7 @@ scatter(samples(1, :), samples(2, :))
 u_vec = rand(2, 1);
 u_vec = u_vec/sqrt(sum(u_vec.^2));
 samp_proj = u_vec' * samples;
+
 centered_samp = samples - repmat(mu', 1, num);
 cov_samples = (1/num) * (centered_samp * centered_samp');
 angs = linspace(0, 2*pi, 48);
