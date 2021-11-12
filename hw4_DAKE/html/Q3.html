@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-08"><meta name="DC.source" content="Q3.m"><style type="text/css">
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-12"><meta name="DC.source" content="Q3.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,79 +67,404 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><h2 id="2">a)</h2><pre class="codeinput">mu = [4, 5];
-cy = [8, -5; -5, 4];
-num = 1000;
-samples = nRandn(mu, cy, num);
-<span class="comment">%scatter(samples(:, 1), samples(:, 2))</span>
-</pre><h2 id="3">b)</h2><pre class="codeinput">u_vec = rand(2, 1);
-u_vec = u_vec/sqrt(sum(u_vec.^2));
-samp_proj = u_vec' * samples;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#23">b)</a></li><li><a href="#44">c)</a></li><li><a href="#49">d)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><p>Samples from a N-dimensional normal distribution can be obtained by calling the function nrandn. This produces samples from a normal distribution with mean 0 and identity matrix as its covariance matrix. Let this matrix be Cx. We have to transform this sample using the matrix M to produce sample that has a covariance Cy. Let the samples drawn initially be X, hence we are interested in producing the samples Y as: <img src="Q3_eq12235901682018721151.png" alt="$$Y = MX $$"></p><p>The covariance Cy of the new samples is related to the old covariance Cx by:</p><p><img src="Q3_eq08701930292949949039.png" alt="$$C_y = MC_x M^T $$"></p><p>Since Cx is an identity matrix, we get:</p><p><img src="Q3_eq04406994513620598136.png" alt="$$C_y = MM^T $$"></p><p>Now performing eigen-value decomposition of Cy, we can write Cy as:</p><p><img src="Q3_eq13251489964662182067.png" alt="$$C_y = V\Lambda V^T $$"></p><p>The eigen values are stored in <img src="Q3_eq17970051150543768451.png" alt="$$\Lambda $$"> matrix which is a square-matrix with non-zero positive diagonal elements and 0 off-diaognal elements. The non-zero positive diagonal elements is guaranteed because covariance matrices are symmetric and positive-definite. Therefore, we can define a matrix <img src="Q3_eq07194497371635660361.png" alt="$$\lambda $$"> as:</p><p><img src="Q3_eq14488655079973697289.png" alt="$$\lambda = \sqrt{\Lambda} $$"></p><p>where <img src="Q3_eq07194497371635660361.png" alt="$$\lambda $$"> stores the square-root of each eigen-value.</p><p>Thus, we can write Cy as:</p><p><img src="Q3_eq01013298573211921872.png" alt="$$C_y = V\lambda \lambda ^T V^T $$"></p><p>Notice that since <img src="Q3_eq07194497371635660361.png" alt="$$\lambda $$"> is symmetric, <img src="Q3_eq06405971571912492773.png" alt="$$\lambda ^T = \lambda $$"></p><p>Let <img src="Q3_eq13808172302047912095.png" alt="$$M = V\lambda $$"></p><p>Hence we have: <img src="Q3_eq17943557485294738002.png" alt="$$M^T = (V\lambda)^T = \lambda ^T V^T = \lambda V^T $$"></p><p>This matches the equation for Cy above. Therefore, in order to convert samples to have covariance Cy, we multiply samples by M given by the equation:</p><p><img src="Q3_eq17022159088343895189.png" alt="$$M = V \sqrt{\Lambda} $$"></p><p>The mean of Y that is produced is still 0 and hence it needs to be translated by adding the desired mean to each vector in Y. This can be done using repmat function.</p><p>The overall process is captured in the nRandn function defined at the end of this document.</p><pre class="codeinput">mu = [4, 5]; <span class="comment">% Mean of 2-D Gaussian</span>
+cy = [8, -5; -5, 4]; <span class="comment">% Covariance of 2-D Guassian</span>
+num = 1000; <span class="comment">% Sample size desired</span>
+samples = nRandn(mu, cy, num); <span class="comment">% Draw samples from 2-D Gaussian with specified mean, covariance and sample size</span>
+figure();
+scatter(samples(:, 1), samples(:, 2))
+title(<span class="string">'Scatter plot of samples drawn'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <p>The scatter plot is elliptical confirming that it confirms from a 2-D Gaussian. We can see that the distribution is centered at (4, 5). We can also see that the variance is high along x as opposed to y as is expected since 8 &gt; 4. We also see that x and y are negatively correlated captured by negative covariance of x and y in cy.</p><h2 id="23">b)</h2><p>We started with a 2-D Gaussian with identity covariance matrix and 0 mean. This was <img src="Q3_eq04381868895907662183.png" alt="$$A = N(0, I) $$"></p><p>We then transformed this to have a covariance <img src="Q3_eq15175465610352488240.png" alt="$$C_y $$"> and mean <img src="Q3_eq08255224437164986458.png" alt="$$\mu $$"> by transforming it with the matrix M. Let this new distribution be X. Hence we have:</p><p><img src="Q3_eq00848480018121167257.png" alt="$$X = MA + \mu$$"></p><p>where,</p><p><img src="Q3_eq00950425441185806380.png" alt="$$X \sim N(\mu, C_y = MM^T) $$"></p><p>The marginalized distribution is then computed by projecting X onto a unit vector <img src="Q3_eq06277592174952575661.png" alt="$$\hat{u} $$"></p><p>Let this projection be Y. Hence we have:</p><p><img src="Q3_eq03166848418942041381.png" alt="$$Y = \hat{u}^T X $$"></p><p>Therefore, we have:</p><p><img src="Q3_eq12050140122156401901.png" alt="$$Y = \hat{u}^T (MA + \mu) $$"></p><p>Therefore,</p><p><img src="Q3_eq08629583621846184628.png" alt="$$Y = \hat{u}^T MA + \hat{u}^T \mu $$"></p><p>Hence the mean of the projection is:</p><p><img src="Q3_eq04876361739185930601.png" alt="$$\mu_Y = \hat{u}^T \mu $$"></p><p>And the transformation matrix now is:</p><p><img src="Q3_eq17912657647262143241.png" alt="$$M_Y = \hat{u}^T M $$"></p><p>Thus, the variance for Y becomes:</p><p><img src="Q3_eq14759030791442545001.png" alt="$$\sigma_y^2 = M_Y M_Y^T = (\hat{u}^T M)(\hat{u}^T M)^T = \hat{u}^T&#xA;MM^T\hat{u}^T = \hat{u}^T C_X\hat{u}^T $$"></p><p>First, we defined 48 evenly spaced unit vectors along a unit circle as [cos(theta), sin(theta)] where theta varies uniformly from 0 to 2*pi. For each of these unit vectors, we then project the samples onto them to compute the marginal distribution. The actual mean and variance can be computed using mean() and var() functions of matlab. Additionally, the predicted mean and variance is computed using the formulae just derived.</p><pre class="codeinput">centered_samp = samples - repmat(mu, num, 1); <span class="comment">% centering the samples using the mean</span>
+cov_samples = (1/num) * (centered_samp' * centered_samp); <span class="comment">% covariance matrix of centered_samples</span>
+angs = linspace(0, 2*pi, 48); <span class="comment">% 48 evenly spaced angles between 0 and 2*pi</span>
 
-angs = linspace(0, 2*pi, 48);
+mu_proj_pred = zeros(length(angs), 1);
+var_proj_pred = zeros(length(angs), 1);
+mu_proj_act = zeros(length(angs), 1);
+var_proj_act = zeros(length(angs), 1);
+
 <span class="keyword">for</span> i = 1:length(angs)
-    u_vec = [cos(angs(i)), sin(angs(i))];
-    samp_proj = u_vec * samples;
-    mu_proj_pred = u_vec * mu';
-    var_proj_pred = u_vec * cy * u_vec';
-    mu_proj_act = mean(samp_proj);
-    var_proj_act = var(samp_proj);
-    <span class="keyword">if</span> abs(mu_proj_pred - mu_proj_act) &lt; 0.01
-        sprintf(<span class="string">'Means are equal for angle %d'</span>, angs(i));
-    <span class="keyword">end</span>
-    <span class="keyword">if</span> abs(var_proj_pred - var_proj_act) &lt; 0.01
-        sprintf(<span class="string">'Variances are equal for angle %d'</span>, angs(i));
-    <span class="keyword">end</span>
+    u_vec = [cos(angs(i)), sin(angs(i))]; <span class="comment">% Computing unit vectors</span>
+    samp_proj = samples * u_vec'; <span class="comment">% Marginal distribution</span>
 
+    mu_proj_pred(i) =  mu * u_vec'; <span class="comment">% Predicted mean</span>
+    var_proj_pred(i) = u_vec * cov_samples * u_vec'; <span class="comment">% Predicted variance</span>
+
+    mu_proj_act(i) = mean(samp_proj); <span class="comment">% Actual mean of the projection</span>
+    var_proj_act(i) = var(samp_proj); <span class="comment">% Actual variance of the projection</span>
 <span class="keyword">end</span>
-</pre><pre class="codeinput"><span class="keyword">function</span> samples = nRandn(mean, cov, num)
-    N = length(mean);
-    [V, D] = eig(cov);
+
+figure();
+stem(angs, mu_proj_pred, <span class="string">'r'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Mean predicted'</span>);
+hold <span class="string">on</span>;
+stem(angs, mu_proj_act, <span class="string">'k'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Mean actual'</span>);
+xlabel(<span class="string">'Angle (radians)'</span>)
+ylabel(<span class="string">'Mean'</span>)
+title(<span class="string">'Mean projection and actual'</span>)
+legend();
+
+figure();
+stem(angs, var_proj_pred, <span class="string">'r'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Mean predicted'</span>);
+hold <span class="string">on</span>;
+stem(angs, var_proj_act, <span class="string">'k'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Mean actual'</span>);
+xlabel(<span class="string">'Angle (radians)'</span>)
+ylabel(<span class="string">'Variance'</span>)
+title(<span class="string">'Variance projection and actual'</span>)
+legend();
+</pre><img vspace="5" hspace="5" src="Q3_02.png" alt=""> <img vspace="5" hspace="5" src="Q3_03.png" alt=""> <p>From the stem plots, we can see that the actual mean and the predicted mean of all the marginal distributions match. We can also see that the actual variance and the predicted variance of the marginal distributions match.</p><h2 id="44">c)</h2><pre class="codeinput">samples_new = nRandn(mu, cy, 1000); <span class="comment">% New sample</span>
+centered_samples_new = samples_new - repmat(mu, 1000, 1);
+mu <span class="comment">% Actual mean</span>
+new_mu_pred = mean(samples_new, 1) <span class="comment">% Mean of the new sample</span>
+cy <span class="comment">% Actual variance</span>
+new_cov_pred = (1/1000) * (centered_samples_new' * centered_samples_new) <span class="comment">% Covariance of the new sample</span>
+</pre><pre class="codeoutput">
+mu =
+
+     4     5
+
+
+new_mu_pred =
+
+    3.9929    5.0153
+
+
+cy =
+
+     8    -5
+    -5     4
+
+
+new_cov_pred =
+
+    7.7379   -4.8707
+   -4.8707    3.9140
+
+</pre><p>We can see that the mean of the sample drawn is similar to the actual mean passed to draw the sample. Similarly, the variance of the sample drawn is similar to the actual variance passed to draw the sample.</p><p>In order to draw the ellipse on the transformed data, we can first create a unit circle. This circle has same variance along x and y and hence has an identity covariance matrix. We can then transform the circle in the same way the data has been transformed: first my multiplying the circle with M to have the covariance Cy and then my translating with mean to have the same mean as the sample.</p><pre class="codeinput">[V, D] = eig(cy); <span class="comment">% eigven value decomposition of the covariance matrix</span>
+M = V * sqrt(D); <span class="comment">% Transformation matrix M computed as described in (a)</span>
+circ_vects = [cos(angs); sin(angs)]; <span class="comment">% creating a circle of vectors</span>
+ellip_vects = repmat(mu', 1, length(angs)) + M * circ_vects; <span class="comment">% Performing same transformation as data</span>
+figure();
+scatter(samples_new(:, 1), samples_new(:, 2))
+hold <span class="string">on</span>;
+plot(ellip_vects(1, :), ellip_vects(2, :), <span class="string">'r'</span>, <span class="string">'LineWidth'</span>, 2)
+title(<span class="string">'Plotting a transformed ellipse on the sample'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_04.png" alt=""> <p>Repeating this for 3 additional data sets. The covariance matrix can be generate randomly. However, covariance matrix is supposed to be symmetric and positive-definite and hence has a restriction on the set of values it can assume. It can be generate easily by taking a random 2*2 matrix and then multiplying this matrix by its transpose.</p><pre class="codeinput"><span class="keyword">for</span> k =  1:3
+    <span class="comment">% Generating a random covariance matrix</span>
+    cov_generator = rand(2);
+    cov_k = cov_generator * cov_generator.';
+    <span class="comment">% Generating a random mean with values upto 10</span>
+    mu_k = randi(10, 1, 2);
+    <span class="comment">% Drawing random samples</span>
+    samples_k = nRandn(mu_k, cov_k, num);
+    <span class="comment">% Eigen value decomposition of covariance matrix</span>
+    [V, D] = eig(cov_k);
+    <span class="comment">% Transformation matrix</span>
     M = V * sqrt(D);
-    samp = randn(N, num);
-    samples = repmat(mean', 1, num) + M * samp;
+    <span class="comment">% Computing the new ellipse</span>
+    ellip_vects = repmat(mu_k', 1, length(angs)) + M * circ_vects;
+    figure();
+    scatter(samples_k(:, 1), samples_k(:, 2))
+    hold <span class="string">on</span>;
+    plot(ellip_vects(1, :), ellip_vects(2, :), <span class="string">'r'</span>, <span class="string">'LineWidth'</span>, 2)
+    title(<span class="string">'Plotting a transformed ellipse on the sample'</span>)
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Q3_05.png" alt=""> <img vspace="5" hspace="5" src="Q3_06.png" alt=""> <img vspace="5" hspace="5" src="Q3_07.png" alt=""> <h2 id="49">d)</h2><p>The marginal distribution will have the maximum variance when the unit vector along which the data is projected lies parallel to the spread of the data. The spread of the data can be captured using Principal Component Analysis (PCA) or eigenvalue decomposition. For this, first the data (D) is centered using its mean. And a covariance matrix is computed from the data as:</p><p><img src="Q3_eq05490079753170336674.png" alt="$$C = DD^T $$"></p><p>The eigenvalue decomposition of the covariance matrix can then be performed as:</p><p><img src="Q3_eq10113220984088887004.png" alt="$$C = V\Lambda V^T $$"></p><p>The largest variance of the data is captured by the vector that has the largest eigenvalue. The eigenvalues are present along the diagonal of the matrix <img src="Q3_eq17970051150543768451.png" alt="$$\Lambda $$">. The eigenvectors are stored as the columns of the matrix V. Hence the desired unit vector is the column of the matrix V that has the largest eigenvalue.</p><pre class="codeinput">samps = nRandn(mu, cy, 1000); <span class="comment">% New sample</span>
+D = samps - repmat(mu, 1000, 1); <span class="comment">% Centering the data</span>
+C = (1/1000) * (D' * D); <span class="comment">% Covariance matrix</span>
+[V, l] = eig(C);
+<span class="comment">% The maximum eigenvalue is the second one hence the corresponding unit</span>
+<span class="comment">% vector is the second column of V</span>
+max_var_u = V(:, 2);
+max_var_u = max_var_u/sqrt(sum(max_var_u.^2)); <span class="comment">% Normalizing to make a unit vector</span>
+figure();
+scatter(samps(:, 1), samps(:, 2))
+hold <span class="string">on</span>;
+plot([mu(1), mu(1) + max_var_u(1)], [mu(2), mu(2) + max_var_u(2)], <span class="string">'LineWidth'</span>, 2)
+</pre><p>From the plot, we can see that this vector indeed lies along the direction that will capture the maximum variance of the data in the samples drawn.</p><pre class="codeinput"><span class="keyword">function</span> samples = nRandn(mean, cov, num)
+    <span class="comment">% The function draws samples from an N-dimensional normal distribution.</span>
+    <span class="comment">% It does so my first drawing samples from an N-dimensional normal</span>
+    <span class="comment">% distribution of 0 mean and identity covariance matrix. It then</span>
+    <span class="comment">% transforms the data using a matrix M to have the covariance "cov".</span>
+    <span class="comment">% Lastly, it translates the data to have the mean "mean".</span>
+
+    N = length(mean);
+    [V, D] = eig(cov);  <span class="comment">% Eigen value decomposition of covariance matrix</span>
+    M = V * sqrt(D); <span class="comment">% Transformation matrix is given as product of V and square-root of eigenvalues</span>
+    samp = randn(num, N); <span class="comment">% Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix</span>
+    samples = repmat(mean, num , 1) + samp * M';
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
 %% a)
-mu = [4, 5];
-cy = [8, -5; -5, 4];
-num = 1000;
-samples = nRandn(mu, cy, num);
-%scatter(samples(:, 1), samples(:, 2))
+% Samples from a N-dimensional normal distribution can be obtained by
+% calling the function nrandn. This produces samples from a normal
+% distribution with mean 0 and identity matrix as its covariance matrix.
+% Let this matrix be Cx. We have to transform this sample using the matrix
+% M to produce sample that has a covariance Cy. Let the samples drawn initially be X,
+% hence we are interested in producing the samples Y as: $$Y = MX $$
+%%
+% The covariance Cy of the new samples is related to the old covariance Cx
+% by:
+%% 
+% $$C_y = MC_x M^T $$
+%%
+% Since Cx is an identity matrix, we get:
+%%
+% $$C_y = MM^T $$
+%%
+% Now performing eigen-value decomposition of Cy, we can write Cy as:
+%%
+% $$C_y = V\Lambda V^T $$
+%%
+% The eigen values are stored in $$\Lambda $$ matrix which is a
+% square-matrix with non-zero positive diagonal elements and 0 off-diaognal
+% elements. The non-zero positive diagonal elements is guaranteed because
+% covariance matrices are symmetric and positive-definite. Therefore, we
+% can define a matrix $$\lambda $$ as:
+%%
+% $$\lambda = \sqrt{\Lambda} $$
+%%
+% where $$\lambda $$ stores the square-root of each eigen-value.
+%%
+% Thus, we can write Cy as:
+%%
+% $$C_y = V\lambda \lambda ^T V^T $$
+%%
+% Notice that since $$\lambda $$ is symmetric, $$\lambda ^T = \lambda $$
+%%
+% Let $$M = V\lambda $$
+%%
+% Hence we have: $$M^T = (V\lambda)^T = \lambda ^T V^T = \lambda V^T $$
+%%
+% This matches the equation for Cy above. Therefore, in order to convert
+% samples to have covariance Cy, we multiply samples by M given by the
+% equation:
+%%
+% $$M = V \sqrt{\Lambda} $$
+%%
+% The mean of Y that is produced is still 0 and hence it needs to be
+% translated by adding the desired mean to each vector in Y. This can be done using
+% repmat function.
+%%
+% The overall process is captured in the nRandn function defined at the end
+% of this document.
+%%
+mu = [4, 5]; % Mean of 2-D Gaussian
+cy = [8, -5; -5, 4]; % Covariance of 2-D Guassian
+num = 1000; % Sample size desired
+samples = nRandn(mu, cy, num); % Draw samples from 2-D Gaussian with specified mean, covariance and sample size
+figure();
+scatter(samples(:, 1), samples(:, 2))
+title('Scatter plot of samples drawn')
+%%
+% The scatter plot is elliptical confirming that it confirms from a 2-D
+% Gaussian. We can see that the distribution is centered at (4, 5). We can
+% also see that the variance is high along x as opposed to y as is expected
+% since 8 > 4. We also see that x and y are negatively correlated captured
+% by negative covariance of x and y in cy.
 
 %% b)
-u_vec = rand(2, 1);
-u_vec = u_vec/sqrt(sum(u_vec.^2));
-samp_proj = u_vec' * samples;
+% We started with a 2-D Gaussian with identity covariance matrix and 0
+% mean. This was $$A = N(0, I) $$
+%%
+% We then transformed this to have a covariance $$C_y $$ and mean $$\mu $$
+% by transforming it with the matrix M. Let this new distribution be X.
+% Hence we have:
+%%
+% $$X = MA + \mu$$
+%%
+% where,
+%%
+% $$X \sim N(\mu, C_y = MM^T) $$
+%%
+% The marginalized distribution is then computed by projecting X onto a
+% unit vector $$\hat{u} $$
+%%
+% Let this projection be Y. Hence we have:
+%%
+% $$Y = \hat{u}^T X $$
+%%
+% Therefore, we have:
+%%
+% $$Y = \hat{u}^T (MA + \mu) $$
+%%
+% Therefore,
+%%
+% $$Y = \hat{u}^T MA + \hat{u}^T \mu $$
+%%
+% Hence the mean of the projection is:
+%%
+% $$\mu_Y = \hat{u}^T \mu $$
+%%
+% And the transformation matrix now is:
+%% 
+% $$M_Y = \hat{u}^T M $$
+%%
+% Thus, the variance for Y becomes:
+%%
+% $$\sigma_y^2 = M_Y M_Y^T = (\hat{u}^T M)(\hat{u}^T M)^T = \hat{u}^T
+% MM^T\hat{u}^T = \hat{u}^T C_X\hat{u}^T $$
+%%
+% First, we defined 48 evenly spaced unit vectors along a unit circle as
+% [cos(theta), sin(theta)] where theta varies uniformly from 0 to 2*pi. For
+% each of these unit vectors, we then project the samples onto them to
+% compute the marginal distribution. The actual mean and variance can
+% be computed using mean() and var() functions of matlab. Additionally, the
+% predicted mean and variance is computed using the formulae just derived.
+%%
+centered_samp = samples - repmat(mu, num, 1); % centering the samples using the mean
+cov_samples = (1/num) * (centered_samp' * centered_samp); % covariance matrix of centered_samples
+angs = linspace(0, 2*pi, 48); % 48 evenly spaced angles between 0 and 2*pi
 
-angs = linspace(0, 2*pi, 48);
+mu_proj_pred = zeros(length(angs), 1);
+var_proj_pred = zeros(length(angs), 1);
+mu_proj_act = zeros(length(angs), 1);
+var_proj_act = zeros(length(angs), 1);
+
 for i = 1:length(angs)
-    u_vec = [cos(angs(i)), sin(angs(i))];
-    samp_proj = u_vec * samples;
-    mu_proj_pred = u_vec * mu';
-    var_proj_pred = u_vec * cy * u_vec';
-    mu_proj_act = mean(samp_proj);
-    var_proj_act = var(samp_proj);
-    if abs(mu_proj_pred - mu_proj_act) < 0.01
-        sprintf('Means are equal for angle %d', angs(i));
-    end
-    if abs(var_proj_pred - var_proj_act) < 0.01
-        sprintf('Variances are equal for angle %d', angs(i));
-    end
+    u_vec = [cos(angs(i)), sin(angs(i))]; % Computing unit vectors
+    samp_proj = samples * u_vec'; % Marginal distribution
     
+    mu_proj_pred(i) =  mu * u_vec'; % Predicted mean
+    var_proj_pred(i) = u_vec * cov_samples * u_vec'; % Predicted variance
+    
+    mu_proj_act(i) = mean(samp_proj); % Actual mean of the projection
+    var_proj_act(i) = var(samp_proj); % Actual variance of the projection
 end
+
+figure();
+stem(angs, mu_proj_pred, 'r', 'DisplayName', 'Mean predicted');
+hold on;
+stem(angs, mu_proj_act, 'k', 'DisplayName', 'Mean actual');
+xlabel('Angle (radians)')
+ylabel('Mean')
+title('Mean projection and actual')
+legend();
+
+figure();
+stem(angs, var_proj_pred, 'r', 'DisplayName', 'Mean predicted');
+hold on;
+stem(angs, var_proj_act, 'k', 'DisplayName', 'Mean actual');
+xlabel('Angle (radians)')
+ylabel('Variance')
+title('Variance projection and actual')
+legend();
+
+%%
+% From the stem plots, we can see that the actual mean and the predicted
+% mean of all the marginal distributions match. We can also see that the
+% actual variance and the predicted variance of the marginal distributions
+% match.
+
+%% c)
+samples_new = nRandn(mu, cy, 1000); % New sample
+centered_samples_new = samples_new - repmat(mu, 1000, 1);
+mu % Actual mean
+new_mu_pred = mean(samples_new, 1) % Mean of the new sample
+cy % Actual variance
+new_cov_pred = (1/1000) * (centered_samples_new' * centered_samples_new) % Covariance of the new sample
+%%
+% We can see that the mean of the sample drawn is similar to the actual
+% mean passed to draw the sample. Similarly, the variance of the sample
+% drawn is similar to the actual variance passed to draw the sample.
+%%
+% In order to draw the ellipse on the transformed data, we can first create
+% a unit circle. This circle has same variance along x and y and hence has
+% an identity covariance matrix. We can then transform the circle in the
+% same way the data has been transformed: first my multiplying the circle
+% with M to have the covariance Cy and then my translating with mean to
+% have the same mean as the sample.
+%%
+[V, D] = eig(cy); % eigven value decomposition of the covariance matrix
+M = V * sqrt(D); % Transformation matrix M computed as described in (a)
+circ_vects = [cos(angs); sin(angs)]; % creating a circle of vectors
+ellip_vects = repmat(mu', 1, length(angs)) + M * circ_vects; % Performing same transformation as data
+figure();
+scatter(samples_new(:, 1), samples_new(:, 2))
+hold on;
+plot(ellip_vects(1, :), ellip_vects(2, :), 'r', 'LineWidth', 2)
+title('Plotting a transformed ellipse on the sample')
+%%
+% Repeating this for 3 additional data sets. The covariance matrix can be
+% generate randomly. However, covariance matrix is supposed to be symmetric
+% and positive-definite and hence has a restriction on the set of values it
+% can assume. It can be generate easily by taking a random 2*2 matrix and 
+% then multiplying this matrix by its transpose.
+for k =  1:3
+    % Generating a random covariance matrix
+    cov_generator = rand(2);
+    cov_k = cov_generator * cov_generator.';
+    % Generating a random mean with values upto 10
+    mu_k = randi(10, 1, 2);
+    % Drawing random samples
+    samples_k = nRandn(mu_k, cov_k, num);
+    % Eigen value decomposition of covariance matrix
+    [V, D] = eig(cov_k);
+    % Transformation matrix
+    M = V * sqrt(D);
+    % Computing the new ellipse
+    ellip_vects = repmat(mu_k', 1, length(angs)) + M * circ_vects;
+    figure();
+    scatter(samples_k(:, 1), samples_k(:, 2))
+    hold on;
+    plot(ellip_vects(1, :), ellip_vects(2, :), 'r', 'LineWidth', 2)
+    title('Plotting a transformed ellipse on the sample')
+end
+
+%% d)
+% The marginal distribution will have the maximum variance when the unit
+% vector along which the data is projected lies parallel to the spread of
+% the data. The spread of the data can be captured using Principal
+% Component Analysis (PCA) or eigenvalue decomposition. For this, first the
+% data (D) is centered using its mean. And a covariance matrix is computed from
+% the data as:
+%%
+% $$C = DD^T $$
+%%
+% The eigenvalue decomposition of the covariance matrix can then be
+% performed as:
+%%
+% $$C = V\Lambda V^T $$
+%%
+% The largest variance of the data is captured by the vector that has the
+% largest eigenvalue. The eigenvalues are present along the diagonal of the
+% matrix $$\Lambda $$. The eigenvectors are stored as the columns of the
+% matrix V. Hence the desired unit vector is the column of the matrix V
+% that has the largest eigenvalue.
+%%
+samps = nRandn(mu, cy, 1000); % New sample
+D = samps - repmat(mu, 1000, 1); % Centering the data
+C = (1/1000) * (D' * D); % Covariance matrix
+[V, l] = eig(C);
+% The maximum eigenvalue is the second one hence the corresponding unit
+% vector is the second column of V
+max_var_u = V(:, 2);
+max_var_u = max_var_u/sqrt(sum(max_var_u.^2)); % Normalizing to make a unit vector
+figure();
+scatter(samps(:, 1), samps(:, 2))
+hold on;
+plot([mu(1), mu(1) + max_var_u(1)], [mu(2), mu(2) + max_var_u(2)], 'LineWidth', 2)
+%%
+% From the plot, we can see that this vector indeed lies along the
+% direction that will capture the maximum variance of the data in the
+% samples drawn.
 
 %%
 function samples = nRandn(mean, cov, num)
+    % The function draws samples from an N-dimensional normal distribution.
+    % It does so my first drawing samples from an N-dimensional normal
+    % distribution of 0 mean and identity covariance matrix. It then
+    % transforms the data using a matrix M to have the covariance "cov".
+    % Lastly, it translates the data to have the mean "mean".
+    
     N = length(mean);
-    [V, D] = eig(cov);
-    M = V * sqrt(D);
-    samp = randn(N, num);
-    samples = repmat(mean', 1, num) + M * samp;
+    [V, D] = eig(cov);  % Eigen value decomposition of covariance matrix
+    M = V * sqrt(D); % Transformation matrix is given as product of V and square-root of eigenvalues
+    samp = randn(num, N); % Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix
+    samples = repmat(mean, num , 1) + samp * M';
 end
 ##### SOURCE END #####
 --></body></html>

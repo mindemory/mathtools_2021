@@ -2,15 +2,16 @@ clear; close all; clc;
 
 %% a)
 % From a randomly defined pdf (p) of length n, first a cdf is created
-% inside the functiton randp. It then draws random values from uniform
+% inside the function randp. It then draws random values from uniform
 % distribution and then computes the samples by checking for the cdf values
-% with probabilities greater than the randomly selected value.
+% with probabilities greater than the randomly selected value. This method
+% of sampling is called inverse transform sampling.
 %%
 p = rand(10, 1); % Random vector of length n
 p = p/sum(p); % Normalize the vector to create a pdf
 samp_size = 1000; % Define the sample size that is desired
 samples = randp(p, samp_size); % Use the randp function to draw samples from the defined pdf
-figure();
+fig1 = figure();
 histogram(samples, 'DisplayName', 'sample dist');
 hold on;
 plot(p * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf')
@@ -20,8 +21,11 @@ legend('Location', 'northwest');
 title('Randomly drawn sample and pdf')
 
 %%
+% Here the sample size is varied and samples are drawn from the same pdf
+% but with different sample sizes using the defined randp function
+%%
 samp_sizes = [10^2, 10^3, 10^4, 10^5]; % Sample sizes
-figure()
+fig2 = figure();
 for i = 1:4
     samp_size = samp_sizes(i); 
     samples = randp(p, samp_size); % Draw samples from the same pdf p and different sample sizes
@@ -34,6 +38,10 @@ for i = 1:4
     xlabel('Integers')
     ylabel('Frequency of Occurrence')
 end
+%%
+% We can see that as the sample size increases, the sample drawn fits the
+% pdf better i.e. the sample distribution converges to pdf as the sample size
+% is increased.
 
 %% b)
 % psum function computes a combined pdf r from p and q which maps the
@@ -51,6 +59,12 @@ q = q/sum(q);  % Create a pdf q
 r = psum(p, q);
 
 %%
+% Initialize p: storing the probability of getting each number on its face
+% in a die roll. Then we compute the combined pdf of rolling N die by
+% convolving p with itself N times. We can also draw samples by calling
+% randp with pdf = p and adding it to the previously drawn sample from randp
+% with pdf = p and repeat this N - 1 times.
+%%
 p = [1:6]/sum(1:6); % Rolling of a die probability
 samp_size = 1000;
 samp_r = zeros(samp_size, 1); % Initilaizing samples
@@ -64,7 +78,7 @@ for i = 1:n_rolls
     samp_r = samp_r + randp(p, samp_size); % Draw samples with pdf p in each loop and add it to the samples.
 end
 
-figure();
+fig3 = figure();
 histogram(samp_r, 'DisplayName', 'sample dist');
 hold on;
 plot(r * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf');
@@ -73,13 +87,14 @@ ylabel('Frequency of Occurrence')
 legend('Location', 'northwest');
 
 %%
-samp_sizes = [10^2, 10^3, 10^4, 10^5];
-figure()
+% Computing samples from randp for different sample sizes
+samp_sizes = [10^2, 10^3, 10^4, 10^5]; % Range of sample sizes
+fig4 = figure();
 for i = 1:4
     samp_size = samp_sizes(i);
-    samp_r = zeros(samp_size, 1);
+    samp_r = zeros(samp_size, 1); % Initialize sample array
     for j = 1:n_rolls
-        samp_r = samp_r + randp(p, samp_size);
+        samp_r = samp_r + randp(p, samp_size); % Add samples drawn from randp to previously drawn sample
     end
     subplot(2, 2, i);
     histogram(samp_r, 'DisplayName', 'sample dist');
@@ -90,12 +105,19 @@ for i = 1:4
     ylabel('Frequency of Occurrence')
 end
 
+%%
+% We can again see that as the sample size increases, the samples drawn
+% match the pdf more closely.
+
+%% Note: For some reason publishing the file does not produce fig4 in the html.
+%% However, the figure is produced on running and is uploaded to the drive as Q2_04.png
+
 %% Functions
 function samples = randp(p, num)
     % The function randp computes the samples from the pdf defined by p and
     % the sample size num. This is done by first computing the cdf from the
     % pdf. The samples are then drawn by choosing a random value from
-    % uniform distribution and checking where the randomly drawn value lie
+    % uniform distribution and checking where the randomly drawn value lies
     % on the cdf that is computed.
     cdf_p = zeros(size(p)); % Initialize cdf
     cdf_p(1) = p(1); % The first value of cdf is the first value of pdf

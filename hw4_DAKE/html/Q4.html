@@ -1,0 +1,386 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q4</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-12"><meta name="DC.source" content="Q4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#9">b)</a></li><li><a href="#11">c)</a></li><li><a href="#14">d)</a></li><li><a href="#19">Functions</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><pre class="codeinput">load(<span class="string">'experimentData.mat'</span>)
+fig1 = figure();
+histogram(trialConds, 2, <span class="string">'FaceColor'</span>, <span class="string">'r'</span>);
+xlabel(<span class="string">'Trial Condition'</span>)
+ylabel(<span class="string">'Trial Counts'</span>)
+title(<span class="string">'Trials across Conditions'</span>)
+</pre><img vspace="5" hspace="5" src="Q4_01.png" alt=""> <p>Both trial conditions seem to have roughly equal number of trials.</p><p>Dividing the data based on the trial conditions</p><pre class="codeinput">cond1_index = find(trialConds == 1);
+cond2_index = find(trialConds == 2);
+cond1_data = data(cond1_index, :);
+cond2_data = data(cond2_index, :);
+sprintf(<span class="string">'For condition 1, %d trials were completed'</span>, length(cond1_data))
+sprintf(<span class="string">'For condition 2, %d trials were completed'</span>, length(cond2_data))
+</pre><pre class="codeoutput">
+ans =
+
+    'For condition 1, 300 trials were completed'
+
+
+ans =
+
+    'For condition 2, 312 trials were completed'
+
+</pre><p>Making a scatter plot from the divided data.</p><pre class="codeinput">fig2 = figure();
+scatter3(cond1_data(:, 1), cond1_data(:, 2), cond1_data(:, 3), 10, <span class="string">'r'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 1'</span>)
+hold <span class="string">on</span>;
+scatter3(cond2_data(:, 1), cond2_data(:, 2), cond2_data(:, 3), 10, <span class="string">'k'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 2'</span>)
+legend();
+xlabel(<span class="string">'Voxel 1'</span>); ylabel(<span class="string">'Voxel 2'</span>); zlabel(<span class="string">'Voxel 3'</span>);
+title(<span class="string">'Responses in three voxels across 2 trial conditions'</span>)
+</pre><img vspace="5" hspace="5" src="Q4_02.png" alt=""> <p>The response clouds for both the conditions appear separated and hence appear to exhibit a substantial difference across the two conditions. Specifically, trials from condition 2 have higher values in each of the three voxels compared to the trials from condition 1. Both the response clouds appear ellipsoidal in shape and hence they can be modelled as 3-D normal distributions.</p><h2 id="9">b)</h2><pre class="codeinput"><span class="keyword">global</span> cond1_mean cond2_mean cond1_covar cond2_covar
+cond1_mean = mean(cond1_data, 1); <span class="comment">% Mean for condition 1</span>
+cond2_mean = mean(cond2_data, 1); <span class="comment">% Mean for condition 2</span>
+cond1_centered = cond1_data - repmat(cond1_mean, length(cond1_data), 1); <span class="comment">% Centering data for condition 1</span>
+cond2_centered = cond2_data - repmat(cond2_mean, length(cond2_data), 1); <span class="comment">% Centering data for condition 2</span>
+cond1_covar = (1/length(cond1_data)) * (cond1_centered' * cond1_centered) <span class="comment">% Computing covariance for condition 1</span>
+cond1_cov = cov(cond1_data) <span class="comment">% Computing covariance for condition 1</span>
+cond2_covar = (1/length(cond2_data)) * (cond2_centered' * cond2_centered) <span class="comment">% Computing covariance for condition 2</span>
+cond2_cov = cov(cond2_data) <span class="comment">% Computing covariance for condition 2</span>
+</pre><pre class="codeoutput">
+cond1_covar =
+
+   26.0444    9.7876    4.8923
+    9.7876   15.6932    3.3961
+    4.8923    3.3961    3.3716
+
+
+cond1_cov =
+
+   26.1315    9.8203    4.9087
+    9.8203   15.7457    3.4075
+    4.9087    3.4075    3.3829
+
+
+cond2_covar =
+
+   12.8625    8.0714    2.9013
+    8.0714   26.8591    6.2990
+    2.9013    6.2990    4.4109
+
+
+cond2_cov =
+
+   12.9038    8.0973    2.9106
+    8.0973   26.9454    6.3192
+    2.9106    6.3192    4.4251
+
+</pre><p>We can see that the covariances computed for both conditions using matrix multiplication or using cov function are similar to each other. The covariance matrices of condition 1 and condition 2 appear different from each other. Specifically for condition 1, there is a higher variance along voxel 1, followed by voxel 2 and the smallest variance in voxel 3. However, for condition 2, the highest variance exists in voxel 2 followed by voxel 1 and the smallest in voxel 3. We can also see that for condition 1, there is a higher covariance between voxels 1 and 2, followed by voxels 1 and 3 and the smallest between voxels 2 and 3. On the other hand, for condition 2, there is a higher covariance between voxels 1 and 2, followed by voxels 2 and 3 and the smallest between voxels 1 and 3. Therefore, clearly, there is a difference between the covariance matrices of condition 1 and 2, but they are not wildly different as the scale of variances and covariances is the same.</p><h2 id="11">c)</h2><p>Computing SVD from covariance matrices gives S and V, where the columns of V hold eigen vectors and the S stores the corresponding eigen values along its diagonal. The magnitude of the scaling factor for each vector is the square-root of the eigen value. In order to translate each scaled vector to the center of the response cloud, mean is added to them using repmat.</p><pre class="codeinput">[U1, S1, V1] = svd(cond1_covar); <span class="comment">% svd of covariance for condition 1</span>
+[U2, S2, V2] = svd(cond2_covar); <span class="comment">% svd of covariance for condition 2</span>
+sing_vecs1 = sqrt(S1) * V1' + repmat(cond1_mean, length(S1), 1); <span class="comment">% computing singular vectors for condition 1</span>
+sing_vecs2 = sqrt(S2) * V2' + repmat(cond2_mean, length(S2), 1); <span class="comment">% computing singular vectors for condition 2</span>
+
+fig3 = figure();
+scatter3(cond1_data(:, 1), cond1_data(:, 2), cond1_data(:, 3), 10, <span class="string">'r'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 1'</span>)
+hold <span class="string">on</span>;
+scatter3(cond2_data(:, 1), cond2_data(:, 2), cond2_data(:, 3), 10, <span class="string">'k'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 2'</span>)
+
+<span class="keyword">for</span> i = 1:3
+    mu1 = cond1_mean;
+    plot3([mu1(1), sing_vecs1(i, 1)], [mu1(2), sing_vecs1(i, 2)], <span class="keyword">...</span>
+        [mu1(3), sing_vecs1(i, 3)], <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'DisplayName'</span>, <span class="string">'v1'</span>) <span class="comment">% Plotting singular vectors for conditon 1</span>
+    mu2 = cond2_mean;
+    plot3([mu2(1), sing_vecs2(i, 1)], [mu2(2), sing_vecs2(i, 2)], <span class="keyword">...</span>
+        [mu2(3), sing_vecs2(i, 3)], <span class="string">'m'</span>, <span class="string">'LineWidth'</span>, 3, <span class="string">'DisplayName'</span>, <span class="string">'v2'</span>) <span class="comment">% Plotting singular vectors for condition 2</span>
+
+<span class="keyword">end</span>
+legend();
+xlabel(<span class="string">'Voxel 1'</span>); ylabel(<span class="string">'Voxel 2'</span>); zlabel(<span class="string">'Voxel 3'</span>);
+title(<span class="string">'Responses in three voxels across 2 trial conditions'</span>)
+</pre><img vspace="5" hspace="5" src="Q4_03.png" alt=""> <p>As opposed to the differences in the covariance matrices, the singular values of the two conditions appear similar to each other. This implies that though there are difference in the responses across the conditions, both of these responses original from a similar distribution spaces across by their different means and covariance matrices but aligned along similar direction in the 3-D space.</p><h2 id="14">d)</h2><pre class="codeinput">numTrials1 = length(cond1_data);
+numTrials2 = length(cond2_data);
+simResponses = odorExperiment(numTrials1, numTrials2); <span class="comment">% Simulating the data</span>
+</pre><pre class="codeinput">cond1_sim = simResponses(1:numTrials1, :); <span class="comment">% Simulated data for condition 1</span>
+cond2_sim = simResponses(numTrials1+1:end, :); <span class="comment">% Simulated data for condition 2</span>
+</pre><p>Making a scatter plot from the divided data.</p><pre class="codeinput">fig4 = figure();
+
+subplot(1, 2, 1) <span class="comment">% Scatterplot for actual data</span>
+scatter3(cond1_data(:, 1), cond1_data(:, 2), cond1_data(:, 3), 10, <span class="string">'r'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 1'</span>)
+hold <span class="string">on</span>;
+scatter3(cond2_data(:, 1), cond2_data(:, 2), cond2_data(:, 3), 10, <span class="string">'k'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 2'</span>)
+xlabel(<span class="string">'Voxel 1'</span>); ylabel(<span class="string">'Voxel 2'</span>); zlabel(<span class="string">'Voxel 3'</span>);
+title(<span class="string">'Actual Data'</span>)
+axis <span class="string">equal</span>
+
+subplot(1, 2, 2) <span class="comment">% Scatterplot for simulated data</span>
+scatter3(cond1_sim(:, 1), cond1_sim(:, 2), cond1_sim(:, 3), 10, <span class="string">'r'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 1'</span>)
+hold <span class="string">on</span>;
+scatter3(cond2_sim(:, 1), cond2_sim(:, 2), cond2_sim(:, 3), 10, <span class="string">'k'</span>, <span class="keyword">...</span>
+    <span class="string">'filled'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Condition 2'</span>)
+xlabel(<span class="string">'Voxel 1'</span>); ylabel(<span class="string">'Voxel 2'</span>); zlabel(<span class="string">'Voxel 3'</span>);
+title(<span class="string">'Simulated Data'</span>)
+axis <span class="string">equal</span>
+</pre><img vspace="5" hspace="5" src="Q4_04.png" alt=""> <p>From the graphs, we can see that the plots for the actual data and the simulated data are similar to each other. Therefore, the simulated data is a good characterization of the real amygdala voxel responses.</p><h2 id="19">Functions</h2><pre class="codeinput"><span class="keyword">function</span> simResponses = odorExperiment(numTrials1, numTrials2)
+    <span class="comment">% The function produces simulated responses by drawing samples for each</span>
+    <span class="comment">% condition from their respective 3-D Normal distributions using nRandn</span>
+    <span class="comment">% functions given the mean and the covariance of the distribution.</span>
+    <span class="keyword">global</span> cond1_mean cond2_mean cond1_covar cond2_covar
+    simResponses1 = nRandn(cond1_mean, cond1_covar, numTrials1);
+    simResponses2 = nRandn(cond2_mean, cond2_covar, numTrials2);
+    simResponses = [simResponses1; simResponses2];
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> samples = nRandn(mean, cov, num)
+    <span class="comment">% The function draws samples from an N-dimensional normal distribution.</span>
+    <span class="comment">% It does so my first drawing samples from an N-dimensional normal</span>
+    <span class="comment">% distribution of 0 mean and identity covariance matrix. It then</span>
+    <span class="comment">% transforms the data using a matrix M to have the covariance "cov".</span>
+    <span class="comment">% Lastly, it translates the data to have the mean "mean".</span>
+
+    N = length(mean);
+    [V, D] = eig(cov);  <span class="comment">% Eigen value decomposition of covariance matrix</span>
+    M = V * sqrt(D); <span class="comment">% Transformation matrix is given as product of V and square-root of eigenvalues</span>
+    samp = randn(num, N); <span class="comment">% Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix</span>
+    samples = repmat(mean, num , 1) + samp * M';
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+load('experimentData.mat')
+fig1 = figure();
+histogram(trialConds, 2, 'FaceColor', 'r');
+xlabel('Trial Condition')
+ylabel('Trial Counts')
+title('Trials across Conditions')
+
+%%
+% Both trial conditions seem to have roughly equal number of trials.
+
+%%
+% Dividing the data based on the trial conditions
+%%
+cond1_index = find(trialConds == 1);
+cond2_index = find(trialConds == 2);
+cond1_data = data(cond1_index, :);
+cond2_data = data(cond2_index, :);
+sprintf('For condition 1, %d trials were completed', length(cond1_data))
+sprintf('For condition 2, %d trials were completed', length(cond2_data))
+%%
+% Making a scatter plot from the divided data.
+%%
+fig2 = figure();
+scatter3(cond1_data(:, 1), cond1_data(:, 2), cond1_data(:, 3), 10, 'r', ...
+    'filled', 'DisplayName', 'Condition 1')
+hold on;
+scatter3(cond2_data(:, 1), cond2_data(:, 2), cond2_data(:, 3), 10, 'k', ...
+    'filled', 'DisplayName', 'Condition 2')
+legend();
+xlabel('Voxel 1'); ylabel('Voxel 2'); zlabel('Voxel 3');
+title('Responses in three voxels across 2 trial conditions')
+%%
+% The response clouds for both the conditions appear separated and hence 
+% appear to exhibit a substantial difference across the two conditions. 
+% Specifically, trials from condition 2 have higher values in each of the 
+% three voxels compared to the trials from condition 1. Both the response
+% clouds appear ellipsoidal in shape and hence they can be modelled as 3-D
+% normal distributions.
+
+%% b)
+global cond1_mean cond2_mean cond1_covar cond2_covar
+cond1_mean = mean(cond1_data, 1); % Mean for condition 1
+cond2_mean = mean(cond2_data, 1); % Mean for condition 2
+cond1_centered = cond1_data - repmat(cond1_mean, length(cond1_data), 1); % Centering data for condition 1
+cond2_centered = cond2_data - repmat(cond2_mean, length(cond2_data), 1); % Centering data for condition 2
+cond1_covar = (1/length(cond1_data)) * (cond1_centered' * cond1_centered) % Computing covariance for condition 1
+cond1_cov = cov(cond1_data) % Computing covariance for condition 1
+cond2_covar = (1/length(cond2_data)) * (cond2_centered' * cond2_centered) % Computing covariance for condition 2
+cond2_cov = cov(cond2_data) % Computing covariance for condition 2
+
+%%
+% We can see that the covariances computed for both conditions using matrix
+% multiplication or using cov function are similar to each other. The
+% covariance matrices of condition 1 and condition 2 appear different from
+% each other. Specifically for condition 1, there is a higher variance
+% along voxel 1, followed by voxel 2 and the smallest variance in voxel 3.
+% However, for condition 2, the highest variance exists in voxel 2 followed
+% by voxel 1 and the smallest in voxel 3. We can also see that for
+% condition 1, there is a higher covariance between voxels 1 and 2, followed
+% by voxels 1 and 3 and the smallest between voxels 2 and 3. On the other
+% hand, for condition 2, there is a higher covariance between voxels 1 and
+% 2, followed by voxels 2 and 3 and the smallest between voxels 1 and 3.
+% Therefore, clearly, there is a difference between the covariance matrices
+% of condition 1 and 2, but they are not wildly different as the scale of
+% variances and covariances is the same.
+
+%% c)
+% Computing SVD from covariance matrices gives S and V, where the columns
+% of V hold eigen vectors and the S stores the corresponding eigen values
+% along its diagonal. The magnitude of the scaling factor for each vector
+% is the square-root of the eigen value. In order to translate each scaled
+% vector to the center of the response cloud, mean is added to them using
+% repmat.
+%%
+[U1, S1, V1] = svd(cond1_covar); % svd of covariance for condition 1
+[U2, S2, V2] = svd(cond2_covar); % svd of covariance for condition 2
+sing_vecs1 = sqrt(S1) * V1' + repmat(cond1_mean, length(S1), 1); % computing singular vectors for condition 1
+sing_vecs2 = sqrt(S2) * V2' + repmat(cond2_mean, length(S2), 1); % computing singular vectors for condition 2
+
+fig3 = figure();
+scatter3(cond1_data(:, 1), cond1_data(:, 2), cond1_data(:, 3), 10, 'r', ...
+    'filled', 'DisplayName', 'Condition 1')
+hold on;
+scatter3(cond2_data(:, 1), cond2_data(:, 2), cond2_data(:, 3), 10, 'k', ...
+    'filled', 'DisplayName', 'Condition 2')
+
+for i = 1:3
+    mu1 = cond1_mean;
+    plot3([mu1(1), sing_vecs1(i, 1)], [mu1(2), sing_vecs1(i, 2)], ...
+        [mu1(3), sing_vecs1(i, 3)], 'b', 'LineWidth', 3, 'DisplayName', 'v1') % Plotting singular vectors for conditon 1
+    mu2 = cond2_mean;
+    plot3([mu2(1), sing_vecs2(i, 1)], [mu2(2), sing_vecs2(i, 2)], ...
+        [mu2(3), sing_vecs2(i, 3)], 'm', 'LineWidth', 3, 'DisplayName', 'v2') % Plotting singular vectors for condition 2
+
+end
+legend();
+xlabel('Voxel 1'); ylabel('Voxel 2'); zlabel('Voxel 3');
+title('Responses in three voxels across 2 trial conditions')
+
+%%
+% As opposed to the differences in the covariance matrices, the singular
+% values of the two conditions appear similar to each other. This implies
+% that though there are difference in the responses across the conditions,
+% both of these responses original from a similar distribution spaces
+% across by their different means and covariance matrices but aligned along
+% similar direction in the 3-D space.
+
+%% d)
+numTrials1 = length(cond1_data);
+numTrials2 = length(cond2_data);
+simResponses = odorExperiment(numTrials1, numTrials2); % Simulating the data
+%%
+cond1_sim = simResponses(1:numTrials1, :); % Simulated data for condition 1
+cond2_sim = simResponses(numTrials1+1:end, :); % Simulated data for condition 2
+%%
+% Making a scatter plot from the divided data.
+%%
+fig4 = figure();
+
+subplot(1, 2, 1) % Scatterplot for actual data
+scatter3(cond1_data(:, 1), cond1_data(:, 2), cond1_data(:, 3), 10, 'r', ...
+    'filled', 'DisplayName', 'Condition 1')
+hold on;
+scatter3(cond2_data(:, 1), cond2_data(:, 2), cond2_data(:, 3), 10, 'k', ...
+    'filled', 'DisplayName', 'Condition 2')
+xlabel('Voxel 1'); ylabel('Voxel 2'); zlabel('Voxel 3');
+title('Actual Data')
+axis equal
+
+subplot(1, 2, 2) % Scatterplot for simulated data
+scatter3(cond1_sim(:, 1), cond1_sim(:, 2), cond1_sim(:, 3), 10, 'r', ...
+    'filled', 'DisplayName', 'Condition 1')
+hold on;
+scatter3(cond2_sim(:, 1), cond2_sim(:, 2), cond2_sim(:, 3), 10, 'k', ...
+    'filled', 'DisplayName', 'Condition 2')
+xlabel('Voxel 1'); ylabel('Voxel 2'); zlabel('Voxel 3');
+title('Simulated Data')
+axis equal
+
+%%
+% From the graphs, we can see that the plots for the actual data and the
+% simulated data are similar to each other. Therefore, the simulated data
+% is a good characterization of the real amygdala voxel responses.
+
+%% Functions
+function simResponses = odorExperiment(numTrials1, numTrials2)
+    % The function produces simulated responses by drawing samples for each
+    % condition from their respective 3-D Normal distributions using nRandn
+    % functions given the mean and the covariance of the distribution.
+    global cond1_mean cond2_mean cond1_covar cond2_covar
+    simResponses1 = nRandn(cond1_mean, cond1_covar, numTrials1);
+    simResponses2 = nRandn(cond2_mean, cond2_covar, numTrials2);
+    simResponses = [simResponses1; simResponses2];
+end
+
+function samples = nRandn(mean, cov, num)
+    % The function draws samples from an N-dimensional normal distribution.
+    % It does so my first drawing samples from an N-dimensional normal
+    % distribution of 0 mean and identity covariance matrix. It then
+    % transforms the data using a matrix M to have the covariance "cov".
+    % Lastly, it translates the data to have the mean "mean".
+    
+    N = length(mean);
+    [V, D] = eig(cov);  % Eigen value decomposition of covariance matrix
+    M = V * sqrt(D); % Transformation matrix is given as product of V and square-root of eigenvalues
+    samp = randn(num, N); % Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix
+    samples = repmat(mean, num , 1) + samp * M';
+end
+##### SOURCE END #####
+--></body></html>

@@ -51,7 +51,7 @@ clear; close all; clc;
 %% b)
 % Let B1 be the event that the first child has brown eyes and B2 be the 
 % event that the second child has brown eyes. Therefore, the probability of
-% the mother having b allele i.e. jhaving Bb genotype is given by:
+% the mother having b allele i.e. having Bb genotype is given by:
 %%
 % $P(Bbm|B1c \cap B2c)$
 %%
@@ -120,7 +120,7 @@ clear; close all; clc;
 % This is basically the Bayes' rule.
 %%
 % The probability of one child having brown eyes is independent of the
-% other given that the genotype of the mother. Hence we have:
+% other given the genotype of the mother. Hence we have:
 %%
 % $P(B1c \cap B2c|Bbm) = P(B1c|Bbm) \times P(B2c|Bbm) = \frac{1}{2}\times \frac{1}{2} = \frac{1}{4}$
 %%
@@ -142,12 +142,12 @@ clear; close all; clc;
 %%
 % $P(Bbm|B1c \cap B2c \cap ... \cap Bnc) = \frac{P(B1c \cap B2c \cap ... \cap Bnc|Bbm)P(Bbm)}{P(B1c \cap B2c \cap ... \cap Bnc|BBm)P(BBm) + P(B1c \cap B2c \cap ... \cap Bnc|Bbm)P(Bbm)}$
 %%
-% Because: $$P(Bbm) = P(BBm) = 1/2, we can reduce the equation to:
+% Because: $$P(Bbm) = P(BBm) = 1/2 $$, we can reduce the equation to:
 %%
 % $P(Bbm|B1c \cap B2c \cap ... \cap Bnc) = \frac{P(B1c \cap B2c \cap ... \cap Bnc|Bbm)}{P(B1c \cap B2c \cap ... \cap Bnc|BBm) + P(B1c \cap B2c \cap ... \cap Bnc|Bbm)}$
 %%
 % Also given the genotype of the mother, the genotypes of each child is
-% independent of each other, hence we have:
+% independent of others, hence we have:
 %%
 % $P(Bbm|B1c \cap B2c \cap ... \cap Bnc) = \frac{(P(B1c|Bbm))^N}{(P(B1c|BBm))^N + (P(B1c|Bbm))^N}$
 %%

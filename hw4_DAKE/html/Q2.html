@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-10"><meta name="DC.source" content="Q2.m"><style type="text/css">
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-11"><meta name="DC.source" content="Q2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,23 +67,25 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#4">b)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><h2 id="2">a)</h2><pre class="codeinput">p = rand(10, 1); <span class="comment">% Random vector of length n</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#7">b)</a></li><li><a href="#13">Note: For some reason publishing the file does not produce fig4 in the html.</a></li><li><a href="#14">However, the figure is produced on running and is uploaded to the drive as Q2_04.png</a></li><li><a href="#15">Functions</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><p>From a randomly defined pdf (p) of length n, first a cdf is created inside the function randp. It then draws random values from uniform distribution and then computes the samples by checking for the cdf values with probabilities greater than the randomly selected value. This method of sampling is called inverse transform sampling.</p><pre class="codeinput">p = rand(10, 1); <span class="comment">% Random vector of length n</span>
 p = p/sum(p); <span class="comment">% Normalize the vector to create a pdf</span>
 samp_size = 1000; <span class="comment">% Define the sample size that is desired</span>
 samples = randp(p, samp_size); <span class="comment">% Use the randp function to draw samples from the defined pdf</span>
-figure();
+fig1 = figure();
 histogram(samples, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
 hold <span class="string">on</span>;
 plot(p * samp_size, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'DisplayName'</span>, <span class="string">'pdf'</span>)
 xlabel(<span class="string">'Integers'</span>)
 ylabel(<span class="string">'Frequency of Occurrence'</span>)
 legend(<span class="string">'Location'</span>, <span class="string">'northwest'</span>);
-</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <pre class="codeinput">samp_sizes = [10^2, 10^3, 10^4, 10^5];
-figure()
+title(<span class="string">'Randomly drawn sample and pdf'</span>)
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <p>Here the sample size is varied and samples are drawn from the same pdf but with different sample sizes using the defined randp function</p><pre class="codeinput">samp_sizes = [10^2, 10^3, 10^4, 10^5]; <span class="comment">% Sample sizes</span>
+fig2 = figure();
 <span class="keyword">for</span> i = 1:4
     samp_size = samp_sizes(i);
-    samples = randp(p, samp_size);
+    samples = randp(p, samp_size); <span class="comment">% Draw samples from the same pdf p and different sample sizes</span>
+    <span class="comment">% Plot the new sample and the pdf</span>
     subplot(2, 2, i);
     histogram(samples, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
     hold <span class="string">on</span>;
@@ -92,40 +94,40 @@ figure()
     xlabel(<span class="string">'Integers'</span>)
     ylabel(<span class="string">'Frequency of Occurrence'</span>)
 <span class="keyword">end</span>
-</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <img vspace="5" hspace="5" src="Q2_03.png" alt=""> <h2 id="4">b)</h2><pre class="codeinput">p_size = randi([2, 20], 1);
-q_size = randi([2, 30], 1);
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <p>We can see that as the sample size increases, the sample drawn fits the pdf better i.e. the sample distribution converges to pdf as the sample size is increased.</p><h2 id="7">b)</h2><p>psum function computes a combined pdf r from p and q which maps the probabilities on the range defined by the sum of p and q. It is done by convolving p and q. Since convolution in signal domain is multiplication in the Fourier domain, r can be obtained as the real part of the inverse Fourier Transform of the product of the Fourier Transforms of p and q.</p><pre class="codeinput">p_size = randi([2, 20], 1); <span class="comment">% Randomly define the size of p</span>
+q_size = randi([2, 30], 1); <span class="comment">% Randomly define the size of q</span>
 p = rand(p_size, 1);
-p = p/sum(p);
+p = p/sum(p); <span class="comment">% Create a pdf p</span>
 q = rand(q_size, 1);
-q = q/sum(q);
+q = q/sum(q);  <span class="comment">% Create a pdf q</span>
 r = psum(p, q);
-</pre><pre class="codeinput">p = [1:6]/sum(1:6);
+</pre><p>Initialize p: storing the probability of getting each number on its face in a die roll. Then we compute the combined pdf of rolling N die by convolving p with itself N times. We can also draw samples by calling randp with pdf = p and adding it to the previously drawn sample from randp with pdf = p and repeat this N - 1 times.</p><pre class="codeinput">p = [1:6]/sum(1:6); <span class="comment">% Rolling of a die probability</span>
 samp_size = 1000;
-samp_r = zeros(samp_size, 1);
-n_rolls = 4;
+samp_r = zeros(samp_size, 1); <span class="comment">% Initilaizing samples</span>
+n_rolls = 4; <span class="comment">% Defining the number of rolls to be drawn</span>
 <span class="keyword">for</span> i = 1:n_rolls
     <span class="keyword">if</span> i == 1
-        r = p;
+        r = p; <span class="comment">% Initilalize r to be p for just 1 run of the die</span>
     <span class="keyword">else</span>
-        r = psum(r, p);
+        r = psum(r, p); <span class="comment">% Compute r by convolving r with p</span>
     <span class="keyword">end</span>
-    samp_r = samp_r + randp(p, samp_size);
+    samp_r = samp_r + randp(p, samp_size); <span class="comment">% Draw samples with pdf p in each loop and add it to the samples.</span>
 <span class="keyword">end</span>
-<span class="comment">%samp_r = randp(p, 10000) + randp(p, 10000) + randp(p, 10000) + randp(p, 10000);</span>
-figure();
+
+fig3 = figure();
 histogram(samp_r, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
 hold <span class="string">on</span>;
 plot(r * samp_size, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="string">'DisplayName'</span>, <span class="string">'pdf'</span>);
 xlabel(<span class="string">'Sum of rolls'</span>)
 ylabel(<span class="string">'Frequency of Occurrence'</span>)
 legend(<span class="string">'Location'</span>, <span class="string">'northwest'</span>);
-</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <pre class="codeinput">samp_sizes = [10^2, 10^3, 10^4, 10^5];
-figure()
+</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <p>Computing samples from randp for different sample sizes</p><pre class="codeinput">samp_sizes = [10^2, 10^3, 10^4, 10^5]; <span class="comment">% Range of sample sizes</span>
+fig4 = figure();
 <span class="keyword">for</span> i = 1:4
     samp_size = samp_sizes(i);
-    samp_r = zeros(samp_size, 1);
+    samp_r = zeros(samp_size, 1); <span class="comment">% Initialize sample array</span>
     <span class="keyword">for</span> j = 1:n_rolls
-        samp_r = samp_r + randp(p, samp_size);
+        samp_r = samp_r + randp(p, samp_size); <span class="comment">% Add samples drawn from randp to previously drawn sample</span>
     <span class="keyword">end</span>
     subplot(2, 2, i);
     histogram(samp_r, <span class="string">'DisplayName'</span>, <span class="string">'sample dist'</span>);
@@ -135,11 +137,11 @@ figure()
     xlabel(<span class="string">'Integers'</span>)
     ylabel(<span class="string">'Frequency of Occurrence'</span>)
 <span class="keyword">end</span>
-</pre><img vspace="5" hspace="5" src="Q2_05.png" alt=""> <pre class="codeinput"><span class="keyword">function</span> samples = randp(p, num)
+</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <p>We can again see that as the sample size increases, the samples drawn match the pdf more closely.</p><h2 id="13">Note: For some reason publishing the file does not produce fig4 in the html.</h2><h2 id="14">However, the figure is produced on running and is uploaded to the drive as Q2_04.png</h2><h2 id="15">Functions</h2><pre class="codeinput"><span class="keyword">function</span> samples = randp(p, num)
     <span class="comment">% The function randp computes the samples from the pdf defined by p and</span>
     <span class="comment">% the sample size num. This is done by first computing the cdf from the</span>
     <span class="comment">% pdf. The samples are then drawn by choosing a random value from</span>
-    <span class="comment">% uniform distribution and checking where the randomly drawn value lie</span>
+    <span class="comment">% uniform distribution and checking where the randomly drawn value lies</span>
     <span class="comment">% on the cdf that is computed.</span>
     cdf_p = zeros(size(p)); <span class="comment">% Initialize cdf</span>
     cdf_p(1) = p(1); <span class="comment">% The first value of cdf is the first value of pdf</span>
@@ -158,37 +160,57 @@ figure()
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> r = psum(p, q)
-    p_size = length(p);
-    q_size = length(q);
-    r_size = p_size + q_size;
-    p(r_size) = 0;
-    p = circshift(p, 1);
-    q(r_size) = 0;
-    r = real(ifft(fft(p) .* fft(q)));
+    <span class="comment">% psum computes the probability distribution function (pdf) r i.e.</span>
+    <span class="comment">% defined for the sum of the samples drawn from p (size m) and the samples drawn</span>
+    <span class="comment">% from q (size n). Since r is defined for the sum of the samples drawn,</span>
+    <span class="comment">% it is of length m + n. Also the smallest value for r is going to be 2</span>
+    <span class="comment">% and hence the probability of 1 in r is 0. r is computed as a</span>
+    <span class="comment">% convolution of p and q. Convolution in the signal domain is</span>
+    <span class="comment">% multiplication in the Fourier domain. Therefore, r is defined as the</span>
+    <span class="comment">% real values obtained from the inverse Fourier Transform of the product</span>
+    <span class="comment">% of the Fourier Transforms of p and q</span>
+    p_size = length(p); <span class="comment">% Length of p</span>
+    q_size = length(q); <span class="comment">% Length of q</span>
+    r_size = p_size + q_size; <span class="comment">% Size of r is defined as the sum of p and q</span>
+    p(r_size) = 0; <span class="comment">% Pad p with the size of r's with 0s</span>
+    p = circshift(p, 1); <span class="comment">% Circshift p by 1 so that the the computed convolve will have 0 probability for 1 and finite probability for 2 and later</span>
+    q(r_size) = 0; <span class="comment">% Pad q with the size of r's with 0s</span>
+    r = real(ifft(fft(p) .* fft(q))); <span class="comment">% Convolution of p and q</span>
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
 %% a)
+% From a randomly defined pdf (p) of length n, first a cdf is created
+% inside the function randp. It then draws random values from uniform
+% distribution and then computes the samples by checking for the cdf values
+% with probabilities greater than the randomly selected value. This method
+% of sampling is called inverse transform sampling.
+%%
 p = rand(10, 1); % Random vector of length n
 p = p/sum(p); % Normalize the vector to create a pdf
 samp_size = 1000; % Define the sample size that is desired
 samples = randp(p, samp_size); % Use the randp function to draw samples from the defined pdf
-figure();
+fig1 = figure();
 histogram(samples, 'DisplayName', 'sample dist');
 hold on;
 plot(p * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf')
 xlabel('Integers')
 ylabel('Frequency of Occurrence')
 legend('Location', 'northwest');
+title('Randomly drawn sample and pdf')
 
 %%
-samp_sizes = [10^2, 10^3, 10^4, 10^5];
-figure()
+% Here the sample size is varied and samples are drawn from the same pdf
+% but with different sample sizes using the defined randp function
+%%
+samp_sizes = [10^2, 10^3, 10^4, 10^5]; % Sample sizes
+fig2 = figure();
 for i = 1:4
-    samp_size = samp_sizes(i);
-    samples = randp(p, samp_size);
+    samp_size = samp_sizes(i); 
+    samples = randp(p, samp_size); % Draw samples from the same pdf p and different sample sizes
+    % Plot the new sample and the pdf
     subplot(2, 2, i);
     histogram(samples, 'DisplayName', 'sample dist');
     hold on;
@@ -197,31 +219,47 @@ for i = 1:4
     xlabel('Integers')
     ylabel('Frequency of Occurrence')
 end
+%%
+% We can see that as the sample size increases, the sample drawn fits the
+% pdf better i.e. the sample distribution converges to pdf as the sample size
+% is increased.
 
 %% b)
-p_size = randi([2, 20], 1);
-q_size = randi([2, 30], 1);
-p = rand(p_size, 1);
-p = p/sum(p);
+% psum function computes a combined pdf r from p and q which maps the
+% probabilities on the range defined by the sum of p and q. It is done by
+% convolving p and q. Since convolution in signal domain is multiplication
+% in the Fourier domain, r can be obtained as the real part of the inverse
+% Fourier Transform of the product of the Fourier Transforms of p and q.
+%%
+p_size = randi([2, 20], 1); % Randomly define the size of p
+q_size = randi([2, 30], 1); % Randomly define the size of q
+p = rand(p_size, 1); 
+p = p/sum(p); % Create a pdf p
 q = rand(q_size, 1);
-q = q/sum(q);
+q = q/sum(q);  % Create a pdf q
 r = psum(p, q);
 
 %%
-p = [1:6]/sum(1:6);
+% Initialize p: storing the probability of getting each number on its face
+% in a die roll. Then we compute the combined pdf of rolling N die by
+% convolving p with itself N times. We can also draw samples by calling
+% randp with pdf = p and adding it to the previously drawn sample from randp
+% with pdf = p and repeat this N - 1 times.
+%%
+p = [1:6]/sum(1:6); % Rolling of a die probability
 samp_size = 1000;
-samp_r = zeros(samp_size, 1);
-n_rolls = 4;
+samp_r = zeros(samp_size, 1); % Initilaizing samples
+n_rolls = 4; % Defining the number of rolls to be drawn
 for i = 1:n_rolls
     if i == 1
-        r = p;
+        r = p; % Initilalize r to be p for just 1 run of the die
     else
-        r = psum(r, p);
+        r = psum(r, p); % Compute r by convolving r with p
     end
-    samp_r = samp_r + randp(p, samp_size);
+    samp_r = samp_r + randp(p, samp_size); % Draw samples with pdf p in each loop and add it to the samples.
 end
-%samp_r = randp(p, 10000) + randp(p, 10000) + randp(p, 10000) + randp(p, 10000);
-figure();
+
+fig3 = figure();
 histogram(samp_r, 'DisplayName', 'sample dist');
 hold on;
 plot(r * samp_size, 'r-', 'LineWidth', 2, 'DisplayName', 'pdf');
@@ -230,13 +268,14 @@ ylabel('Frequency of Occurrence')
 legend('Location', 'northwest');
 
 %%
-samp_sizes = [10^2, 10^3, 10^4, 10^5];
-figure()
+% Computing samples from randp for different sample sizes
+samp_sizes = [10^2, 10^3, 10^4, 10^5]; % Range of sample sizes
+fig4 = figure();
 for i = 1:4
     samp_size = samp_sizes(i);
-    samp_r = zeros(samp_size, 1);
+    samp_r = zeros(samp_size, 1); % Initialize sample array
     for j = 1:n_rolls
-        samp_r = samp_r + randp(p, samp_size);
+        samp_r = samp_r + randp(p, samp_size); % Add samples drawn from randp to previously drawn sample
     end
     subplot(2, 2, i);
     histogram(samp_r, 'DisplayName', 'sample dist');
@@ -248,11 +287,18 @@ for i = 1:4
 end
 
 %%
+% We can again see that as the sample size increases, the samples drawn
+% match the pdf more closely.
+
+%% Note: For some reason publishing the file does not produce fig4 in the html.
+%% However, the figure is produced on running and is uploaded to the drive as Q2_04.png
+
+%% Functions
 function samples = randp(p, num)
     % The function randp computes the samples from the pdf defined by p and
     % the sample size num. This is done by first computing the cdf from the
     % pdf. The samples are then drawn by choosing a random value from
-    % uniform distribution and checking where the randomly drawn value lie
+    % uniform distribution and checking where the randomly drawn value lies
     % on the cdf that is computed.
     cdf_p = zeros(size(p)); % Initialize cdf
     cdf_p(1) = p(1); % The first value of cdf is the first value of pdf
@@ -271,13 +317,22 @@ function samples = randp(p, num)
 end
 
 function r = psum(p, q)
-    p_size = length(p);
-    q_size = length(q);
-    r_size = p_size + q_size;
-    p(r_size) = 0;
-    p = circshift(p, 1);
-    q(r_size) = 0;
-    r = real(ifft(fft(p) .* fft(q)));
+    % psum computes the probability distribution function (pdf) r i.e.
+    % defined for the sum of the samples drawn from p (size m) and the samples drawn
+    % from q (size n). Since r is defined for the sum of the samples drawn,
+    % it is of length m + n. Also the smallest value for r is going to be 2
+    % and hence the probability of 1 in r is 0. r is computed as a
+    % convolution of p and q. Convolution in the signal domain is
+    % multiplication in the Fourier domain. Therefore, r is defined as the
+    % real values obtained from the inverse Fourier Transform of the product
+    % of the Fourier Transforms of p and q
+    p_size = length(p); % Length of p
+    q_size = length(q); % Length of q
+    r_size = p_size + q_size; % Size of r is defined as the sum of p and q
+    p(r_size) = 0; % Pad p with the size of r's with 0s
+    p = circshift(p, 1); % Circshift p by 1 so that the the computed convolve will have 0 probability for 1 and finite probability for 2 and later
+    q(r_size) = 0; % Pad q with the size of r's with 0s
+    r = real(ifft(fft(p) .* fft(q))); % Convolution of p and q
 end
 ##### SOURCE END #####
 --></body></html>
