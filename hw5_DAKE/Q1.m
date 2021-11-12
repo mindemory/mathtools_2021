@@ -154,11 +154,11 @@ sub_matrix_sizes = [8, 16, 32, 64, 128, 256];
 var_mean = zeros(length(sub_matrix_sizes), 1);
 var_median = zeros(length(sub_matrix_sizes), 1);
 var_midpoint = zeros(length(sub_matrix_sizes), 1);
-theor_var_mean = 1./sub_matrix_sizes;
+theor_var_mean = 1/samp_size * ones(length(sub_matrix_sizes), 1);
 for i = 1:length(sub_matrix_sizes)
     sub_matrix_size = sub_matrix_sizes(i);
     sub_matrix_indices = randsample(1: samp_size, sub_matrix_size);
-    sub_matrix = samples(:, sub_matrix_indices);
+    sub_matrix = samples(sub_matrix_indices, :);
     
     % Computing the unbiased estimators as above:
     sub_matrix_mean = mean(sub_matrix, 2);
@@ -172,12 +172,15 @@ for i = 1:length(sub_matrix_sizes)
 end
 
 fig6 = figure();
-plot(log(sub_matrix_sizes), log(var_mean), 'r', 'DisplayName', 'Variance of mean');
+plot(log(sub_matrix_sizes), log(var_mean), 'ro-', 'DisplayName', 'Variance of mean');
 hold on;
-plot(log(sub_matrix_sizes), log(var_median), 'k', 'DisplayName', 'Variance of median');
-plot(log(sub_matrix_sizes), log(var_midpoint), 'b', 'DisplayName', 'Variance of midpoint');
-plot(log(sub_matrix_sizes), log(theor_var_mean), 'g', 'DisplayName', 'Theoretical variance of mean');
+plot(log(sub_matrix_sizes), log(var_median), 'ko-', 'DisplayName', 'Variance of median');
+plot(log(sub_matrix_sizes), log(var_midpoint), 'bo-', 'DisplayName', 'Variance of midpoint');
+plot(log(sub_matrix_sizes), log(theor_var_mean), 'go-', 'DisplayName', 'Theoretical variance of mean');
 xlabel('log(sample size)')
 ylabel('log(variance)')
 title('log-log plot of variance and sample size')
-legend('Location', 'southwest');
+legend('Location', 'east');
+
+%%
+diff_median_mean_estimators = var_median - var_mean;

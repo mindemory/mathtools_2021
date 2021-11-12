@@ -82,23 +82,23 @@ title(<span class="string">'Histogram of sample averages'</span>)
 </pre><pre class="codeoutput">
 var_estimate =
 
-    0.0998
+    0.0964
 
-</pre><p>As can be seen, indeed the empirical variance of the 10000 estimates is close to the theoretically predicted variance of the average of 10 values.</p><h2 id="35">b)</h2><pre class="codeinput">samples_median = median(samples, 2); <span class="comment">% Computing median of each sample</span>
+</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <p>As can be seen, indeed the empirical variance of the 10000 estimates is close to the theoretically predicted variance of the average of 10 values.</p><h2 id="35">b)</h2><pre class="codeinput">samples_median = median(samples, 2); <span class="comment">% Computing median of each sample</span>
 fig2 = figure();
 histogram(samples_median, 50) <span class="comment">% Plotting a histogram of the resulting estimates</span>
 xlim([-2.3, 2.3])
 xlabel(<span class="string">'Sample median'</span>)
 ylabel(<span class="string">'Frequency'</span>)
 title(<span class="string">'Histogram of sample median'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <p>The histogram of sample medians also exhibits a normal distribution</p><pre class="codeinput">fig3 = figure();
+</pre><img vspace="5" hspace="5" src="Q1_03.png" alt=""> <img vspace="5" hspace="5" src="Q1_04.png" alt=""> <p>The histogram of sample medians also exhibits a normal distribution</p><pre class="codeinput">fig3 = figure();
 subplot(1, 2, 1)
 normplot(samples_mean)
 title(<span class="string">'Q-Q plot  of sample mean'</span>)
 subplot(1, 2, 2)
 normplot(samples_median)
 title(<span class="string">'Q-Q plot of sample median'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_03.png" alt=""> <p>From the Q-Q plots, we see that for both sample mean and sample median, the Q-Q plots has points lie very close to the straight line with almost no deviation. Hence, we can say that both the distribution of sample mean and the distribution of sample median follow Normal distributions.</p><h2 id="39">c)</h2><pre class="codeinput">samples_minimum = min(samples, [], 2); <span class="comment">% Computing minimum of each sample</span>
+</pre><img vspace="5" hspace="5" src="Q1_05.png" alt=""> <p>From the Q-Q plots, we see that for both sample mean and sample median, the Q-Q plots has points lie very close to the straight line with almost no deviation. Hence, we can say that both the distribution of sample mean and the distribution of sample median follow Normal distributions.</p><h2 id="39">c)</h2><pre class="codeinput">samples_minimum = min(samples, [], 2); <span class="comment">% Computing minimum of each sample</span>
 samples_maximum = max(samples, [], 2); <span class="comment">% Computing maximum of each sample</span>
 samples_midpoint = (samples_minimum + samples_maximum)/2; <span class="comment">% Computing midpoint of each sample</span>
 fig4 = figure();
@@ -111,7 +111,7 @@ title(<span class="string">'Histogram of sample midpoints'</span>)
 fig5 = figure();
 normplot(samples_midpoint)
 title(<span class="string">'Q-Q plot  of sample midpoint'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_04.png" alt=""> <img vspace="5" hspace="5" src="Q1_05.png" alt=""> <p>From the histogram, we can see that the distribution of sample midpoints also appears to be normal. Additionally, from the Q-Q plot we can see that the points lie very close to the straight line with almost no deviation. And hence we confirm that the distribution of midpoints of samples drawn from a normal distribution is also normal.</p><h2 id="41">d)</h2><pre class="codeinput">num_samples = 10000;
+</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <img vspace="5" hspace="5" src="Q1_07.png" alt=""> <p>From the histogram, we can see that the distribution of sample midpoints also appears to be normal. Additionally, from the Q-Q plot we can see that the points lie very close to the straight line with almost no deviation. And hence we confirm that the distribution of midpoints of samples drawn from a normal distribution is also normal.</p><h2 id="41">d)</h2><pre class="codeinput">num_samples = 10000;
 samp_size = 256;
 samples = randn(num_samples, samp_size); <span class="comment">% Generating 10000 samples, each of size 10</span>
 
@@ -119,11 +119,11 @@ sub_matrix_sizes = [8, 16, 32, 64, 128, 256];
 var_mean = zeros(length(sub_matrix_sizes), 1);
 var_median = zeros(length(sub_matrix_sizes), 1);
 var_midpoint = zeros(length(sub_matrix_sizes), 1);
-theor_var_mean = 1./sub_matrix_sizes;
+theor_var_mean = 1/samp_size * ones(length(sub_matrix_sizes), 1);
 <span class="keyword">for</span> i = 1:length(sub_matrix_sizes)
     sub_matrix_size = sub_matrix_sizes(i);
     sub_matrix_indices = randsample(1: samp_size, sub_matrix_size);
-    sub_matrix = samples(:, sub_matrix_indices);
+    sub_matrix = samples(sub_matrix_indices, :);
 
     <span class="comment">% Computing the unbiased estimators as above:</span>
     sub_matrix_mean = mean(sub_matrix, 2);
@@ -137,16 +137,17 @@ theor_var_mean = 1./sub_matrix_sizes;
 <span class="keyword">end</span>
 
 fig6 = figure();
-plot(log(sub_matrix_sizes), log(var_mean), <span class="string">'r'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of mean'</span>);
+plot(log(sub_matrix_sizes), log(var_mean), <span class="string">'ro-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of mean'</span>);
 hold <span class="string">on</span>;
-plot(log(sub_matrix_sizes), log(var_median), <span class="string">'k'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of median'</span>);
-plot(log(sub_matrix_sizes), log(var_midpoint), <span class="string">'b'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of midpoint'</span>);
-plot(log(sub_matrix_sizes), log(theor_var_mean), <span class="string">'g'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Theoretical variance of mean'</span>);
+plot(log(sub_matrix_sizes), log(var_median), <span class="string">'ko-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of median'</span>);
+plot(log(sub_matrix_sizes), log(var_midpoint), <span class="string">'bo-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of midpoint'</span>);
+plot(log(sub_matrix_sizes), log(theor_var_mean), <span class="string">'go-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Theoretical variance of mean'</span>);
 xlabel(<span class="string">'log(sample size)'</span>)
 ylabel(<span class="string">'log(variance)'</span>)
 title(<span class="string">'log-log plot of variance and sample size'</span>)
-legend(<span class="string">'Location'</span>, <span class="string">'southwest'</span>);
-</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+legend(<span class="string">'Location'</span>, <span class="string">'east'</span>);
+</pre><img vspace="5" hspace="5" src="Q1_08.png" alt=""> <pre class="codeinput">diff_median_mean_estimators = var_median - var_mean;
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
@@ -304,11 +305,11 @@ sub_matrix_sizes = [8, 16, 32, 64, 128, 256];
 var_mean = zeros(length(sub_matrix_sizes), 1);
 var_median = zeros(length(sub_matrix_sizes), 1);
 var_midpoint = zeros(length(sub_matrix_sizes), 1);
-theor_var_mean = 1./sub_matrix_sizes;
+theor_var_mean = 1/samp_size * ones(length(sub_matrix_sizes), 1);
 for i = 1:length(sub_matrix_sizes)
     sub_matrix_size = sub_matrix_sizes(i);
     sub_matrix_indices = randsample(1: samp_size, sub_matrix_size);
-    sub_matrix = samples(:, sub_matrix_indices);
+    sub_matrix = samples(sub_matrix_indices, :);
     
     % Computing the unbiased estimators as above:
     sub_matrix_mean = mean(sub_matrix, 2);
@@ -322,14 +323,17 @@ for i = 1:length(sub_matrix_sizes)
 end
 
 fig6 = figure();
-plot(log(sub_matrix_sizes), log(var_mean), 'r', 'DisplayName', 'Variance of mean');
+plot(log(sub_matrix_sizes), log(var_mean), 'ro-', 'DisplayName', 'Variance of mean');
 hold on;
-plot(log(sub_matrix_sizes), log(var_median), 'k', 'DisplayName', 'Variance of median');
-plot(log(sub_matrix_sizes), log(var_midpoint), 'b', 'DisplayName', 'Variance of midpoint');
-plot(log(sub_matrix_sizes), log(theor_var_mean), 'g', 'DisplayName', 'Theoretical variance of mean');
+plot(log(sub_matrix_sizes), log(var_median), 'ko-', 'DisplayName', 'Variance of median');
+plot(log(sub_matrix_sizes), log(var_midpoint), 'bo-', 'DisplayName', 'Variance of midpoint');
+plot(log(sub_matrix_sizes), log(theor_var_mean), 'go-', 'DisplayName', 'Theoretical variance of mean');
 xlabel('log(sample size)')
 ylabel('log(variance)')
 title('log-log plot of variance and sample size')
-legend('Location', 'southwest');
+legend('Location', 'east');
+
+%%
+diff_median_mean_estimators = var_median - var_mean;
 ##### SOURCE END #####
 --></body></html>
