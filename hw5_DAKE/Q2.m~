@@ -1,0 +1,6 @@
+clear; close all; clc;
+
+%%
+
+xl = 0:0.01:1;
+xnl = 1 - xl;
