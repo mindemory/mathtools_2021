@@ -170,7 +170,7 @@ for i = 1:length(sub_matrix_sizes)
     var_median(i) = var(sub_matrix_median);
     var_midpoint(i) = var(sub_matrix_midpoint);
     
-    theor_var_mean(i) = 1/sub_matrix_size;
+    theor_var_mean(i) = 1/sub_matrix_size/samp_size;
 
 end
 
@@ -186,10 +186,4 @@ title('log-log plot of variance and sample size')
 legend('Location', 'east');
 
 %%
-% From the graph, we can see that although the variance of all the three
-% estimators appears to converge with sample size, the rate of convergence
-% is not the same for all the three estimators. Specifically, only the
-% variance of average estimator appears to converge with rate 1/N.
-
-
 diff_median_mean_estimators = var_median - var_mean;

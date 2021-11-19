@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q3</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-16"><meta name="DC.source" content="Q3.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q3</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-19"><meta name="DC.source" content="Q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,7 +52,6 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
-span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,25 +66,102 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#9">b)</a></li><li><a href="#10">c)</a></li><li><a href="#11">d)</a></li><li><a href="#12">Function</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
 </pre><h2 id="2">a)</h2><pre class="codeinput">I = 1:10;
 lambda = 0.05;
 mu = [5, 4];
 sigma = [2, 3];
-gauss_cdf1 = normcdf(I, mu(1), sigma(1));
-gauss_cdf2 = normcdf(I, mu(2), sigma(2));
-p1 = lambda/2 + (1-lambda) * gauss_cdf1;
-p2 = lambda/2 + (1-lambda) * gauss_cdf2;
 
 fig1 = figure();
-plot(I, p1, <span class="string">'DisplayName'</span>, <span class="string">'p1'</span>, <span class="string">'LineWidth'</span>, 2)
-hold <span class="string">on</span>;
-plot(I, p2, <span class="string">'DisplayName'</span>, <span class="string">'p2'</span>, <span class="string">'LineWidth'</span>, 2)
+<span class="keyword">for</span> i = 1:length(mu)
+    gauss_cdf = normcdf(I, mu(i), sigma(i));
+    p = lambda/2 + (1-lambda) * gauss_cdf;
+    plot(I, p, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'p%d'</span>,i), <span class="string">'LineWidth'</span>, 2)
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
 xlabel(<span class="string">'Brightness (I)'</span>)
 ylabel(<span class="string">'P(red is brighter)'</span>)
 title(<span class="string">'Psychometric functions'</span>)
 legend(<span class="string">'Location'</span>, <span class="string">'southeast'</span>)
-</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="Q3_01.png" alt=""> <p>The two curves are sigmoidal or psychometric functions and saturate to 1 as the intensity is increased. The two curves differ in their slopes. Curve p1 has a steeper slope compared to the curve p2. This implies that the probability of the subject saying that "The red spot is brighter" increases rapidly with small changes in brightness in case of p1 but is rather slow in case of curve p2. We can also see that the curve p1 is in general above the curve p1 indicating that for the same intensity values, the probability of the subject saying that "The red spot is brighter" is higher in the case of p2.</p><p>Changing the mean of the psychometric function shifts the curve to the right along the brightness axis as increasing the mean results in increasing the threshold for deciding the response. This can be seen clearly in the figure below:</p><pre class="codeinput">I = 1:10;
+lambda = 0.05;
+mu = [1, 3, 6];
+sigma = [2, 2, 2];
+
+fig2 = figure();
+<span class="keyword">for</span> i = 1:length(mu)
+    gauss_cdf = normcdf(I, mu(i), sigma(i));
+    p = lambda/2 + (1-lambda) * gauss_cdf;
+    plot(I, p, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'Mean = %d'</span>,mu(i)), <span class="string">'LineWidth'</span>, 2)
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+xlabel(<span class="string">'Brightness (I)'</span>)
+ylabel(<span class="string">'P(red is brighter)'</span>)
+title(<span class="string">'Psychometric functions (varying mean)'</span>)
+legend(<span class="string">'Location'</span>, <span class="string">'southeast'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_02.png" alt=""> <p>Changing the standard deviation of the psychometric functions does not affect the threshold but affects the slope of the curve. Hence increasing the standard deviation would flatten the curve. Specifically, it will decrease the probability of calling "Red is brighter" at higher intensity levels but increase the probability of calling "Red is brighter" at lower intensity levels. This can be seen clearly in the figure below:</p><pre class="codeinput">I = 1:10;
+lambda = 0.05;
+mu = [3, 3, 3];
+sigma = [1, 2, 4];
+
+fig3 = figure();
+<span class="keyword">for</span> i = 1:length(mu)
+    gauss_cdf = normcdf(I, mu(i), sigma(i));
+    p = lambda/2 + (1-lambda) * gauss_cdf;
+    plot(I, p, <span class="string">'DisplayName'</span>, sprintf(<span class="string">'Stdev = %d'</span>,sigma(i)), <span class="string">'LineWidth'</span>, 2)
+    hold <span class="string">on</span>;
+<span class="keyword">end</span>
+xlabel(<span class="string">'Brightness (I)'</span>)
+ylabel(<span class="string">'P(red is brighter)'</span>)
+title(<span class="string">'Psychometric functions (varying standard deviation)'</span>)
+legend(<span class="string">'Location'</span>, <span class="string">'southeast'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_03.png" alt=""> <p>The range of p(I) is [0:1]. This range is appropriate because p(I) is a probability of the subject making a decision. The probability makes sense only in the range 0 to 1 and thus justifies the range of p(I).</p><h2 id="9">b)</h2><p>The function simpsych is defined at the end of the file.</p><h2 id="10">c)</h2><pre class="codeinput">T = ones(1, 7) * 100;
+I = 1:7;
+lambda = 0.05;
+mu = 4;
+sigma = 1;
+B = simpsych(lambda, mu, sigma, I, T);
+gauss_cdf = normcdf(I, mu, sigma);
+p = lambda/2 + (1 - lambda) * gauss_cdf;
+
+fig4 = figure();
+plot(I, p, <span class="string">'DisplayName'</span>, <span class="string">'p(I)'</span>, <span class="string">'LineWidth'</span>, 2)
+hold <span class="string">on</span>;
+plot(I, B./T, <span class="string">'r*-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'B./T'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Brightness (I)'</span>)
+ylabel(<span class="string">'P(red is brighter)'</span>)
+title(sprintf(<span class="string">'Simulating simpsych (trials = %d)'</span>, 100))
+legend(<span class="string">'Location'</span>, <span class="string">'southeast'</span>)
+</pre><img vspace="5" hspace="5" src="Q3_04.png" alt=""> <h2 id="11">d)</h2><pre class="codeinput">T = ones(1, 7) * 10;
+I = 1:7;
+lambda = 0.05;
+mu = 4;
+sigma = 1;
+B = simpsych(lambda, mu, sigma, I, T);
+gauss_cdf = normcdf(I, mu, sigma);
+p = lambda/2 + (1 - lambda) * gauss_cdf;
+
+fig5 = figure();
+plot(I, p, <span class="string">'DisplayName'</span>, <span class="string">'p(I)'</span>, <span class="string">'LineWidth'</span>, 2)
+hold <span class="string">on</span>;
+plot(I, B./T, <span class="string">'r*-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'B./T'</span>, <span class="string">'LineWidth'</span>, 2)
+xlabel(<span class="string">'Brightness (I)'</span>)
+ylabel(<span class="string">'P(red is brighter)'</span>)
+title(sprintf(<span class="string">'Simulating simpsych (trials = %d)'</span>, 10))
+legend(<span class="string">'Location'</span>, <span class="string">'southeast'</span>)
+</pre><h2 id="12">Function</h2><pre class="codeinput"><span class="keyword">function</span> B = simpsych(lambda, mu, sigma, I, T)
+    loop_size = length(I);
+    B = zeros(1, loop_size);
+    gauss_cdf = normcdf(I, mu, sigma);
+    p = lambda/2 + (1 - lambda) * gauss_cdf;
+    <span class="keyword">for</span> k = 1:loop_size
+        <span class="comment">%yesses = 0;</span>
+        trial_rand = rand(1, T(k));
+        yesses = trial_rand &lt; p(k);
+        B(:, k) = sum(yesses);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
@@ -94,19 +170,139 @@ I = 1:10;
 lambda = 0.05;
 mu = [5, 4];
 sigma = [2, 3];
-gauss_cdf1 = normcdf(I, mu(1), sigma(1));
-gauss_cdf2 = normcdf(I, mu(2), sigma(2));
-p1 = lambda/2 + (1-lambda) * gauss_cdf1;
-p2 = lambda/2 + (1-lambda) * gauss_cdf2;
 
 fig1 = figure();
-plot(I, p1, 'DisplayName', 'p1', 'LineWidth', 2)
-hold on;
-plot(I, p2, 'DisplayName', 'p2', 'LineWidth', 2)
+for i = 1:length(mu)
+    gauss_cdf = normcdf(I, mu(i), sigma(i));
+    p = lambda/2 + (1-lambda) * gauss_cdf;
+    plot(I, p, 'DisplayName', sprintf('p%d',i), 'LineWidth', 2)
+    hold on;
+end
 xlabel('Brightness (I)')
 ylabel('P(red is brighter)')
 title('Psychometric functions')
 legend('Location', 'southeast')
+
+%%
+% The two curves are sigmoidal or psychometric functions and saturate to 1
+% as the intensity is increased. The two curves differ in their slopes.
+% Curve p1 has a steeper slope compared to the curve p2. This implies that 
+% the probability of the subject saying that "The red spot is brighter"
+% increases rapidly with small changes in brightness in case of p1 but is
+% rather slow in case of curve p2. We can also see that the curve p1 is in
+% general above the curve p1 indicating that for the same intensity values,
+% the probability of the subject saying that "The red spot is brighter" is
+% higher in the case of p2.
+
+%%
+% Changing the mean of the psychometric function shifts the curve to the right
+% along the brightness axis as increasing the mean results in increasing
+% the threshold for deciding the response. This can be seen clearly in the
+% figure below:
+%%
+I = 1:10;
+lambda = 0.05;
+mu = [1, 3, 6];
+sigma = [2, 2, 2];
+
+fig2 = figure();
+for i = 1:length(mu)
+    gauss_cdf = normcdf(I, mu(i), sigma(i));
+    p = lambda/2 + (1-lambda) * gauss_cdf;
+    plot(I, p, 'DisplayName', sprintf('Mean = %d',mu(i)), 'LineWidth', 2)
+    hold on;
+end
+xlabel('Brightness (I)')
+ylabel('P(red is brighter)')
+title('Psychometric functions (varying mean)')
+legend('Location', 'southeast')
+
+%%
+% Changing the standard deviation of the psychometric functions does not
+% affect the threshold but affects the slope of the curve. Hence increasing
+% the standard deviation would flatten the curve. Specifically, it will
+% decrease the probability of calling "Red is brighter" at higher
+% intensity levels but increase the probability of calling "Red is
+% brighter" at lower intensity levels. This can be seen clearly in the
+% figure below:
+%%
+I = 1:10;
+lambda = 0.05;
+mu = [3, 3, 3];
+sigma = [1, 2, 4];
+
+fig3 = figure();
+for i = 1:length(mu)
+    gauss_cdf = normcdf(I, mu(i), sigma(i));
+    p = lambda/2 + (1-lambda) * gauss_cdf;
+    plot(I, p, 'DisplayName', sprintf('Stdev = %d',sigma(i)), 'LineWidth', 2)
+    hold on;
+end
+xlabel('Brightness (I)')
+ylabel('P(red is brighter)')
+title('Psychometric functions (varying standard deviation)')
+legend('Location', 'southeast')
+
+%%
+% The range of p(I) is [0:1]. This range is appropriate because p(I) is a
+% probability of the subject making a decision. The probability makes sense
+% only in the range 0 to 1 and thus justifies the range of p(I).
+
+%% b)
+% The function simpsych is defined at the end of the file.
+
+%% c)
+T = ones(1, 7) * 100;
+I = 1:7;
+lambda = 0.05;
+mu = 4;
+sigma = 1;
+B = simpsych(lambda, mu, sigma, I, T);
+gauss_cdf = normcdf(I, mu, sigma);
+p = lambda/2 + (1 - lambda) * gauss_cdf;
+
+fig4 = figure();
+plot(I, p, 'DisplayName', 'p(I)', 'LineWidth', 2)
+hold on;
+plot(I, B./T, 'r*-', 'DisplayName', 'B./T', 'LineWidth', 2)
+xlabel('Brightness (I)')
+ylabel('P(red is brighter)')
+title(sprintf('Simulating simpsych (trials = %d)', 100))
+legend('Location', 'southeast')
+
+%% d)
+T = ones(1, 7) * 10;
+I = 1:7;
+lambda = 0.05;
+mu = 4;
+sigma = 1;
+B = simpsych(lambda, mu, sigma, I, T);
+gauss_cdf = normcdf(I, mu, sigma);
+p = lambda/2 + (1 - lambda) * gauss_cdf;
+
+fig5 = figure();
+plot(I, p, 'DisplayName', 'p(I)', 'LineWidth', 2)
+hold on;
+plot(I, B./T, 'r*-', 'DisplayName', 'B./T', 'LineWidth', 2)
+xlabel('Brightness (I)')
+ylabel('P(red is brighter)')
+title(sprintf('Simulating simpsych (trials = %d)', 10))
+legend('Location', 'southeast')
+
+%% Function
+function B = simpsych(lambda, mu, sigma, I, T)
+    loop_size = length(I);
+    B = zeros(1, loop_size);
+    gauss_cdf = normcdf(I, mu, sigma);
+    p = lambda/2 + (1 - lambda) * gauss_cdf;
+    for k = 1:loop_size
+        %yesses = 0;
+        trial_rand = rand(1, T(k));
+        yesses = trial_rand < p(k);
+        B(:, k) = sum(yesses);
+    end
+end
+
 
 ##### SOURCE END #####
 --></body></html>

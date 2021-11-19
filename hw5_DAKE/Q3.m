@@ -60,6 +60,7 @@ legend('Location', 'southeast')
 % intensity levels but increase the probability of calling "Red is
 % brighter" at lower intensity levels. This can be seen clearly in the
 % figure below:
+
 %%
 I = 1:10;
 lambda = 0.05;
@@ -99,7 +100,7 @@ p = lambda/2 + (1 - lambda) * gauss_cdf;
 fig4 = figure();
 plot(I, p, 'DisplayName', 'p(I)', 'LineWidth', 2)
 hold on;
-plot(I, B./T, 'r*-', 'DisplayName', 'B./T', 'LineWidth', 2)
+plot(I, B./T, 'r*', 'DisplayName', 'B./T', 'LineWidth', 2)
 xlabel('Brightness (I)')
 ylabel('P(red is brighter)')
 title(sprintf('Simulating simpsych (trials = %d)', 100))
@@ -118,11 +119,35 @@ p = lambda/2 + (1 - lambda) * gauss_cdf;
 fig5 = figure();
 plot(I, p, 'DisplayName', 'p(I)', 'LineWidth', 2)
 hold on;
-plot(I, B./T, 'r*-', 'DisplayName', 'B./T', 'LineWidth', 2)
+plot(I, B./T, 'r*', 'DisplayName', 'B./T', 'LineWidth', 2)
 xlabel('Brightness (I)')
 ylabel('P(red is brighter)')
 title(sprintf('Simulating simpsych (trials = %d)', 10))
 legend('Location', 'southeast')
+
+%%
+% The second plot also samples from the same psychometric distribution but
+% since the number of trials are less, there is more noise in sampling. As
+% a result, the data points from the sample do not fit the psychometric
+% curve as well in the second curve as they do in the first curve.
+
+%% d)
+mu_steps = 1:0.1:7;
+T10 = ones(1, 7) * 10;
+T100 = ones(1, 7) * 100;
+I = 1:7;
+lambda = 0.05;
+sigma = 1;
+B10_likelihood = zeros(length(mu_steps), 7);
+B100_likelihood = zeros(length(mu_steps), 7);
+
+for i = 1:length(mu_steps)
+    mu = mu_steps(i);
+    B10_likelihood(i, :) = simpsych(lambda, mu, sigma, I, T10);
+    B100_likelihood(i, :) = simpsych(lambda, mu, sigma, I, T100);
+end
+
+%% e)
 
 %% Function
 function B = simpsych(lambda, mu, sigma, I, T)

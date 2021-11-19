@@ -25,6 +25,8 @@ ylabel('Frequency in sample')
 title('Histogram of firing rates for different stimulus types')
 
 %% b)
+d_prime = abs(mean_10_coher - mean_no_coher)/sqrt(var_no_coher);
+fprintf("The d' for the task and the pair of stimuli is %d\n", d_prime)
 
 %% c)
 thresholds = 0:15;
