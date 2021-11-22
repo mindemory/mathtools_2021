@@ -56,9 +56,9 @@ fprintf("The d' for the task and the pair of stimuli is %d\n", d_prime)
 %%
 thresholds = 0:0.01:10; % range of thresholds
 hits = zeros(length(thresholds), 1); % Initializing hits
-misses = zeros(length(thresholds), 1); % Initializing misses
-false_alarms = zeros(length(thresholds), 1); % Initializing false-alarms
-correct_rejs = zeros(length(thresholds), 1); % Initializing correct rejects
+misses = zeros(length(thresholds), 1); % Initializing false-alarms
+false_alarms = zeros(length(thresholds), 1); % Initializing hit rates
+correct_rejs = zeros(length(thresholds), 1); % Initializing false-alarm rates
 for i = 1:length(thresholds)
     threshold = thresholds(i);
     hits(i) = sum(resp_10_coher > threshold); % Computing the number of hits
@@ -84,5 +84,3 @@ title('ROC Curve')
 accuracy = (hits + correct_rejs)./(misses + false_alarms);
 [max_accuracy, optim_threshold_index] = max(accuracy);
 optim_threshold = thresholds(optim_threshold_index);
-
-%% d)

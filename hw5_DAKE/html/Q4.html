@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q4</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-12"><meta name="DC.source" content="Q4.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q4</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-22"><meta name="DC.source" content="Q4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,7 +52,6 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
-span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -67,20 +66,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li><li><a href="#4">c)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><h2 id="2">a)</h2><pre class="codeinput">mean_no_coher = 5;
-var_no_coher = 1;
-mean_10_coher = 8;
-var_10_coher = 1;
-samp_size = 1000;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#5">b)</a></li><li><a href="#8">c)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><p>The data can be simulated by drawing samples from a standard normal distribution and then scaling the distribution by the variance of the distribution of interest and finally translating it by the mean of interest. The resulting data will have been drawn from a Gaussian distribution of desired mean and variance.</p><p>Since the spikes of neurons cannot be negative in number, we can eliminate the values in the sample that are negative by first creating a Boolean array called 'setter' that has 0s if values are negative and 1s if values are positive. We can then compute an element-wise product of the actual sample data with this Boolean array to create a positive sample data.</p><pre class="codeinput">mean_no_coher = 5; <span class="comment">% Mean of noise</span>
+std_no_coher = 1; <span class="comment">% Standard deviation of noise</span>
+mean_10_coher = 8; <span class="comment">% Mean of signal + noise</span>
+std_10_coher = 1; <span class="comment">% Standard deviation of signal + noise</span>
+samp_size = 1000; <span class="comment">% Sample size</span>
 
-resp_no_coher = mean_no_coher + var_no_coher * randn(samp_size, 1);
-resp_no_coher_pos_setter = resp_no_coher &gt; 0;
-resp_no_coher_pos = resp_no_coher .* resp_no_coher_pos_setter;
+resp_no_coher = mean_no_coher + std_no_coher^2 * randn(samp_size, 1); <span class="comment">% Creating noise sample</span>
+resp_no_coher_pos_setter = resp_no_coher &gt; 0; <span class="comment">% Setter Boolean array</span>
+resp_no_coher = resp_no_coher .* resp_no_coher_pos_setter; <span class="comment">% Excluding negative samples from noise</span>
 
-resp_10_coher = mean_10_coher + var_10_coher * randn(samp_size, 1);
-resp_10_coher_pos_setter = resp_10_coher &gt; 0;
-resp_10_coher_pos = resp_10_coher .* resp_10_coher_pos_setter;
+resp_10_coher = mean_10_coher + std_10_coher^2 * randn(samp_size, 1); <span class="comment">% Creating signal + noise sample</span>
+resp_10_coher_pos_setter = resp_10_coher &gt; 0; <span class="comment">% Setter Boolean array</span>
+resp_10_coher = resp_10_coher .* resp_10_coher_pos_setter; <span class="comment">% Excluding negative samples from signal + noise</span>
 
 fig1 = figure();
 histogram(resp_no_coher, <span class="string">'DisplayName'</span>, <span class="string">'No coherence'</span>);
@@ -90,41 +89,63 @@ legend(<span class="string">'Location'</span>, <span class="string">'northwest'<
 xlabel(<span class="string">'Firing rate (spikes/s)'</span>)
 ylabel(<span class="string">'Frequency in sample'</span>)
 title(<span class="string">'Histogram of firing rates for different stimulus types'</span>)
-</pre><img vspace="5" hspace="5" src="Q4_01.png" alt=""> <h2 id="3">b)</h2><h2 id="4">c)</h2><pre class="codeinput">thresholds = 0:15;
-HR = zeros(length(thresholds), 1);
-FAR = zeros(length(thresholds), 1);
+</pre><img vspace="5" hspace="5" src="Q4_01.png" alt=""> <h2 id="5">b)</h2><p>The success of the decoder is given by sensitivity or <img src="Q4_eq18142269600868904437.png" alt="$$d' $$" style="width:8px;height:10px;">. For two distributions that have same standard deviation, it is given using the formula:</p><p><img src="Q4_eq03545346845507442961.png" alt="$$d' = \frac{\mu_{S+N} - \mu_{N}}{\sigma^2} $$" style="width:78px;height:20px;"></p><pre class="codeinput">d_prime = abs(mean_10_coher - mean_no_coher)/std_no_coher;
+fprintf(<span class="string">"The d' for the task and the pair of stimuli is %d\n"</span>, d_prime)
+</pre><pre class="codeoutput">The d' for the task and the pair of stimuli is 3
+</pre><img vspace="5" hspace="5" src="Q4_02.png" alt=""> <h2 id="8">c)</h2><p>The decoder over here either observes motion of dots or does not observe motion of dots. The probability of making correct guesses and incorrect guesses depends on where along the x-axis of the two distributions the criterion/threshold is set. Therefore, the maximum likelihood decoder for this problem will involve optimizing the threshold/criterion.</p><pre class="codeinput">thresholds = 0:0.01:10; <span class="comment">% range of thresholds</span>
+hits = zeros(length(thresholds), 1); <span class="comment">% Initializing hit rates</span>
+misses = zeros(length(thresholds), 1); <span class="comment">% Initializing false-alarm rates</span>
+false_alarms = zeros(length(thresholds), 1); <span class="comment">% Initializing hit rates</span>
+correct_rejs = zeros(length(thresholds), 1); <span class="comment">% Initializing false-alarm rates</span>
 <span class="keyword">for</span> i = 1:length(thresholds)
     threshold = thresholds(i);
-    hits = sum(resp_10_coher &gt; threshold);
-    misses = sum(resp_10_coher &lt; threshold);
-    false_alarms = sum(resp_no_coher &gt; threshold);
-    correct_rejs = sum(resp_no_coher &lt; threshold);
-    HR(i) = hits/(hits + misses);
-    FAR(i) = false_alarms/(false_alarms + correct_rejs);
+    hits(i) = sum(resp_10_coher &gt; threshold); <span class="comment">% Computing the number of hits</span>
+    misses(i) = sum(resp_10_coher &lt; threshold); <span class="comment">% Computing the number of misses</span>
+    false_alarms(i) = sum(resp_no_coher &gt; threshold); <span class="comment">% Computing the number of false-alarms</span>
+    correct_rejs(i) = sum(resp_no_coher &lt; threshold); <span class="comment">% Computing the number of correct rejections</span>
+    <span class="comment">%HR(i) = hits/(hits + misses); % Computing hit rate</span>
+    <span class="comment">%FAR(i) = false_alarms/(false_alarms + correct_rejs); % Computing false-alarm rate</span>
 <span class="keyword">end</span>
+
+HR = hits./(hits + misses);
+FAR = false_alarms./(false_alarms + correct_rejs);
+
 fig2 = figure();
-plot(FAR, HR, <span class="string">'ro-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(FAR, HR, <span class="string">'r*-'</span>)
 xlabel(<span class="string">'False alarm rate'</span>)
 ylabel(<span class="string">'Hit rate'</span>)
 title(<span class="string">'ROC Curve'</span>)
-</pre><img vspace="5" hspace="5" src="Q4_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="Q4_03.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
 %% a)
-mean_no_coher = 5;
-var_no_coher = 1;
-mean_10_coher = 8;
-var_10_coher = 1;
-samp_size = 1000;
+% The data can be simulated by drawing samples from a standard normal
+% distribution and then scaling the distribution by the variance of the
+% distribution of interest and finally translating it by the mean of
+% interest. The resulting data will have been drawn from a Gaussian
+% distribution of desired mean and variance.
+%%
+% Since the spikes of neurons cannot be negative in number, we can
+% eliminate the values in the sample that are negative by first creating a
+% Boolean array called 'setter' that has 0s if values are negative and 1s
+% if values are positive. We can then compute an element-wise product of
+% the actual sample data with this Boolean array to create a positive
+% sample data.
+%%
+mean_no_coher = 5; % Mean of noise
+std_no_coher = 1; % Standard deviation of noise
+mean_10_coher = 8; % Mean of signal + noise
+std_10_coher = 1; % Standard deviation of signal + noise
+samp_size = 1000; % Sample size
 
-resp_no_coher = mean_no_coher + var_no_coher * randn(samp_size, 1);
-resp_no_coher_pos_setter = resp_no_coher > 0;
-resp_no_coher_pos = resp_no_coher .* resp_no_coher_pos_setter;
+resp_no_coher = mean_no_coher + std_no_coher^2 * randn(samp_size, 1); % Creating noise sample
+resp_no_coher_pos_setter = resp_no_coher > 0; % Setter Boolean array
+resp_no_coher = resp_no_coher .* resp_no_coher_pos_setter; % Excluding negative samples from noise
 
-resp_10_coher = mean_10_coher + var_10_coher * randn(samp_size, 1);
-resp_10_coher_pos_setter = resp_10_coher > 0;
-resp_10_coher_pos = resp_10_coher .* resp_10_coher_pos_setter;
+resp_10_coher = mean_10_coher + std_10_coher^2 * randn(samp_size, 1); % Creating signal + noise sample
+resp_10_coher_pos_setter = resp_10_coher > 0; % Setter Boolean array
+resp_10_coher = resp_10_coher .* resp_10_coher_pos_setter; % Excluding negative samples from signal + noise
 
 fig1 = figure();
 histogram(resp_no_coher, 'DisplayName', 'No coherence');
@@ -136,22 +157,42 @@ ylabel('Frequency in sample')
 title('Histogram of firing rates for different stimulus types')
 
 %% b)
+% The success of the decoder is given by sensitivity or $$d' $$. For two
+% distributions that have same standard deviation, it is given using the
+% formula:
+%%
+% $$d' = \frac{\mu_{S+N} - \mu_{N}}{\sigma^2} $$
+%%
+d_prime = abs(mean_10_coher - mean_no_coher)/std_no_coher;
+fprintf("The d' for the task and the pair of stimuli is %d\n", d_prime)
 
 %% c)
-thresholds = 0:15;
-HR = zeros(length(thresholds), 1);
-FAR = zeros(length(thresholds), 1);
+% The decoder over here either observes motion of dots or does not observe
+% motion of dots. The probability of making correct guesses and incorrect
+% guesses depends on where along the x-axis of the two distributions the
+% criterion/threshold is set. Therefore, the maximum likelihood decoder for
+% this problem will involve optimizing the threshold/criterion.
+%%
+thresholds = 0:0.01:10; % range of thresholds
+hits = zeros(length(thresholds), 1); % Initializing hit rates
+misses = zeros(length(thresholds), 1); % Initializing false-alarm rates
+false_alarms = zeros(length(thresholds), 1); % Initializing hit rates
+correct_rejs = zeros(length(thresholds), 1); % Initializing false-alarm rates
 for i = 1:length(thresholds)
     threshold = thresholds(i);
-    hits = sum(resp_10_coher > threshold);
-    misses = sum(resp_10_coher < threshold);
-    false_alarms = sum(resp_no_coher > threshold);
-    correct_rejs = sum(resp_no_coher < threshold);
-    HR(i) = hits/(hits + misses);
-    FAR(i) = false_alarms/(false_alarms + correct_rejs);
+    hits(i) = sum(resp_10_coher > threshold); % Computing the number of hits
+    misses(i) = sum(resp_10_coher < threshold); % Computing the number of misses
+    false_alarms(i) = sum(resp_no_coher > threshold); % Computing the number of false-alarms
+    correct_rejs(i) = sum(resp_no_coher < threshold); % Computing the number of correct rejections
+    %HR(i) = hits/(hits + misses); % Computing hit rate
+    %FAR(i) = false_alarms/(false_alarms + correct_rejs); % Computing false-alarm rate
 end
+
+HR = hits./(hits + misses);
+FAR = false_alarms./(false_alarms + correct_rejs);
+
 fig2 = figure();
-plot(FAR, HR, 'ro-', 'LineWidth', 2)
+plot(FAR, HR, 'r*-')
 xlabel('False alarm rate')
 ylabel('Hit rate')
 title('ROC Curve')
