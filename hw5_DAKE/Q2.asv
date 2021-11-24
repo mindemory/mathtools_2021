@@ -183,9 +183,8 @@ nolang_up_limit = nolang_posterior(nolang_up_index)
 
 %% d)
 % The joint posterior distribution can be computed by taking an outer
-% product of the posterior of each distribution.
-jdf = lang_posterior' * nolang_posterior;
-
+% product of the l
+jdf = lang_likelihood' * nolang_likelihood;
 fig4 = figure();
 imagesc(jdf)
 xlabel('xnl')
@@ -193,11 +192,5 @@ ylabel('xl')
 title('Joint posterior distribution')
 
 %%
-% The posterior probability of xl > xnl is given by the sum of all the
-% values in the lower triangular part of jdf as this corresponds to xl >
-% xnl. The posterior probability of xl <= xnl is given as 1 - the
-% probability of xl > xnl.
-pxlgxnl = sum(tril(jdf), 'all') % xl > xnl
-pxnlgxl = 1 - pxlgxnl % xl <= xnl
-
-%% e)
+pxlgxnl = sum(tril(jdf), 'all')
+pxnlgxl = sum(triu(jdf), 'all')

@@ -1,0 +1,366 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-23"><meta name="DC.source" content="Q2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#4">b)</a></li><li><a href="#35">c)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><p>We are given that the conditional probability of activation given language and the conditional probabilty of activation given no language both follow a Bernoulli distribution. Since each experiment follows a Bernoulli distribution, the total set of studies would follow a Binomial distribution with N = total and X = activations observed for each condition. Using binopdf, we can then compute the likelihood of the range of parameters 0 to 1.</p><pre class="codeinput">lang_total = 869;
+lang_activ = 103;
+nolang_total = 2353;
+nolang_activ = 199;
+
+xl = 0:0.001:1;
+xnl = 0:0.001:1;
+
+lang_likelihood = binopdf(lang_activ, lang_total, xl); <span class="comment">% Likelihood of xl for language</span>
+nolang_likelihood = binopdf(nolang_activ, nolang_total, xnl); <span class="comment">% Likelihood of xnl for no language</span>
+
+fig1 = figure();
+bar(xl, lang_likelihood, <span class="string">'DisplayName'</span>, <span class="string">'x_l'</span>);
+hold <span class="string">on</span>;
+bar(xnl, nolang_likelihood, <span class="string">'DisplayName'</span>, <span class="string">'x_{nl}'</span>);
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'p(x|obs)'</span>)
+title(<span class="string">'Likelihood of parameters'</span>)
+legend()
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <h2 id="4">b)</h2><p>The paramter that maximizes each distribution can be computed by finding the index for maximum in each likelihood and then checking the index at the corresponding location in the parameter set.</p><pre class="codeinput">lang_max_index = find(lang_likelihood == max(lang_likelihood)); <span class="comment">% Index of maximum lang likelihood</span>
+nolang_max_index = find(nolang_likelihood == max(nolang_likelihood)); <span class="comment">% Index of maximum nolang likelihood</span>
+lang_maxlikelihood_pred = xl(lang_max_index) <span class="comment">% The parameter value at maximum for language</span>
+nolang_maxlikelihood_pred = xnl(nolang_max_index) <span class="comment">% The parameter value at maximum for no language</span>
+</pre><pre class="codeoutput">
+lang_maxlikelihood_pred =
+
+    0.1190
+
+
+nolang_maxlikelihood_pred =
+
+    0.0850
+
+</pre><p>The pdf of a Bernoulli random variable (X) can be written as:</p><p><img src="Q2_eq17668206664596948396.png" alt="$$f(X) = p^X(1-p)^{(1-X)} $$"></p><p>where, X = 0 or 1 in this case no language or language.p^X(1-p)^(1-X)</p><p>The likelihood function then becomes:</p><p><img src="Q2_eq10096972078732862972.png" alt="$$L(p) = \prod_{i = 1}^N p^{X_i}(1-p)^{(1-X_i)} $$"></p><p>The log-likelihood function can be obtained by taking the logarithm of both sides. Thus,</p><p><img src="Q2_eq12594317009391999651.png" alt="$$LL(p) = log(\prod_{i = 1}^N p^{X_i}(1-p)^{(1-X_i)}) $$"></p><p>Therefore,</p><p><img src="Q2_eq10240147068764505734.png" alt="$$LL(p) = \sum_{i = 1}^N log(p^{X_i}(1-p)^{(1-X_i)}) $$"></p><p>Therefore,</p><p><img src="Q2_eq08102673258602780929.png" alt="$$LL(p) = \sum_{i = 1}^N X_i log p + (1-X_i)log(1-p) $$"></p><p>Let <img src="Q2_eq12810502334802585072.png" alt="$$Y = \sum_{i = 1}^N X_i $$"></p><p>Therefore,</p><p><img src="Q2_eq11560378754286217919.png" alt="$$LL(p) = Y log p + (N-Y)log(1-p) $$"></p><p>The aim is to compute the maximum likelihood estimation. Hence we are interested in the value of p for which the derivative of LL(p) equates to 0.</p><p>Therefore,</p><p><img src="Q2_eq09222785892930778980.png" alt="$$\frac{\partial LL(p)}{\partial p} = \frac{\partial }{\partial p} (Y log p + (N-Y)log(1-p)) = 0 $$"></p><p>Therefore,</p><p><img src="Q2_eq06385570568615067790.png" alt="$$\frac{Y}{p} + \frac{Y-N}{1-p} = 0 $$"></p><p>Therefore,</p><p><img src="Q2_eq12262634773270424506.png" alt="$$Y - pY = pN - pY $$"></p><p>Therefore,</p><p><img src="Q2_eq02274562764552373647.png" alt="$$Y = pN $$"></p><p>Therefore,</p><p><img src="Q2_eq13659057610386291464.png" alt="$$\hat{p} = \frac{Y}{N} $$"></p><p>Therefore,</p><p><img src="Q2_eq15204708348822477391.png" alt="$$\hat{p} = \frac{\sum_{i=1}^N X_i}{N} $$"></p><p>In our example, Y is the active instances and N is the total instances for each condition. Computing the estimated maximum likelihoods:</p><pre class="codeinput">lang_maxlikelihood_estim = lang_activ/lang_total
+nolang_maxlikelihood_estim = nolang_activ/nolang_total
+</pre><pre class="codeoutput">
+lang_maxlikelihood_estim =
+
+    0.1185
+
+
+nolang_maxlikelihood_estim =
+
+    0.0846
+
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <h2 id="35">c)</h2><p>The next step is to compute <img src="Q2_eq11292647279166977497.png" alt="$$P(x | data) $$"></p><p>Using Bayesian formula, we have:</p><p><img src="Q2_eq08342806293843411855.png" alt="$$P(x_i | data) = \frac{P(data | x_i) P(x_i)}{\sum_{i = 1}^N P(data | x_i) P(x_i)} $$"></p><p>The denominator can be obtained as a dot product between the likelihood and px for each condition. The posterior can then be computed as an element-wise product between the likelihood and px and the dividing the result by the denominator computed. Here, since the prior is uniform, we have:</p><p><img src="Q2_eq07260216194381241563.png" alt="$$P(x_i) = \frac{1}{N} $$"></p><pre class="codeinput">px = (1/length(xl)) * ones(1, length(xl));
+lang_denom = lang_likelihood * px';
+nolang_denom = nolang_likelihood * px';
+lang_posterior = (lang_likelihood .* px) / lang_denom; <span class="comment">% Posterior for language</span>
+nolang_posterior = (nolang_likelihood .* px) / nolang_denom; <span class="comment">% Posterior for no language</span>
+
+fig2 = figure();
+plot(xl, lang_posterior, <span class="string">'DisplayName'</span>, <span class="string">'x_l'</span>);
+hold <span class="string">on</span>;
+plot(xnl, nolang_posterior, <span class="string">'DisplayName'</span>, <span class="string">'x_{nl}'</span>);
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'p(obs|x)'</span>)
+title(<span class="string">'Posterior distributions'</span>)
+legend()
+</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <p>The cumulative posterior distributions can be obtained by summing all the posterior distributions upto the given parameter index. The cumulative posterior distributions will be monotonically increasing functions from 0 to 1.</p><pre class="codeinput">lang_cumulative = zeros(1, length(xl)); <span class="comment">% Initializing language cumulative</span>
+nolang_cumulative = zeros(1, length(xl)); <span class="comment">% Initializing no language cumulative</span>
+
+<span class="keyword">for</span> i = 1:length(xl)
+    <span class="keyword">if</span> i == 1
+        lang_cumulative(i) = lang_posterior(i);
+        nolang_cumulative(i) = nolang_posterior(i);
+    <span class="keyword">else</span>
+        lang_cumulative(i) = lang_cumulative(i-1) + lang_posterior(i);
+        nolang_cumulative(i) = nolang_cumulative(i-1) + nolang_posterior(i);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fig3 = figure();
+plot(xl, lang_cumulative, <span class="string">'DisplayName'</span>, <span class="string">'x_l'</span>);
+hold <span class="string">on</span>;
+plot(xnl, nolang_cumulative, <span class="string">'DisplayName'</span>, <span class="string">'x_{nl}'</span>);
+xlabel(<span class="string">'x'</span>)
+ylabel(<span class="string">'sum p(obs|x)'</span>)
+title(<span class="string">'Cumulative Posterior Distributions'</span>)
+legend()
+</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <p>Next we are to compute the upper and lower bounds for 95% confidence interval about the mean. The upper bound will be set by cdf having a value of 0.975 and the lower bound will be set by the cdf having value of 0.025. Therefore, we are interested in finding the first value in the posterior that will result in cdf having value greater than 0.975. This will be the upper bound. Similarly, we are interested in finding the last value in the posterior that will result in cdf having value lesser than 0.025. This will be the lower bound.</p><pre class="codeinput">lang_low_index = find(lang_cumulative &lt; 0.025, 1, <span class="string">'last'</span> );
+lang_up_index = find(lang_cumulative &gt; 0.975, 1 );
+nolang_low_index = find(nolang_cumulative &lt; 0.025, 1, <span class="string">'last'</span> );
+nolang_up_index = find(nolang_cumulative &gt; 0.975, 1 );
+
+lang_low_limit = lang_posterior(lang_low_index)
+lang_up_limit = lang_posterior(lang_up_index)
+nolang_low_limit = nolang_posterior(nolang_low_index)
+nolang_up_limit = nolang_posterior(nolang_up_index)
+</pre><pre class="codeoutput">
+lang_low_limit =
+
+    0.0052
+
+
+lang_up_limit =
+
+    0.0046
+
+
+nolang_low_limit =
+
+    0.0075
+
+
+nolang_up_limit =
+
+    0.0111
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+% We are given that the conditional probability of activation given
+% language and the conditional probabilty of activation given no language
+% both follow a Bernoulli distribution. Since each experiment follows a
+% Bernoulli distribution, the total set of studies would follow a Binomial
+% distribution with N = total and X = activations observed for each
+% condition. Using binopdf, we can then compute the likelihood of the range
+% of parameters 0 to 1.
+%%
+lang_total = 869;
+lang_activ = 103;
+nolang_total = 2353;
+nolang_activ = 199;
+
+xl = 0:0.001:1;
+xnl = 0:0.001:1;
+
+lang_likelihood = binopdf(lang_activ, lang_total, xl); % Likelihood of xl for language
+nolang_likelihood = binopdf(nolang_activ, nolang_total, xnl); % Likelihood of xnl for no language
+
+fig1 = figure();
+bar(xl, lang_likelihood, 'DisplayName', 'x_l');
+hold on;
+bar(xnl, nolang_likelihood, 'DisplayName', 'x_{nl}');
+xlabel('x')
+ylabel('p(x|obs)')
+title('Likelihood of parameters')
+legend()
+
+%% b)
+% The paramter that maximizes each distribution can be computed by finding
+% the index for maximum in each likelihood and then checking the index at
+% the corresponding location in the parameter set.
+%%
+lang_max_index = find(lang_likelihood == max(lang_likelihood)); % Index of maximum lang likelihood
+nolang_max_index = find(nolang_likelihood == max(nolang_likelihood)); % Index of maximum nolang likelihood
+lang_maxlikelihood_pred = xl(lang_max_index) % The parameter value at maximum for language
+nolang_maxlikelihood_pred = xnl(nolang_max_index) % The parameter value at maximum for no language
+
+%%
+% The pdf of a Bernoulli random variable (X) can be written as:
+%%
+% $$f(X) = p^X(1-p)^{(1-X)} $$
+%%
+% where, X = 0 or 1 in this case no language or language.p^X(1-p)^(1-X)
+%%
+% The likelihood function then becomes:
+%%
+% $$L(p) = \prod_{i = 1}^N p^{X_i}(1-p)^{(1-X_i)} $$
+%%
+% The log-likelihood function can be obtained by taking the logarithm of
+% both sides. Thus,
+%%
+% $$LL(p) = log(\prod_{i = 1}^N p^{X_i}(1-p)^{(1-X_i)}) $$
+%%
+% Therefore,
+%%
+% $$LL(p) = \sum_{i = 1}^N log(p^{X_i}(1-p)^{(1-X_i)}) $$
+%%
+% Therefore,
+%%
+% $$LL(p) = \sum_{i = 1}^N X_i log p + (1-X_i)log(1-p) $$
+%%
+% Let $$Y = \sum_{i = 1}^N X_i $$
+%%
+% Therefore,
+%%
+% $$LL(p) = Y log p + (N-Y)log(1-p) $$
+%%
+% The aim is to compute the maximum likelihood estimation. Hence we are
+% interested in the value of p for which the derivative of LL(p) equates to
+% 0.
+%%
+% Therefore,
+%%
+% $$\frac{\partial LL(p)}{\partial p} = \frac{\partial }{\partial p} (Y log p + (N-Y)log(1-p)) = 0 $$
+%%
+% Therefore,
+%%
+% $$\frac{Y}{p} + \frac{Y-N}{1-p} = 0 $$
+%%
+% Therefore,
+%%
+% $$Y - pY = pN - pY $$
+%%
+% Therefore,
+%%
+% $$Y = pN $$
+%%
+% Therefore,
+%%
+% $$\hat{p} = \frac{Y}{N} $$
+%%
+% Therefore,
+%%
+% $$\hat{p} = \frac{\sum_{i=1}^N X_i}{N} $$
+%%
+% In our example, Y is the active instances and N is the total instances
+% for each condition. Computing the estimated maximum likelihoods:
+%%
+lang_maxlikelihood_estim = lang_activ/lang_total
+nolang_maxlikelihood_estim = nolang_activ/nolang_total
+
+%% c)
+% The next step is to compute $$P(x | data) $$
+%%
+% Using Bayesian formula, we have:
+%%
+% $$P(x_i | data) = \frac{P(data | x_i) P(x_i)}{\sum_{i = 1}^N P(data | x_i) P(x_i)} $$
+%%
+% The denominator can be obtained as a dot product between the likelihood
+% and px for each condition. The posterior can then be computed
+% as an element-wise product between the likelihood and px and the
+% dividing the result by the denominator computed. Here, since the prior is
+% uniform, we have:
+%%
+% $$P(x_i) = \frac{1}{N} $$
+%%
+px = (1/length(xl)) * ones(1, length(xl));
+lang_denom = lang_likelihood * px';
+nolang_denom = nolang_likelihood * px';
+lang_posterior = (lang_likelihood .* px) / lang_denom; % Posterior for language
+nolang_posterior = (nolang_likelihood .* px) / nolang_denom; % Posterior for no language
+
+fig2 = figure();
+plot(xl, lang_posterior, 'DisplayName', 'x_l');
+hold on;
+plot(xnl, nolang_posterior, 'DisplayName', 'x_{nl}');
+xlabel('x')
+ylabel('p(obs|x)')
+title('Posterior distributions')
+legend()
+
+%%
+% The cumulative posterior distributions can be obtained by summing all the 
+% posterior distributions upto the given parameter index. The cumulative
+% posterior distributions will be monotonically increasing functions from 0
+% to 1.
+%%
+lang_cumulative = zeros(1, length(xl)); % Initializing language cumulative
+nolang_cumulative = zeros(1, length(xl)); % Initializing no language cumulative
+
+for i = 1:length(xl)
+    if i == 1
+        lang_cumulative(i) = lang_posterior(i);
+        nolang_cumulative(i) = nolang_posterior(i);
+    else
+        lang_cumulative(i) = lang_cumulative(i-1) + lang_posterior(i);
+        nolang_cumulative(i) = nolang_cumulative(i-1) + nolang_posterior(i);
+    end
+end
+
+fig3 = figure();
+plot(xl, lang_cumulative, 'DisplayName', 'x_l');
+hold on;
+plot(xnl, nolang_cumulative, 'DisplayName', 'x_{nl}');
+xlabel('x')
+ylabel('sum p(obs|x)')
+title('Cumulative Posterior Distributions')
+legend()
+
+%%
+% Next we are to compute the upper and lower bounds for 95% confidence
+% interval about the mean. The upper bound will be set by cdf having a
+% value of 0.975 and the lower bound will be set by the cdf having value of
+% 0.025. Therefore, we are interested in finding the first value in the
+% posterior that will result in cdf having value greater than 0.975. This
+% will be the upper bound. Similarly, we are interested in finding the last
+% value in the posterior that will result in cdf having value lesser than
+% 0.025. This will be the lower bound.
+%%
+lang_low_index = find(lang_cumulative < 0.025, 1, 'last' );
+lang_up_index = find(lang_cumulative > 0.975, 1 );
+nolang_low_index = find(nolang_cumulative < 0.025, 1, 'last' );
+nolang_up_index = find(nolang_cumulative > 0.975, 1 );
+
+lang_low_limit = lang_posterior(lang_low_index)
+lang_up_limit = lang_posterior(lang_up_index)
+nolang_low_limit = nolang_posterior(nolang_low_index)
+nolang_up_limit = nolang_posterior(nolang_up_index)
+
+##### SOURCE END #####
+--></body></html>
