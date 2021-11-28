@@ -71,6 +71,10 @@ end
 HR = hits./(hits + misses); % Computing hit rate for each threshold
 FAR = false_alarms./(false_alarms + correct_rejs); % Computing false-alarm rate for each threshold
 
+accuracy = (hits + correct_rejs)./(misses + false_alarms);
+[max_accuracy, optim_threshold_index] = max(accuracy);
+optim_threshold = thresholds(optim_threshold_index);
+
 fig2 = figure();
 plot(FAR, HR, 'r*-')
 hold on;
@@ -81,8 +85,6 @@ title('ROC Curve')
 
 
 %%
-accuracy = (hits + correct_rejs)./(misses + false_alarms);
-[max_accuracy, optim_threshold_index] = max(accuracy);
-optim_threshold = thresholds(optim_threshold_index);
+
 
 %% d)
