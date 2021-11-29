@@ -9,23 +9,23 @@ clear; close all; clc;
 % condition. Using binopdf, we can then compute the likelihood of the range
 % of parameters 0 to 1.
 %%
-lang_total = 869;
-lang_activ = 103;
-nolang_total = 2353;
-nolang_activ = 199;
+lang_total = 869; % Total language studies
+lang_activ = 103; % Language studies showing activation in Broca's area
+nolang_total = 2353; % Total no language studies
+nolang_activ = 199; % No language studies showing activation in Broca's area
 
-xl = 0:0.001:1;
-xnl = 0:0.001:1;
+xl = 0:0.001:1; % Range of probabilities for language
+xnl = 0:0.001:1; % Range of probabilities for no language
 
-lang_likelihood = binopdf(lang_activ, lang_total, xl); % Likelihood of xl for language
-nolang_likelihood = binopdf(nolang_activ, nolang_total, xnl); % Likelihood of xnl for no language
+lang_likelihood = binopdf(lang_activ, lang_total, xl); % Likelihood of xl for language data
+nolang_likelihood = binopdf(nolang_activ, nolang_total, xnl); % Likelihood of xnl for no language data
 
 fig1 = figure();
 bar(xl, lang_likelihood, 'DisplayName', 'x_l');
 hold on;
 bar(xnl, nolang_likelihood, 'DisplayName', 'x_{nl}');
 xlabel('x')
-ylabel('p(x|obs)')
+ylabel('p(data|x)')
 title('Likelihood of parameters')
 legend()
 
@@ -44,7 +44,7 @@ nolang_maxlikelihood_pred = xnl(nolang_max_index) % The parameter value at maxim
 %%
 % $$f(X) = p^X(1-p)^{(1-X)} $$
 %%
-% where, X = 0 or 1 in this case no language or language.p^X(1-p)^(1-X)
+% where, X = 0 or 1 in this case no language or language.
 %%
 % The likelihood function then becomes:
 %%
@@ -103,6 +103,11 @@ nolang_maxlikelihood_pred = xnl(nolang_max_index) % The parameter value at maxim
 lang_maxlikelihood_estim = lang_activ/lang_total
 nolang_maxlikelihood_estim = nolang_activ/nolang_total
 
+%%
+% As can be seen, the exact maximum likelihood estimates given by the
+% formula for ML estimator of a Bernoulli probability agrees with the
+% estimates obtained from the computed maximum likelihood estimate.
+
 %% c)
 % The next step is to compute $$P(x | data) $$
 %%
@@ -118,9 +123,9 @@ nolang_maxlikelihood_estim = nolang_activ/nolang_total
 %%
 % $$P(x_i) = \frac{1}{N} $$
 %%
-px = (1/length(xl)) * ones(1, length(xl));
-lang_denom = lang_likelihood * px';
-nolang_denom = nolang_likelihood * px';
+px = (1/length(xl)) * ones(1, length(xl)); % uniform prior
+lang_denom = lang_likelihood * px'; % normalizing denominator for computing posterior for language
+nolang_denom = nolang_likelihood * px'; % normalizing denominator for computing posterior for no language
 lang_posterior = (lang_likelihood .* px) / lang_denom; % Posterior for language
 nolang_posterior = (nolang_likelihood .* px) / nolang_denom; % Posterior for no language
 
@@ -129,7 +134,7 @@ plot(xl, lang_posterior, 'DisplayName', 'x_l');
 hold on;
 plot(xnl, nolang_posterior, 'DisplayName', 'x_{nl}');
 xlabel('x')
-ylabel('p(obs|x)')
+ylabel('p(x|data)')
 title('Posterior distributions')
 legend()
 
@@ -163,7 +168,7 @@ legend()
 
 %%
 % Next we are to compute the upper and lower bounds for 95% confidence
-% interval about the mean. The upper bound will be set by cdf having a
+% intervals. The upper bound will be set by cdf having a
 % value of 0.975 and the lower bound will be set by the cdf having value of
 % 0.025. Therefore, we are interested in finding the first value in the
 % posterior that will result in cdf having value greater than 0.975. This
@@ -171,15 +176,15 @@ legend()
 % value in the posterior that will result in cdf having value lesser than
 % 0.025. This will be the lower bound.
 %%
-lang_low_index = find(lang_cumulative < 0.025, 1, 'last' );
-lang_up_index = find(lang_cumulative > 0.975, 1 );
-nolang_low_index = find(nolang_cumulative < 0.025, 1, 'last' );
-nolang_up_index = find(nolang_cumulative > 0.975, 1 );
+lang_low_index = find(lang_cumulative < 0.025, 1, 'last' ); % Index of lower bound language
+lang_up_index = find(lang_cumulative > 0.975, 1 ); % Index of upper bound language
+nolang_low_index = find(nolang_cumulative < 0.025, 1, 'last' ); % Index of lower bound no language
+nolang_up_index = find(nolang_cumulative > 0.975, 1 ); % Index of upper bound no language
 
-lang_low_limit = lang_posterior(lang_low_index)
-lang_up_limit = lang_posterior(lang_up_index)
-nolang_low_limit = nolang_posterior(nolang_low_index)
-nolang_up_limit = nolang_posterior(nolang_up_index)
+lang_low_limit = lang_posterior(lang_low_index) % Lower limit for language
+lang_up_limit = lang_posterior(lang_up_index) % Upper limit for language
+nolang_low_limit = nolang_posterior(nolang_low_index) % Lower limit for no language
+nolang_up_limit = nolang_posterior(nolang_up_index) % Upper limit for no language
 
 %% d)
 % The joint posterior distribution can be computed by taking an outer
@@ -201,3 +206,41 @@ pxlgxnl = sum(tril(jdf), 'all') % xl > xnl
 pxnlgxl = 1 - pxlgxnl % xl <= xnl
 
 %% e)
+% We can compute P(language | activation) using the Bayes' rule:
+%%
+% $$P(language | activation) = \frac{P(activation | language)\times P(language)}{P(activation | language)\times P(language) + P(activation | no language)\times P(no language)} $$
+%%
+% The priors are:
+%%
+% $$P(language) = P(no language) = 0.5 $$
+%%
+% And the likelihoods are computed in b. Therefore, in terms of variables,
+% we have:
+%%
+% $$P(activation | language) = lang_maxlikelihood_estim $$
+%%
+% $$P(activation | no language) = nolang_maxlikelihood_estim $$
+%%
+
+p_lang = 0.5; % prior probability of language
+p_nolang = 0.5; % prior probability of no language
+p_lang_activ = (lang_maxlikelihood_estim * p_lang) / ...
+    (lang_maxlikelihood_estim * p_lang + nolang_maxlikelihood_estim * p_nolang) % P(language | activation)
+p_nolang_activ = (nolang_maxlikelihood_estim * p_nolang) / ...
+    (lang_maxlikelihood_estim * p_lang + nolang_maxlikelihood_estim * p_nolang) % P(language | activation)
+%%
+% If Poldrack's critique were true, then the Bayes factor would not equate
+% the prior odds. If, however, Poldrack's critique were incorrect, then the
+% Bayes factor would be the same as the prior odds. Computing the Bayes'
+% factor as the ratio of p_lang_activ and p_nolang_activ and comparing it
+% to the prior odds:
+%%
+bayes_factor = p_lang_activ/p_nolang_activ % Bayes' factor
+prior_odds = p_lang/p_nolang % Prior odds
+
+%%
+% As can be seen, the prior odds are 1. However, the Bayes' factor is not
+% 1. Therefore, we can see that Poldrack's critique is correct and can say
+% that activation in a given area does not necessarily indicate that a
+% cognitive process is engaged in language without computing the posterior
+% probability.

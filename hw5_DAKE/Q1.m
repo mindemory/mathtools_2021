@@ -146,11 +146,12 @@ title('Q-Q plot  of sample midpoint')
 % samples drawn from a normal distribution is also normal.
 
 %% d)
-num_samples = 10000;
-samp_size = 256;
+num_samples = 10000; % Sample size
+samp_size = 256; % Dimension of samples
 samples = randn(num_samples, samp_size); % Generating 10000 samples, each of size 256
 
-sub_matrix_sizes = [8, 16, 32, 64, 128, 256];
+sub_matrix_sizes = [8, 16, 32, 64, 128, 256]; % Sub sampling size
+% Intializing variances
 var_mean = zeros(length(sub_matrix_sizes), 1);
 var_median = zeros(length(sub_matrix_sizes), 1);
 var_midpoint = zeros(length(sub_matrix_sizes), 1);
@@ -159,29 +160,31 @@ for i = 1:length(sub_matrix_sizes)
     sub_matrix_size = sub_matrix_sizes(i);
     sub_matrix_indices = randsample(1: samp_size, sub_matrix_size);
     sub_matrix = samples(:, sub_matrix_indices);
-    
+    size(sub_matrix)
     % Computing the unbiased estimators as above:
     sub_matrix_mean = mean(sub_matrix, 2);
     sub_matrix_median = median(sub_matrix, 2);
     sub_matrix_minimum = min(sub_matrix, [], 2);
     sub_matrix_maximum = max(sub_matrix, [], 2);
     sub_matrix_midpoint = (sub_matrix_maximum - sub_matrix_minimum)/2;
+    
+    % Computing the variance for each estimator:
     var_mean(i) = var(sub_matrix_mean);
     var_median(i) = var(sub_matrix_median);
     var_midpoint(i) = var(sub_matrix_midpoint);
     
+    % Theoretical variance is 1/(sub-sample size) as derived in (a).
     theor_var_mean(i) = 1/sub_matrix_size;
-
 end
 
 fig6 = figure();
-plot(log(sub_matrix_sizes), log(var_mean), 'ro-', 'DisplayName', 'Variance of mean');
+loglog(sub_matrix_sizes, var_mean, 'ro-', 'DisplayName', 'Variance of mean');
 hold on;
-plot(log(sub_matrix_sizes), log(var_median), 'ko-', 'DisplayName', 'Variance of median');
-plot(log(sub_matrix_sizes), log(var_midpoint), 'bo-', 'DisplayName', 'Variance of midpoint');
-plot(log(sub_matrix_sizes), log(theor_var_mean), 'go-', 'DisplayName', 'Theoretical variance of mean');
-xlabel('log(sample size)')
-ylabel('log(variance)')
+loglog(sub_matrix_sizes, var_median, 'ko-', 'DisplayName', 'Variance of median');
+loglog(sub_matrix_sizes, var_midpoint, 'bo-', 'DisplayName', 'Variance of midpoint');
+loglog(sub_matrix_sizes, theor_var_mean, 'go-', 'DisplayName', 'Theoretical variance of mean');
+xlabel('Sample size')
+ylabel('Variance')
 title('log-log plot of variance and sample size')
 legend('Location', 'east');
 
@@ -191,5 +194,16 @@ legend('Location', 'east');
 % is not the same for all the three estimators. Specifically, only the
 % variance of average estimator appears to converge with rate 1/N.
 
+%%
+% The difference between the variance of the median estimator and the
+% average estimator is:
+diff_median_mean_estimators = var_median - var_mean
 
-diff_median_mean_estimators = var_median - var_mean;
+%%
+% If the sample size is fixed at 256, the number of replicates will not
+% affect the difference between the variance of the median and the average
+% extrema estimators. Increasing the replicate size would increase the
+% precision of the estimate but the two estimators will not equate just by
+% increasing the number of replicates. In order for the estimators to converge,
+% the sample size needs to be increased as increasing the sample size will
+% bring the estimators converge to the population central tendencies.

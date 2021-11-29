@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q1</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-12"><meta name="DC.source" content="Q1.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>Q1</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-28"><meta name="DC.source" content="Q1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,7 +52,6 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
-span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -78,27 +77,27 @@ xlim([-2.3, 2.3])
 xlabel(<span class="string">'Sample average'</span>)
 ylabel(<span class="string">'Frequency'</span>)
 title(<span class="string">'Histogram of sample averages'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_01.png" alt=""> <p>Each sample is drawn from a normal distribution with mean 0 and variance 1. The average of the samples is obtained by summing the samples and then normalizing them by the number of samples that are drawn. Therefore, the average of the samples is sum of Gaussian distributions with mean 0 and variance 1. Sum of Gaussian random variables is a Gaussian random variable. Therefore, the expected shape of the histogram of sample averages is a Normal distribution. Indeed the histogram exhibits a Normal distribution as can be seen in the figure.</p><p>Let X be the normal distribution with mean 0 and variance = 1. Therefore, we have:</p><p><img src="Q1_eq04757652772046167820.png" alt="$$X \sim N(0, 1) $$"></p><p>where, the mean and variance are:</p><p><img src="Q1_eq03960975947134244669.png" alt="$$\mu = 0 $$, $$\sigma ^2 = 1 $$"></p><p>Let the samples drawn from this distribution be:</p><p><img src="Q1_eq12626281772858632582.png" alt="$$x_1, x_2, ..., x_{N} $$"></p><p>Therefore, the average of the N samples drawn will be:</p><p><img src="Q1_eq15952636984311055452.png" alt="$$\bar{x} = \frac{\sum_i^{N} x_i}{N} $$"></p><p>The variance of the mean will hence be:</p><p><img src="Q1_eq14363992176759505077.png" alt="$$Var(\bar{x}) = Var(\frac{\sum_i^{N} x_i}{N}) $$"></p><p>Now variance of a scaled random variable is the same as the variance of the random variable scaled by square of the scaling factor. Therefore, we can re-write:</p><p><img src="Q1_eq06095717694440782093.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times Var(\sum_i^{N} x_i) $$"></p><p>Now variance of sum of random variables is the sum of variance of each random variable and the sum of covariances of each pair of random variables, i.e.:</p><p><img src="Q1_eq15072527348082793521.png" alt="$$Var(\sum_i^{N} x_i) = \sum_i^{N} Var(x_i) + \sum_{i, j}^N Cov(x_i, x_j)&#xA;$$"></p><p>Here, each sample is drawn independent of each other. Therefore, the covariance of each pair of random variables can be assumed to be 0. Hence, we have:</p><p><img src="Q1_eq07972137634074256462.png" alt="$$Var(\sum_i^{N} x_i) = \sum_i^{N} Var(x_i) $$"></p><p>Substituting back into the equation, we get:</p><p><img src="Q1_eq01354407641840342814.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times \sum_i^{N} Var(x_i) $$"></p><p>Each sample is drawn from X and hence, we have:</p><p><img src="Q1_eq07217619184798308019.png" alt="$$Var(x_i) = \sigma^2 $$"></p><p>Therefore,</p><p><img src="Q1_eq10835851205400288761.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times \sum_i^{N} \sigma^2 $$"></p><p>Therefore,</p><p><img src="Q1_eq08813363110423716071.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times N\times \sigma^2 $$"></p><p>Therefore,</p><p><img src="Q1_eq14340317732039025005.png" alt="$$Var(\bar{x}) = \frac{\sigma^2}{N} $$"></p><p>Because <img src="Q1_eq00931775698867203385.png" alt="$$\sigma ^2 = 1 $$">, the theoretical variance of the average of 10 values is:</p><p><img src="Q1_eq04728122516417841079.png" alt="$$Var(\bar{x}) = \frac{1}{10} = 0.1 $$"></p><p>The empirical variance of the 10000 estimates is:</p><pre class="codeinput">var_estimate = var(samples_mean)
+</pre><img vspace="5" hspace="5" src="Q1_01.png" alt=""> <p>Each sample is drawn from a normal distribution with mean 0 and variance 1. The average of the samples is obtained by summing the samples and then normalizing them by the number of samples that are drawn. Therefore, the average of the samples is sum of Gaussian distributions with mean 0 and variance 1. Sum of Gaussian random variables is a Gaussian random variable. Therefore, the expected shape of the histogram of sample averages is a Normal distribution. Indeed the histogram exhibits a Normal distribution as can be seen in the figure.</p><p>Let X be the normal distribution with mean 0 and variance = 1. Therefore, we have:</p><p><img src="Q1_eq04757652772046167820.png" alt="$$X \sim N(0, 1) $$" style="width:58px;height:11px;"></p><p>where, the mean and variance are:</p><p><img src="Q1_eq03960975947134244669.png" alt="$$\mu = 0 $$, $$\sigma ^2 = 1 $$" style="width:64px;height:13px;"></p><p>Let the samples drawn from this distribution be:</p><p><img src="Q1_eq12626281772858632582.png" alt="$$x_1, x_2, ..., x_{N} $$" style="width:59px;height:8px;"></p><p>Therefore, the average of the N samples drawn will be:</p><p><img src="Q1_eq15952636984311055452.png" alt="$$\bar{x} = \frac{\sum_i^{N} x_i}{N} $$" style="width:53px;height:26px;"></p><p>The variance of the mean will hence be:</p><p><img src="Q1_eq14363992176759505077.png" alt="$$Var(\bar{x}) = Var(\frac{\sum_i^{N} x_i}{N}) $$" style="width:110px;height:26px;"></p><p>Now variance of a scaled random variable is the same as the variance of the random variable scaled by square of the scaling factor. Therefore, we can re-write:</p><p><img src="Q1_eq06095717694440782093.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times Var(\sum_i^{N} x_i) $$" style="width:134px;height:33px;"></p><p>Now variance of sum of random variables is the sum of variance of each random variable and the sum of covariances of each pair of random variables, i.e.:</p><p><img src="Q1_eq15072527348082793521.png" alt="$$Var(\sum_i^{N} x_i) = \sum_i^{N} Var(x_i) + \sum_{i, j}^N Cov(x_i, x_j)&#xA;$$" style="width:209px;height:34px;"></p><p>Here, each sample is drawn independent of each other. Therefore, the covariance of each pair of random variables can be assumed to be 0. Hence, we have:</p><p><img src="Q1_eq07972137634074256462.png" alt="$$Var(\sum_i^{N} x_i) = \sum_i^{N} Var(x_i) $$" style="width:125px;height:33px;"></p><p>Substituting back into the equation, we get:</p><p><img src="Q1_eq01354407641840342814.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times \sum_i^{N} Var(x_i) $$" style="width:134px;height:33px;"></p><p>Each sample is drawn from X and hence, we have:</p><p><img src="Q1_eq07217619184798308019.png" alt="$$Var(x_i) = \sigma^2 $$" style="width:63px;height:13px;"></p><p>Therefore,</p><p><img src="Q1_eq10835851205400288761.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times \sum_i^{N} \sigma^2 $$" style="width:108px;height:33px;"></p><p>Therefore,</p><p><img src="Q1_eq08813363110423716071.png" alt="$$Var(\bar{x}) = \frac{1}{N^2}\times N\times \sigma^2 $$" style="width:113px;height:23px;"></p><p>Therefore,</p><p><img src="Q1_eq14340317732039025005.png" alt="$$Var(\bar{x}) = \frac{\sigma^2}{N} $$" style="width:62px;height:25px;"></p><p>Because <img src="Q1_eq00931775698867203385.png" alt="$$\sigma ^2 = 1 $$" style="width:30px;height:10px;">, the theoretical variance of the average of 10 values is:</p><p><img src="Q1_eq04728122516417841079.png" alt="$$Var(\bar{x}) = \frac{1}{10} = 0.1 $$" style="width:91px;height:23px;"></p><p>The empirical variance of the 10000 estimates is:</p><pre class="codeinput">var_estimate = var(samples_mean)
 </pre><pre class="codeoutput">
 var_estimate =
 
-    0.0964
+    0.1005
 
-</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <p>As can be seen, indeed the empirical variance of the 10000 estimates is close to the theoretically predicted variance of the average of 10 values.</p><h2 id="35">b)</h2><pre class="codeinput">samples_median = median(samples, 2); <span class="comment">% Computing median of each sample</span>
+</pre><p>As can be seen, indeed the empirical variance of the 10000 estimates is close to the theoretically predicted variance of the average of 10 values.</p><h2 id="35">b)</h2><pre class="codeinput">samples_median = median(samples, 2); <span class="comment">% Computing median of each sample</span>
 fig2 = figure();
 histogram(samples_median, 50) <span class="comment">% Plotting a histogram of the resulting estimates</span>
 xlim([-2.3, 2.3])
 xlabel(<span class="string">'Sample median'</span>)
 ylabel(<span class="string">'Frequency'</span>)
 title(<span class="string">'Histogram of sample median'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_03.png" alt=""> <img vspace="5" hspace="5" src="Q1_04.png" alt=""> <p>The histogram of sample medians also exhibits a normal distribution</p><pre class="codeinput">fig3 = figure();
+</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <p>The histogram of sample medians also exhibits a normal distribution</p><pre class="codeinput">fig3 = figure();
 subplot(1, 2, 1)
 normplot(samples_mean)
 title(<span class="string">'Q-Q plot  of sample mean'</span>)
 subplot(1, 2, 2)
 normplot(samples_median)
 title(<span class="string">'Q-Q plot of sample median'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_05.png" alt=""> <p>From the Q-Q plots, we see that for both sample mean and sample median, the Q-Q plots has points lie very close to the straight line with almost no deviation. Hence, we can say that both the distribution of sample mean and the distribution of sample median follow Normal distributions.</p><h2 id="39">c)</h2><pre class="codeinput">samples_minimum = min(samples, [], 2); <span class="comment">% Computing minimum of each sample</span>
+</pre><img vspace="5" hspace="5" src="Q1_03.png" alt=""> <p>From the Q-Q plots, we see that for both sample mean and sample median, the Q-Q plots has points lie very close to the straight line with almost no deviation. Hence, we can say that both the distribution of sample mean and the distribution of sample median follow Normal distributions.</p><h2 id="39">c)</h2><pre class="codeinput">samples_minimum = min(samples, [], 2); <span class="comment">% Computing minimum of each sample</span>
 samples_maximum = max(samples, [], 2); <span class="comment">% Computing maximum of each sample</span>
 samples_midpoint = (samples_minimum + samples_maximum)/2; <span class="comment">% Computing midpoint of each sample</span>
 fig4 = figure();
@@ -111,43 +110,89 @@ title(<span class="string">'Histogram of sample midpoints'</span>)
 fig5 = figure();
 normplot(samples_midpoint)
 title(<span class="string">'Q-Q plot  of sample midpoint'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <img vspace="5" hspace="5" src="Q1_07.png" alt=""> <p>From the histogram, we can see that the distribution of sample midpoints also appears to be normal. Additionally, from the Q-Q plot we can see that the points lie very close to the straight line with almost no deviation. And hence we confirm that the distribution of midpoints of samples drawn from a normal distribution is also normal.</p><h2 id="41">d)</h2><pre class="codeinput">num_samples = 10000;
-samp_size = 256;
-samples = randn(num_samples, samp_size); <span class="comment">% Generating 10000 samples, each of size 10</span>
+</pre><img vspace="5" hspace="5" src="Q1_04.png" alt=""> <img vspace="5" hspace="5" src="Q1_05.png" alt=""> <p>From the histogram, we can see that the distribution of sample midpoints also appears to be normal. Additionally, from the Q-Q plot we can see that the points lie very close to the straight line with almost no deviation. And hence we confirm that the distribution of midpoints of samples drawn from a normal distribution is also normal.</p><h2 id="41">d)</h2><pre class="codeinput">num_samples = 10000; <span class="comment">% Sample size</span>
+samp_size = 256; <span class="comment">% Dimension of samples</span>
+samples = randn(num_samples, samp_size); <span class="comment">% Generating 10000 samples, each of size 256</span>
 
-sub_matrix_sizes = [8, 16, 32, 64, 128, 256];
+sub_matrix_sizes = [8, 16, 32, 64, 128, 256]; <span class="comment">% Sub sampling size</span>
+<span class="comment">% Intializing variances</span>
 var_mean = zeros(length(sub_matrix_sizes), 1);
 var_median = zeros(length(sub_matrix_sizes), 1);
 var_midpoint = zeros(length(sub_matrix_sizes), 1);
-theor_var_mean = 1/samp_size * ones(length(sub_matrix_sizes), 1);
+theor_var_mean = zeros(length(sub_matrix_sizes), 1);
 <span class="keyword">for</span> i = 1:length(sub_matrix_sizes)
     sub_matrix_size = sub_matrix_sizes(i);
     sub_matrix_indices = randsample(1: samp_size, sub_matrix_size);
-    sub_matrix = samples(sub_matrix_indices, :);
-
+    sub_matrix = samples(:, sub_matrix_indices);
+    size(sub_matrix)
     <span class="comment">% Computing the unbiased estimators as above:</span>
     sub_matrix_mean = mean(sub_matrix, 2);
     sub_matrix_median = median(sub_matrix, 2);
     sub_matrix_minimum = min(sub_matrix, [], 2);
     sub_matrix_maximum = max(sub_matrix, [], 2);
     sub_matrix_midpoint = (sub_matrix_maximum - sub_matrix_minimum)/2;
+
+    <span class="comment">% Computing the variance for each estimator:</span>
     var_mean(i) = var(sub_matrix_mean);
     var_median(i) = var(sub_matrix_median);
     var_midpoint(i) = var(sub_matrix_midpoint);
+
+    <span class="comment">% Theoretical variance is 1/(sub-sample size) as derived in (a).</span>
+    theor_var_mean(i) = 1/sub_matrix_size;
 <span class="keyword">end</span>
 
 fig6 = figure();
-plot(log(sub_matrix_sizes), log(var_mean), <span class="string">'ro-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of mean'</span>);
+loglog(sub_matrix_sizes, var_mean, <span class="string">'ro-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of mean'</span>);
 hold <span class="string">on</span>;
-plot(log(sub_matrix_sizes), log(var_median), <span class="string">'ko-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of median'</span>);
-plot(log(sub_matrix_sizes), log(var_midpoint), <span class="string">'bo-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of midpoint'</span>);
-plot(log(sub_matrix_sizes), log(theor_var_mean), <span class="string">'go-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Theoretical variance of mean'</span>);
-xlabel(<span class="string">'log(sample size)'</span>)
-ylabel(<span class="string">'log(variance)'</span>)
+loglog(sub_matrix_sizes, var_median, <span class="string">'ko-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of median'</span>);
+loglog(sub_matrix_sizes, var_midpoint, <span class="string">'bo-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Variance of midpoint'</span>);
+loglog(sub_matrix_sizes, theor_var_mean, <span class="string">'go-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'Theoretical variance of mean'</span>);
+xlabel(<span class="string">'Sample size'</span>)
+ylabel(<span class="string">'Variance'</span>)
 title(<span class="string">'log-log plot of variance and sample size'</span>)
 legend(<span class="string">'Location'</span>, <span class="string">'east'</span>);
-</pre><img vspace="5" hspace="5" src="Q1_08.png" alt=""> <pre class="codeinput">diff_median_mean_estimators = var_median - var_mean;
-</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+</pre><pre class="codeoutput">
+ans =
+
+       10000           8
+
+
+ans =
+
+       10000          16
+
+
+ans =
+
+       10000          32
+
+
+ans =
+
+       10000          64
+
+
+ans =
+
+       10000         128
+
+
+ans =
+
+       10000         256
+
+</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <p>From the graph, we can see that although the variance of all the three estimators appears to converge with sample size, the rate of convergence is not the same for all the three estimators. Specifically, only the variance of average estimator appears to converge with rate 1/N.</p><p>The difference between the variance of the median estimator and the average estimator is:</p><pre class="codeinput">diff_median_mean_estimators = var_median - var_mean
+</pre><pre class="codeoutput">
+diff_median_mean_estimators =
+
+    0.0411
+    0.0288
+    0.0163
+    0.0086
+    0.0043
+    0.0023
+
+</pre><p>If the sample size is fixed at 256, the number of replicates will not affect the difference between the variance of the median and the average extrema estimators. Increasing the replicate size would increase the precision of the estimate but the two estimators will not equate just by increasing the number of replicates. In order for the estimators to converge, the sample size needs to be increased as increasing the sample size will bring the estimators converge to the population central tendencies.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
@@ -297,43 +342,66 @@ title('Q-Q plot  of sample midpoint')
 % samples drawn from a normal distribution is also normal.
 
 %% d)
-num_samples = 10000;
-samp_size = 256;
-samples = randn(num_samples, samp_size); % Generating 10000 samples, each of size 10
+num_samples = 10000; % Sample size
+samp_size = 256; % Dimension of samples
+samples = randn(num_samples, samp_size); % Generating 10000 samples, each of size 256
 
-sub_matrix_sizes = [8, 16, 32, 64, 128, 256];
+sub_matrix_sizes = [8, 16, 32, 64, 128, 256]; % Sub sampling size
+% Intializing variances
 var_mean = zeros(length(sub_matrix_sizes), 1);
 var_median = zeros(length(sub_matrix_sizes), 1);
 var_midpoint = zeros(length(sub_matrix_sizes), 1);
-theor_var_mean = 1/samp_size * ones(length(sub_matrix_sizes), 1);
+theor_var_mean = zeros(length(sub_matrix_sizes), 1);
 for i = 1:length(sub_matrix_sizes)
     sub_matrix_size = sub_matrix_sizes(i);
     sub_matrix_indices = randsample(1: samp_size, sub_matrix_size);
-    sub_matrix = samples(sub_matrix_indices, :);
-    
+    sub_matrix = samples(:, sub_matrix_indices);
+    size(sub_matrix)
     % Computing the unbiased estimators as above:
     sub_matrix_mean = mean(sub_matrix, 2);
     sub_matrix_median = median(sub_matrix, 2);
     sub_matrix_minimum = min(sub_matrix, [], 2);
     sub_matrix_maximum = max(sub_matrix, [], 2);
     sub_matrix_midpoint = (sub_matrix_maximum - sub_matrix_minimum)/2;
+    
+    % Computing the variance for each estimator:
     var_mean(i) = var(sub_matrix_mean);
     var_median(i) = var(sub_matrix_median);
     var_midpoint(i) = var(sub_matrix_midpoint);
+    
+    % Theoretical variance is 1/(sub-sample size) as derived in (a).
+    theor_var_mean(i) = 1/sub_matrix_size;
 end
 
 fig6 = figure();
-plot(log(sub_matrix_sizes), log(var_mean), 'ro-', 'DisplayName', 'Variance of mean');
+loglog(sub_matrix_sizes, var_mean, 'ro-', 'DisplayName', 'Variance of mean');
 hold on;
-plot(log(sub_matrix_sizes), log(var_median), 'ko-', 'DisplayName', 'Variance of median');
-plot(log(sub_matrix_sizes), log(var_midpoint), 'bo-', 'DisplayName', 'Variance of midpoint');
-plot(log(sub_matrix_sizes), log(theor_var_mean), 'go-', 'DisplayName', 'Theoretical variance of mean');
-xlabel('log(sample size)')
-ylabel('log(variance)')
+loglog(sub_matrix_sizes, var_median, 'ko-', 'DisplayName', 'Variance of median');
+loglog(sub_matrix_sizes, var_midpoint, 'bo-', 'DisplayName', 'Variance of midpoint');
+loglog(sub_matrix_sizes, theor_var_mean, 'go-', 'DisplayName', 'Theoretical variance of mean');
+xlabel('Sample size')
+ylabel('Variance')
 title('log-log plot of variance and sample size')
 legend('Location', 'east');
 
 %%
-diff_median_mean_estimators = var_median - var_mean;
+% From the graph, we can see that although the variance of all the three
+% estimators appears to converge with sample size, the rate of convergence
+% is not the same for all the three estimators. Specifically, only the
+% variance of average estimator appears to converge with rate 1/N.
+
+%%
+% The difference between the variance of the median estimator and the
+% average estimator is:
+diff_median_mean_estimators = var_median - var_mean
+
+%%
+% If the sample size is fixed at 256, the number of replicates will not
+% affect the difference between the variance of the median and the average
+% extrema estimators. Increasing the replicate size would increase the
+% precision of the estimate but the two estimators will not equate just by
+% increasing the number of replicates. In order for the estimators to converge,
+% the sample size needs to be increased as increasing the sample size will
+% bring the estimators converge to the population central tendencies.
 ##### SOURCE END #####
 --></body></html>
