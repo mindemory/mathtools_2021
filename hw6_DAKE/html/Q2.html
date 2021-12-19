@@ -1,0 +1,472 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-17"><meta name="DC.source" content="Q2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li><li><a href="#4">c)</a></li><li><a href="#5">d)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><pre class="codeinput">load(<span class="string">'fisherData.mat'</span>)
+mean_data1 = mean(data1);
+mean_data2 = mean(data2);
+w = mean_data2 - mean_data1;
+w_norm = sqrt(sum(w.^2));
+w_hat = w./w_norm;
+midpoint_data = (mean_data1 + mean_data2)/2;
+
+figure();
+scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
+hold <span class="string">on</span>;
+scatter(data2(:, 1), data2(:, 2), <span class="string">'ro'</span>, <span class="string">'DisplayName'</span>, <span class="string">'cat vocalizations'</span>);
+
+plot([midpoint_data(1) - w_hat(1)/2, midpoint_data(1) + w_hat(1)/2], <span class="keyword">...</span>
+    [midpoint_data(2) - w_hat(2)/2, midpoint_data(2) + w_hat(2)/2], <span class="keyword">...</span>
+    <span class="string">'m-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'w hat'</span>, <span class="string">'LineWidth'</span>, 1.5)
+axis <span class="string">equal</span>;
+x_dec_boundary = xlim;
+y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat);
+
+plot(x_dec_boundary, y_dec_boundary, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'boundary'</span>)
+set(gca, <span class="string">'FontSize'</span>, 14)
+set(gca, <span class="string">'LineWidth'</span>, 2)
+xlim(x_dec_boundary)
+title(<span class="string">'Prototype Classifier'</span>)
+legend(<span class="string">'Location'</span>, <span class="string">'northeastoutside'</span>);
+
+frac_correctly_classified = classification_performance(data1, <span class="keyword">...</span>
+    data2, x_dec_boundary, y_dec_boundary, w_hat)
+</pre><pre class="codeoutput">
+frac_correctly_classified =
+
+    0.7357
+
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <h2 id="3">b)</h2><pre class="codeinput"><span class="comment">%cov_data1 = (data1' * data1)./(size(data1 , 1) - 1);</span>
+<span class="comment">%cov_data2 = (data2' * data2)./(size(data2, 1) - 1);</span>
+cov_data1 = cov(data1); cov_data2 = cov(data2);
+cov_combined = (cov_data1 + cov_data2)/2;
+w_hat_fisch = cov_combined \ w';<span class="comment">% \ cov_combined;</span>
+
+figure();
+scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
+hold <span class="string">on</span>;
+scatter(data2(:, 1), data2(:, 2), <span class="string">'ro'</span>, <span class="string">'DisplayName'</span>, <span class="string">'cat vocalizations'</span>);
+
+plot([midpoint_data(1) - w_hat_fisch(1)/2, midpoint_data(1) + w_hat_fisch(1)/2], <span class="keyword">...</span>
+    [midpoint_data(2) - w_hat_fisch(2)/2, midpoint_data(2) + w_hat_fisch(2)/2], <span class="keyword">...</span>
+    <span class="string">'m-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'w hat'</span>, <span class="string">'LineWidth'</span>, 1.5)
+axis <span class="string">equal</span>;
+
+x_dec_boundary = xlim;
+y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat_fisch);
+
+plot(x_dec_boundary, y_dec_boundary, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'boundary'</span>)
+set(gca, <span class="string">'FontSize'</span>, 14)
+set(gca, <span class="string">'LineWidth'</span>, 2)
+xlim(x_dec_boundary)
+title(<span class="string">"Fischer's Linear Discriminant Classifier"</span>)
+legend(<span class="string">'Location'</span>, <span class="string">'northeastoutside'</span>)
+
+frac_correctly_classified = classification_performance(data1, <span class="keyword">...</span>
+    data2, x_dec_boundary, y_dec_boundary, w_hat_fisch)
+</pre><pre class="codeoutput">
+frac_correctly_classified =
+
+    0.7571
+
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <h2 id="4">c)</h2><pre class="codeinput">lambdas = 0:0.05:1;
+runs = 1e3;
+
+train_size = floor(0.95 * size(data1, 1));
+frac_correctly_classified_cv = zeros(length(lambdas), runs);
+<span class="keyword">for</span> run = 1:runs
+    <span class="keyword">for</span> ll = 1:length(lambdas)
+        lambda = lambdas(ll);
+
+        train1_indices = randperm(size(data1, 1), train_size);
+        test1_indices = setdiff(1:size(data1, 1), train1_indices);
+        train2_indices = randperm(size(data2, 1), train_size);
+        test2_indices = setdiff(1:size(data2, 1), train2_indices);
+
+        train1 = data1(train1_indices, :);
+        train2 = data2(train2_indices, :);
+        test1 = data1(test1_indices, :);
+        test2 = data2(test2_indices, :);
+
+        mean_train1 = mean(train1);
+        mean_train2 = mean(train2);
+        w = mean_train2 - mean_train1;
+        w = w./sqrt(sum(w.^2));
+
+        midpoint_train = (mean_train1 + mean_train2)/2;
+
+        <span class="comment">%cov_train1 = (train1' * train1)./(size(train1, 1) - 1);</span>
+        <span class="comment">%cov_train2 = (train2' * train2)./(size(train2, 1) - 1);</span>
+        cov_train1 = cov(train1); cov_train2 = cov(train2);
+        cov_combined = (cov_train1 + cov_train2)/2;
+
+        cov_estimated = (1 - lambda) .* cov_combined + lambda .* eye(2);
+        w_hat_estim = cov_estimated \ w';<span class="comment">% \ cov_estimated;</span>
+
+        x_dec_boundary = xlim;
+        y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_train, <span class="keyword">...</span>
+            w_hat_estim);
+
+        frac_correctly_classified_cv(ll, run) = classification_performance(test1, <span class="keyword">...</span>
+            test2, x_dec_boundary, y_dec_boundary, w_hat_estim);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+frac_correctly_classified_mean = mean(frac_correctly_classified_cv, 2);
+frac_correctly_classified_stderror = std(frac_correctly_classified_cv, 0, 2)<span class="keyword">...</span>
+    ./sqrt(size(frac_correctly_classified_mean, 1));
+
+figure()
+errorbar(lambdas, frac_correctly_classified_mean, frac_correctly_classified_stderror)
+xlabel(<span class="string">'\lambda'</span>)
+ylabel(<span class="string">'proportion correctly classified'</span>)
+title(<span class="string">"Fischer's Linear Discriminant Classifier cross-validation"</span>)
+</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <h2 id="5">d)</h2><pre class="codeinput">figure();
+scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
+hold <span class="string">on</span>;
+scatter(data2(:, 1), data2(:, 2), <span class="string">'ro'</span>, <span class="string">'DisplayName'</span>, <span class="string">'cat vocalizations'</span>);
+
+xx_ = xlim;
+yy_ = ylim;
+pps = 4*1e2;
+xx = linspace(xx_(1), xx_(2), pps);
+yy = linspace(yy_(1), yy_(2), pps);
+[X, Y] = meshgrid(xx, yy);
+XY = [X(:) Y(:)];
+p1 = mvnpdf(XY, mean_data1, cov_data1);
+p2 = mvnpdf(XY, mean_data2, cov_data2);
+diff_p = p1 - p2;
+scatter(XY(:, 1), XY(:, 2), [], diff_p, <span class="string">'MarkerFaceAlpha'</span>, 0.2, <span class="keyword">...</span>
+    <span class="string">'MarkerEdgeAlpha'</span>, 0.2)
+
+dec_x = zeros(length(diff_p), 1);
+dec_y = zeros(length(diff_p), 1);
+<span class="keyword">for</span> i = 1:length(diff_p)
+    <span class="keyword">if</span> diff_p(i) &lt;= 0.01
+        dec_x(i) = XY(i, 1);
+        dec_y(i) = XY(i, 2);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+plot(dec_x, dec_y, <span class="string">'k*'</span>)
+</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <pre class="codeinput">p1_data1 = mvnpdf(data1, mean_data1, cov_data1);
+p2_data1 = mvnpdf(data1, mean_data2, cov_data2);
+p1_data2 = mvnpdf(data2, mean_data1, cov_data2);
+p2_data2 = mvnpdf(data2, mean_data2, cov_data2);
+
+correct_data1 = sum(p1_data1 &gt; p2_data1);
+correct_data2 = sum(p2_data2 &gt; p1_data2);
+
+frac_correctly_classified = (correct_data1 + correct_data2)./<span class="keyword">...</span>
+    (2 * size(data1, 1))
+</pre><pre class="codeoutput">
+frac_correctly_classified =
+
+    0.8143
+
+</pre><pre class="codeinput"><span class="keyword">function</span> samples = nRandn(mean, cov, num)
+    <span class="comment">% The function draws samples from an N-dimensional normal distribution.</span>
+    <span class="comment">% It does so my first drawing samples from an N-dimensional normal</span>
+    <span class="comment">% distribution of 0 mean and identity covariance matrix. It then</span>
+    <span class="comment">% transforms the data using a matrix M to have the covariance "cov".</span>
+    <span class="comment">% Lastly, it translates the data to have the mean "mean".</span>
+
+    N = length(mean);
+    [V, D] = eig(cov);  <span class="comment">% Eigen value decomposition of covariance matrix</span>
+    M = V * sqrt(D); <span class="comment">% Transformation matrix is given as product of V and square-root of eigenvalues</span>
+    samp = randn(num, N); <span class="comment">% Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix</span>
+    samples = repmat(mean, num , 1) + samp * M';
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> y_dec_boundary = decision_boundary(x_dec_boundary, <span class="keyword">...</span>
+    midpoint_data, w_hat)
+
+    dec_boundary_slope = -(w_hat(1))/(w_hat(2));
+    y_dec_boundary(1) = midpoint_data(2) + dec_boundary_slope * <span class="keyword">...</span>
+        (x_dec_boundary(1) - midpoint_data(1));
+    y_dec_boundary(2) = midpoint_data(2) + dec_boundary_slope * <span class="keyword">...</span>
+        (x_dec_boundary(2) - midpoint_data(1));
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> frac_correctly_classified = classification_performance(data1, <span class="keyword">...</span>
+    data2, x_dec_boundary, y_dec_boundary, w_hat)
+
+    dec_boundary_slope = -(w_hat(1))/(w_hat(2));
+    x_ones = ones(size(data1(:, 1))) .* x_dec_boundary(1);
+    y_ones = ones(size(data1(:, 1))) .* y_dec_boundary(1);
+    y_data1 = y_ones + dec_boundary_slope * (data1(:, 1) - x_ones);
+    y_data2 = y_ones + dec_boundary_slope * (data2(:, 1) - x_ones);
+    correct_data1 = sum(y_data1 &gt;= data1(:, 2));
+    correct_data2 = sum(y_data2 &lt;= data2(:, 2));
+    frac_correctly_classified = (correct_data1 + correct_data2)./<span class="keyword">...</span>
+        (2 * size(data1, 1));
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+load('fisherData.mat')
+mean_data1 = mean(data1);
+mean_data2 = mean(data2);
+w = mean_data2 - mean_data1;
+w_norm = sqrt(sum(w.^2));
+w_hat = w./w_norm;
+midpoint_data = (mean_data1 + mean_data2)/2;
+
+figure();
+scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
+hold on;
+scatter(data2(:, 1), data2(:, 2), 'ro', 'DisplayName', 'cat vocalizations');
+
+plot([midpoint_data(1) - w_hat(1)/2, midpoint_data(1) + w_hat(1)/2], ...
+    [midpoint_data(2) - w_hat(2)/2, midpoint_data(2) + w_hat(2)/2], ...
+    'm-', 'DisplayName', 'w hat', 'LineWidth', 1.5)
+axis equal;
+x_dec_boundary = xlim;
+y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat);
+
+plot(x_dec_boundary, y_dec_boundary, 'k-', 'LineWidth', 2, ...
+    'DisplayName', 'boundary')
+set(gca, 'FontSize', 14)
+set(gca, 'LineWidth', 2)
+xlim(x_dec_boundary)
+title('Prototype Classifier')
+legend('Location', 'northeastoutside');
+
+frac_correctly_classified = classification_performance(data1, ...
+    data2, x_dec_boundary, y_dec_boundary, w_hat)
+
+%% b)
+%cov_data1 = (data1' * data1)./(size(data1 , 1) - 1);
+%cov_data2 = (data2' * data2)./(size(data2, 1) - 1);
+cov_data1 = cov(data1); cov_data2 = cov(data2);
+cov_combined = (cov_data1 + cov_data2)/2;
+w_hat_fisch = cov_combined \ w';% \ cov_combined;
+
+figure();
+scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
+hold on;
+scatter(data2(:, 1), data2(:, 2), 'ro', 'DisplayName', 'cat vocalizations');
+
+plot([midpoint_data(1) - w_hat_fisch(1)/2, midpoint_data(1) + w_hat_fisch(1)/2], ...
+    [midpoint_data(2) - w_hat_fisch(2)/2, midpoint_data(2) + w_hat_fisch(2)/2], ...
+    'm-', 'DisplayName', 'w hat', 'LineWidth', 1.5)
+axis equal;
+
+x_dec_boundary = xlim;
+y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat_fisch);
+
+plot(x_dec_boundary, y_dec_boundary, 'k-', 'LineWidth', 2, ...
+    'DisplayName', 'boundary')
+set(gca, 'FontSize', 14)
+set(gca, 'LineWidth', 2)
+xlim(x_dec_boundary)
+title("Fischer's Linear Discriminant Classifier")
+legend('Location', 'northeastoutside')
+
+frac_correctly_classified = classification_performance(data1, ...
+    data2, x_dec_boundary, y_dec_boundary, w_hat_fisch)
+
+%% c)
+lambdas = 0:0.05:1;
+runs = 1e3;
+
+train_size = floor(0.95 * size(data1, 1));
+frac_correctly_classified_cv = zeros(length(lambdas), runs);
+for run = 1:runs
+    for ll = 1:length(lambdas)
+        lambda = lambdas(ll);
+        
+        train1_indices = randperm(size(data1, 1), train_size);
+        test1_indices = setdiff(1:size(data1, 1), train1_indices);
+        train2_indices = randperm(size(data2, 1), train_size);
+        test2_indices = setdiff(1:size(data2, 1), train2_indices);
+        
+        train1 = data1(train1_indices, :);
+        train2 = data2(train2_indices, :);
+        test1 = data1(test1_indices, :);
+        test2 = data2(test2_indices, :);
+    
+        mean_train1 = mean(train1);
+        mean_train2 = mean(train2);
+        w = mean_train2 - mean_train1;
+        w = w./sqrt(sum(w.^2));
+    
+        midpoint_train = (mean_train1 + mean_train2)/2;
+    
+        %cov_train1 = (train1' * train1)./(size(train1, 1) - 1);
+        %cov_train2 = (train2' * train2)./(size(train2, 1) - 1);
+        cov_train1 = cov(train1); cov_train2 = cov(train2);
+        cov_combined = (cov_train1 + cov_train2)/2;
+    
+        cov_estimated = (1 - lambda) .* cov_combined + lambda .* eye(2);
+        w_hat_estim = cov_estimated \ w';% \ cov_estimated;
+    
+        x_dec_boundary = xlim;
+        y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_train, ...
+            w_hat_estim);
+    
+        frac_correctly_classified_cv(ll, run) = classification_performance(test1, ...
+            test2, x_dec_boundary, y_dec_boundary, w_hat_estim);
+    end
+end
+
+frac_correctly_classified_mean = mean(frac_correctly_classified_cv, 2);
+frac_correctly_classified_stderror = std(frac_correctly_classified_cv, 0, 2)...
+    ./sqrt(size(frac_correctly_classified_mean, 1));
+
+figure()
+errorbar(lambdas, frac_correctly_classified_mean, frac_correctly_classified_stderror)
+xlabel('\lambda')
+ylabel('proportion correctly classified')
+title("Fischer's Linear Discriminant Classifier cross-validation")
+
+%% d)
+figure();
+scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
+hold on;
+scatter(data2(:, 1), data2(:, 2), 'ro', 'DisplayName', 'cat vocalizations');
+
+xx_ = xlim;
+yy_ = ylim;
+pps = 4*1e2;
+xx = linspace(xx_(1), xx_(2), pps);
+yy = linspace(yy_(1), yy_(2), pps);
+[X, Y] = meshgrid(xx, yy);
+XY = [X(:) Y(:)];
+p1 = mvnpdf(XY, mean_data1, cov_data1);
+p2 = mvnpdf(XY, mean_data2, cov_data2);
+diff_p = p1 - p2;
+scatter(XY(:, 1), XY(:, 2), [], diff_p, 'MarkerFaceAlpha', 0.2, ...
+    'MarkerEdgeAlpha', 0.2)
+
+dec_x = zeros(length(diff_p), 1);
+dec_y = zeros(length(diff_p), 1);
+for i = 1:length(diff_p)
+    if diff_p(i) <= 0.01
+        dec_x(i) = XY(i, 1);
+        dec_y(i) = XY(i, 2);
+    end
+end
+plot(dec_x, dec_y, 'k*')
+
+%%
+p1_data1 = mvnpdf(data1, mean_data1, cov_data1);
+p2_data1 = mvnpdf(data1, mean_data2, cov_data2);
+p1_data2 = mvnpdf(data2, mean_data1, cov_data2);
+p2_data2 = mvnpdf(data2, mean_data2, cov_data2);
+
+correct_data1 = sum(p1_data1 > p2_data1);
+correct_data2 = sum(p2_data2 > p1_data2);
+
+frac_correctly_classified = (correct_data1 + correct_data2)./...
+    (2 * size(data1, 1))
+%%
+
+function samples = nRandn(mean, cov, num)
+    % The function draws samples from an N-dimensional normal distribution.
+    % It does so my first drawing samples from an N-dimensional normal
+    % distribution of 0 mean and identity covariance matrix. It then
+    % transforms the data using a matrix M to have the covariance "cov".
+    % Lastly, it translates the data to have the mean "mean".
+
+    N = length(mean);
+    [V, D] = eig(cov);  % Eigen value decomposition of covariance matrix
+    M = V * sqrt(D); % Transformation matrix is given as product of V and square-root of eigenvalues
+    samp = randn(num, N); % Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix
+    samples = repmat(mean, num , 1) + samp * M';
+end
+
+function y_dec_boundary = decision_boundary(x_dec_boundary, ...
+    midpoint_data, w_hat)
+
+    dec_boundary_slope = -(w_hat(1))/(w_hat(2));
+    y_dec_boundary(1) = midpoint_data(2) + dec_boundary_slope * ...
+        (x_dec_boundary(1) - midpoint_data(1));
+    y_dec_boundary(2) = midpoint_data(2) + dec_boundary_slope * ...
+        (x_dec_boundary(2) - midpoint_data(1));
+end
+
+function frac_correctly_classified = classification_performance(data1, ...
+    data2, x_dec_boundary, y_dec_boundary, w_hat)
+    
+    dec_boundary_slope = -(w_hat(1))/(w_hat(2));
+    x_ones = ones(size(data1(:, 1))) .* x_dec_boundary(1);
+    y_ones = ones(size(data1(:, 1))) .* y_dec_boundary(1);
+    y_data1 = y_ones + dec_boundary_slope * (data1(:, 1) - x_ones);
+    y_data2 = y_ones + dec_boundary_slope * (data2(:, 1) - x_ones);
+    correct_data1 = sum(y_data1 >= data1(:, 2));
+    correct_data2 = sum(y_data2 <= data2(:, 2));
+    frac_correctly_classified = (correct_data1 + correct_data2)./...
+        (2 * size(data1, 1));
+end
+##### SOURCE END #####
+--></body></html>

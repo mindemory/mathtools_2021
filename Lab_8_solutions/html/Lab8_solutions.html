@@ -1,0 +1,1158 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab8_solutions</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-11-19"><meta name="DC.source" content="Lab8_solutions.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Exercise 1: Estimate the probability of heads, by observing samples</a></li><li><a href="#3">Exercise 1. continued</a></li><li><a href="#4">Exercise 2. Estimate the posterior probability of the coin getting heads</a></li><li><a href="#5">Exercise 2. continued</a></li><li><a href="#6">Exercise 3: Simulate 2IFC</a></li><li><a href="#7">Exercise 3. continued</a></li><li><a href="#8">Exercise 4: Fitting a psychometric curve to the fake data</a></li><li><a href="#9">Exercise 4. continued</a></li><li><a href="#10">Exercise 5: Bootstrapping</a></li><li><a href="#11">Exercise 5. continued</a></li><li><a href="#12">Fun demo: SDT</a></li></ul></div><pre class="codeinput"><span class="comment">%MathTools Lab 8</span>
+clear <span class="string">all</span>; close <span class="string">all</span>; clc; rng(1);
+</pre><h2 id="2">Exercise 1: Estimate the probability of heads, by observing samples</h2><pre class="codeinput"><span class="comment">%Assume we have a unfair coin, the chance of getting a head is greater than</span>
+<span class="comment">%the chance of getting a tail (i.e., P('H') = 0.5).</span>
+p_head_true             = 0.7;
+
+<span class="comment">%let's throw this coin 150 times, and each time, we compute the likelihood</span>
+<span class="comment">%of a range of hypothesized P('H').</span>
+numFlips                = 150;
+p_head_hyp              = 0.01:0.01:0.99;
+
+<span class="comment">%initialize the following matrices:</span>
+<span class="comment">%flips                : stores binary values (1: head; 0: tail) for each</span>
+<span class="comment">%                           coin flip</span>
+<span class="comment">%numHeads             : stores the number of heads you get up until each</span>
+<span class="comment">%                           time point</span>
+<span class="comment">%L_p_hyp, LL_p_hyp    : the likelihood / the log likelihood of P('H') given a</span>
+<span class="comment">%                           range of hypothesized p at each time point</span>
+<span class="comment">%p_hat_byL, p_hat_byLL: the p value that corresponds to the highest</span>
+<span class="comment">%                           likelihood value / the highest log likelihood</span>
+<span class="comment">%                           value at each time point</span>
+[flips,numHeads]        = deal(NaN(1,numFlips));
+[L_p_hyp, LL_p_hyp]     = deal(NaN(numFlips, length(p_head_hyp)));
+[p_hat_byL, p_hat_byLL] = deal(NaN(1,numFlips));
+
+<span class="comment">%YOUR CODE STARTS HERE</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+<span class="comment">%let's loop through all the coin flips</span>
+<span class="keyword">for</span> i = 1:numFlips
+    <span class="comment">%flip the coin, and see if it's a head to a tail (hint: rand.m)</span>
+    flips(i)          = rand &lt; p_head_true;
+
+    <span class="comment">%compute the number of heads you got so far</span>
+    numHeads(i)       = nansum(flips);
+
+    <span class="comment">%compute the likelihood of each hypothesized p value</span>
+    L_p_hyp(i,:)      = binopdf(numHeads(i), i, p_head_hyp);
+
+    <span class="comment">%compute the log likelihood of each hypothesized p value</span>
+    LL_p_hyp(i,:)     = numHeads(i).*log(p_head_hyp) + <span class="keyword">...</span>
+                        (i - numHeads(i)).*log(1 - p_head_hyp);
+
+    <span class="comment">%find the p value that corresponds to the max likelihood and store it</span>
+    <span class="comment">%in p_hat_byL(i)</span>
+    [~, max_idx_byL]  = max(L_p_hyp(i,:));
+    p_hat_byL(i)      = p_head_hyp(max_idx_byL);
+
+    <span class="comment">%find the p value that corresponds to the max likelihood and store it</span>
+    <span class="comment">%in p_hat_byLL(i)</span>
+    [~, max_idx_byLL] = max(LL_p_hyp(i,:));
+    p_hat_byLL(i)     = p_head_hyp(max_idx_byLL);
+<span class="keyword">end</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+</pre><h2 id="3">Exercise 1. continued</h2><pre class="codeinput"><span class="comment">%No changes are needed for this section</span>
+
+figure
+<span class="keyword">for</span> i = 1:20:numFlips <span class="comment">%for plotting, change it to 1:20:numFlips</span>
+    <span class="comment">%plot how the likelihood function changes as number of coin flips</span>
+    subplot(1,2,1)
+    plot(p_head_hyp, L_p_hyp(i,:),<span class="string">'lineWidth'</span>, 3); hold <span class="string">on</span>;
+    scatter(p_hat_byL(i),max(L_p_hyp(i,:)),180,<span class="string">'r*'</span>); hold <span class="string">on</span>;
+    text(p_hat_byL(i),max(L_p_hyp(i,:))-0.1, [<span class="string">'p_{max} = '</span>, <span class="keyword">...</span>
+        num2str(p_hat_byL(i))],<span class="string">'fontSize'</span>,15); hold <span class="string">off</span>; box <span class="string">off</span>;
+    xlim([0, 1]); xlabel([<span class="string">'Hypothesized '</span>, <span class="string">'$P(''H'')$'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+    ylabel(<span class="string">'$L(P(''H'')|data)$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>); box <span class="string">off</span>;
+    set(gca,<span class="string">'FontSize'</span>,15);
+
+    <span class="comment">%plot how the log likelihood function changes as number of coin flips</span>
+    subplot(1,2,2)
+    plot(p_head_hyp, LL_p_hyp(i,:),<span class="string">'lineWidth'</span>, 3); hold <span class="string">on</span>
+    scatter(p_hat_byLL(i),max(LL_p_hyp(i,:))-0.1,180,<span class="string">'r*'</span>); hold <span class="string">on</span>
+    text(p_hat_byLL(i),max(LL_p_hyp(i,:)), [<span class="string">'p_{max} = '</span>, <span class="keyword">...</span>
+        num2str(p_hat_byLL(i))],<span class="string">'fontSize'</span>,15); hold <span class="string">off</span>; box <span class="string">off</span>;
+    xlim([0, 1]); xlabel([<span class="string">'Hypothesized '</span>, <span class="string">'$P(''H'')$'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+    ylabel(<span class="string">'$\log L(P(''H'')|data)$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>); box <span class="string">off</span>;
+    set(gca,<span class="string">'FontSize'</span>,15);
+    set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.7, 0.5]);
+    sgtitle([<span class="string">'#heads = '</span>, num2str(sum(flips(1:i))), <span class="string">' out of #flips = '</span>, num2str(i)]);
+    pause(0.01)
+<span class="keyword">end</span>
+
+<span class="comment">%plot the proportion of heads as a function of coin flips</span>
+<span class="comment">%Notice that it converges to p_head_true = 0.7.</span>
+figure
+plot(1:numFlips, numHeads./(1:numFlips), <span class="string">'k.-'</span>, <span class="string">'lineWidth'</span>, 2); hold <span class="string">on</span>
+plot([1, numFlips],[p_head_true, p_head_true], <span class="string">'r--'</span>, <span class="string">'lineWidth'</span>, 2); hold <span class="string">off</span>
+ylim([0,1]); box <span class="string">off</span>; xlabel(<span class="string">'Flip number'</span>); ylabel(<span class="string">'Proportion of Heads'</span>);
+set(gca,<span class="string">'FontSize'</span>,15);
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.6, 0.45]);
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_01.png" alt=""> <img vspace="5" hspace="5" src="Lab8_solutions_02.png" alt=""> <h2 id="4">Exercise 2. Estimate the posterior probability of the coin getting heads</h2><pre class="codeinput"><span class="comment">%(incorporating prior knowledge)</span>
+
+<span class="comment">%first we assume three different possible priors</span>
+<span class="comment">%1. given past experience, you think it's most likely that coins are fair</span>
+prior_p_head_fair   = normpdf(p_head_hyp, 0.5,0.1);
+prior_p_head_fair   = prior_p_head_fair./sum(prior_p_head_fair);
+
+<span class="comment">%2. you are in a underground casino, and you suspect that the coin in unfair</span>
+prior_p_head_biased = betapdf(p_head_hyp, 2, 5);
+prior_p_head_biased = prior_p_head_biased./sum(prior_p_head_biased);
+
+<span class="comment">%3. you are a new born baby, and you have never seen a coin before</span>
+prior_p_head_uni    = ones(1,length(p_head_hyp))./length(p_head_hyp);
+prior_all = [prior_p_head_fair; prior_p_head_biased; prior_p_head_uni];
+ttl       = {<span class="string">'Suspect fair'</span>, <span class="string">'Suspect biased'</span>, <span class="string">'No idea'</span>};
+
+<span class="comment">%visualize the priors</span>
+figure
+<span class="keyword">for</span> i = 1:size(prior_all,1)
+    subplot(1,size(prior_all,1),i)
+    plot(p_head_hyp, prior_all(i,:), <span class="string">'lineWidth'</span>, 3); box <span class="string">off</span>; grid <span class="string">on</span>
+    title(ttl{i}); xlabel(<span class="string">'Hypothesized P(''H'')'</span>); ylabel(<span class="string">'Probability'</span>);
+    set(gca,<span class="string">'FontSize'</span>,15);
+<span class="keyword">end</span>
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.8, 0.5]);
+
+<span class="comment">%compute the posterior each time you get a new coin flip</span>
+posterior_p_hyp = NaN(numFlips, size(prior_all,1), length(p_head_hyp));
+L_p_hyp_1flip   = NaN(numFlips, length(p_head_hyp));
+
+<span class="comment">%YOUR CODE STARTS HERE</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+<span class="keyword">for</span> i = 1:numFlips
+    <span class="comment">%if this is your first coin flip, use the prior we define above</span>
+    <span class="keyword">if</span> i == 1; prior = prior_all;
+    <span class="comment">%if you've already had some observations of the coin flips, the updated</span>
+    <span class="comment">%prior of the current trial is the posterior from the previous trial.</span>
+    <span class="keyword">else</span>; prior = squeeze(posterior_p_hyp(i-1,:,:));
+    <span class="keyword">end</span>
+
+    <span class="comment">%compute the likelihood of P('H') given the current coin flip (just 1</span>
+    <span class="comment">%observation)</span>
+    L_p_hyp_1flip(i,:) = binopdf(flips(i), 1, p_head_hyp);
+
+    <span class="comment">%compute the posterior probability of P('H') by taking the prior into</span>
+    <span class="comment">%account (make sure the posterior probability sums up to 1)</span>
+    <span class="keyword">for</span> j = 1:size(prior_all,1)
+        posterior_p_hyp_temp = L_p_hyp_1flip(i,:).*prior(j,:);
+        posterior_p_hyp(i,j,:) = posterior_p_hyp_temp./sum(posterior_p_hyp_temp);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_03.png" alt=""> <h2 id="5">Exercise 2. continued</h2><pre class="codeinput"><span class="comment">%No changes are needed for this section</span>
+figure
+<span class="keyword">for</span> t = 1:numFlips <span class="comment">%for plotting, change it to 1:20:numFlips</span>
+    <span class="comment">%visualize the priors (which are updating on each trial)</span>
+    <span class="keyword">for</span> i = 1:size(prior_all,1)
+        subplot(3,size(prior_all,1),i)
+        <span class="keyword">if</span> t == 1; plot(p_head_hyp, prior_all(i,:), <span class="string">'lineWidth'</span>, 3);
+        <span class="keyword">else</span>; plot(p_head_hyp, squeeze(posterior_p_hyp(t-1,i,:)), <span class="string">'lineWidth'</span>, 3);  <span class="keyword">end</span>
+        box <span class="string">off</span>; grid <span class="string">on</span>
+        <span class="keyword">if</span> t == 1; title(ttl{i}); <span class="keyword">else</span>; title([<span class="string">'Updated prior '</span>, num2str(i)]);<span class="keyword">end</span>
+        xlabel(<span class="string">'Hypothesized P(''H'')'</span>); ylabel(<span class="string">'Probability'</span>);
+        set(gca,<span class="string">'FontSize'</span>,15);
+    <span class="keyword">end</span>
+
+    <span class="comment">%visualize the likelihood given only one observation</span>
+    subplot(3,size(prior_all,1),5)
+    plot(p_head_hyp, L_p_hyp_1flip(t,:), <span class="string">'lineWidth'</span>, 3); box <span class="string">off</span>; grid <span class="string">on</span>
+    <span class="keyword">if</span> flips(t); r = <span class="string">'H'</span>; <span class="keyword">else</span>; r = <span class="string">'T'</span>; <span class="keyword">end</span>
+    title([<span class="string">'Likelihood of P(''H''), Given coin flip = '</span>, r]);
+    set(gca,<span class="string">'FontSize'</span>,15);
+
+    <span class="comment">%visualize the posterior probability of P('H')</span>
+    <span class="keyword">for</span> i = 1:size(prior_all,1)
+        subplot(3,size(prior_all,1),6+i)
+        plot(p_head_hyp, squeeze(posterior_p_hyp(t,i,:)), <span class="string">'lineWidth'</span>, 3);
+        box <span class="string">off</span>; grid <span class="string">on</span>
+        title(<span class="string">'Posterior of P(''H'')'</span>); xlabel(<span class="string">'Hypothesized P(''H'')'</span>);
+        ylabel(<span class="string">'Probability'</span>); set(gca,<span class="string">'FontSize'</span>,15);
+    <span class="keyword">end</span>
+    set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.8,1]);
+    pause(0.05)
+<span class="keyword">end</span>
+
+<span class="comment">%You're probably wondering why we updated the likelihood of P('H') when</span>
+<span class="comment">%more observations come in (lines 4-93), but here we update the prior and</span>
+<span class="comment">%only compute the likelihood of P('H') of the current coin flip</span>
+<span class="comment">%(lines 100-180). Mathematically they are the same!</span>
+<span class="comment">%updated likelihood given all past coin flips x original prior</span>
+<span class="comment">%= likelihood of the current coin flip x updated prior given all past coin flips</span>
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_04.png" alt=""> <h2 id="6">Exercise 3: Simulate 2IFC</h2><pre class="codeinput"><span class="comment">%In each trial, participants are presented with an auditory and a visual</span>
+<span class="comment">%stimulus with a temporal discrepancy between them. The discrepancy can</span>
+<span class="comment">%have various levels, ranging from -400 to 400 ms with an increment of 50</span>
+<span class="comment">%ms. Positive values represent the visual stimulus coming before the</span>
+<span class="comment">%auditory stimulus; negative values represent the auditory stimulus coming</span>
+<span class="comment">%first. After stimulus presentation, participants are asked to report</span>
+<span class="comment">%whether they judge the temporal order, i.e., report which stimulus comes</span>
+<span class="comment">%first (V or A). Each temporal discrepancy (a.k.a. stimulus onset</span>
+<span class="comment">%asynchrony; SOA) is tested multiple times.</span>
+
+<span class="comment">%let's first define levels of SOA (in ms)</span>
+t_diff        = -400:50:400;
+<span class="comment">%the number of levels</span>
+len_deltaT    = length(t_diff);
+<span class="comment">%the number of tested trials for each level</span>
+numTrials     = 20;
+
+<span class="comment">%sounds are normally perceived faster as visual stimuli by ~60ms.</span>
+<span class="comment">%In other words, participants perceive an auditory and a visual stimulus</span>
+<span class="comment">%as simultaneous when the auditory stimulus is delayed by 60ms.</span>
+mu_delta_t    = 60;
+<span class="comment">%Sigma controls participants' threshold. A high value represents</span>
+<span class="comment">%participants are really bad at the task; a low value means participants</span>
+<span class="comment">%are able to tell even if the temporal offset is very small.</span>
+sigma_deltaT  = 80;
+
+<span class="comment">%On a small proportion of trials, observers will respond independently of</span>
+<span class="comment">%the stimulus level. For example, observers might have missed the</span>
+<span class="comment">%presentation of the stimulus, perhaps due to a sneeze or a momentary lapse</span>
+<span class="comment">%of attention. On such trials, observers may produce an incorrect response</span>
+<span class="comment">%even if the stimulus level was so high that they would normally have</span>
+<span class="comment">%produced a correct response. As a result of these lapses, the psychometric</span>
+<span class="comment">%function will asymptote to a value that's slightly less than 1 when</span>
+<span class="comment">%t_A - t_V is large, and asymptote to a value that's slightly greater than</span>
+<span class="comment">%0 when t_A - t_V is small.</span>
+lapse         = 0.05;
+
+<span class="comment">%Define the cumulative Gaussian</span>
+P_tilde       = @(mu, sig,lambda, x) lambda/2 + (1-lambda).*normcdf(x, mu, sig);
+
+<span class="comment">%YOUR CODE STARTS HERE</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+<span class="comment">%pass the variables we've defined into the function P_tilde to compute the</span>
+<span class="comment">%probability of reporting 'V-first'</span>
+P_reportV_1st = P_tilde(mu_delta_t, sigma_deltaT, lapse, t_diff);
+
+<span class="comment">%For simulating data, here we'll try two methods, which will give the same</span>
+<span class="comment">%results.</span>
+<span class="comment">%------------------------ Method 1: using for loops------------------------</span>
+randNum       = NaN(len_deltaT, numTrials);
+numT_V1st     = NaN(1, len_deltaT);
+sim_prob_V1st = NaN(1, len_deltaT);
+<span class="keyword">for</span> i = 1:len_deltaT <span class="comment">%for each SOA</span>
+    <span class="comment">%we first generate random numbers (size = 1 x numTrials) from the</span>
+    <span class="comment">%standard uniform distribution</span>
+    randNum(i,:)     = rand(1, numTrials);
+
+    <span class="comment">%get logicals (booleans) for whether the random numbers are smaller</span>
+    <span class="comment">%than the predicted probability at stimulus level i</span>
+    <span class="comment">%1: 'V-first' response</span>
+    <span class="comment">%0: 'V-second' or 'A-first' response</span>
+    bool_V1st        = randNum(i,:) &lt; P_reportV_1st(i);
+
+    <span class="comment">%compute the number of simulated 'V-first' responses</span>
+    numT_V1st(i)     = sum(bool_V1st);
+
+    <span class="comment">%compute the probability of 'V-first' responses</span>
+    sim_prob_V1st(i) = numT_V1st(i)/numTrials;
+<span class="keyword">end</span>
+
+<span class="comment">%------------------------ Method 2: using matrices ------------------------</span>
+<span class="comment">%we first replicate the vector P_reportV_1st to match the size of the</span>
+<span class="comment">%matrix randNum</span>
+P_reportV_1st_rep = repmat(P_reportV_1st',[1,numTrials]);
+
+<span class="comment">%then we get logicals (booleans) for whether the random numbers are smaller</span>
+<span class="comment">%than the predicted probability at all stimulus levels at the same time</span>
+bool_V1st_        = randNum &lt; P_reportV_1st_rep;
+
+<span class="comment">%compute the number of simulated 'V-first' responses (be careful with the</span>
+<span class="comment">%dimension you choose for summation)</span>
+numT_V1st_        = sum(bool_V1st_,2);
+
+<span class="comment">%compute the probability of 'V-first' responses at all stimulus levels at</span>
+<span class="comment">%the same time</span>
+sim_prob_V1st_    = numT_V1st_'/numTrials;
+
+
+<span class="comment">%if your calculation is correct, then sim_prob_V1sit_ should be the same as</span>
+<span class="comment">%sim_prob_V1st. Check:</span>
+<span class="keyword">if</span> isequal(round(sim_prob_V1st,4), round(sim_prob_V1st_,4)); disp(<span class="string">'Check!'</span>); <span class="keyword">end</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+</pre><pre class="codeoutput">Check!
+</pre><h2 id="7">Exercise 3. continued</h2><pre class="codeinput"><span class="comment">%Now let's visualize the psychometric curve and simulated data. If the</span>
+<span class="comment">%code you write above is correct, then it should be very close to the curve.</span>
+
+<span class="comment">%Hard to tell? Try increase numTrials from 20 to 1000.</span>
+<span class="comment">%(The code below does not require changes)</span>
+
+figure
+plot(t_diff, P_reportV_1st, <span class="string">'Color'</span>,[13, 183, 200]./255, <span class="string">'lineWidth'</span>, 3,<span class="keyword">...</span>
+    <span class="string">'lineStyle'</span>,<span class="string">'--'</span>); hold <span class="string">on</span>;
+scatter(t_diff, sim_prob_V1st', 300,<span class="string">'filled'</span>, <span class="string">'MarkerFaceColor'</span>,<span class="keyword">...</span>
+    0.5.*[13, 183, 200]./255, <span class="string">'MarkerEdgeAlpha'</span>, 0, <span class="string">'MarkerFaceAlpha'</span>,0.5); hold <span class="string">on</span>
+xlim([-400, 400]); ylim([0,1]); box <span class="string">off</span>;
+xlabel([<span class="string">'$t_A - t_V$'</span>,<span class="string">'(ms)'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+ylabel(<span class="string">'Probability of reporting ''V-first'''</span>); xticks(t_diff(1:2:end));
+yticks([0,0.5,1]); legend({<span class="string">'Psychometric function'</span>,<span class="keyword">...</span>
+    <span class="string">'Simulated data'</span>},<span class="string">'Location'</span>,<span class="string">'northwest'</span>); legend <span class="string">boxoff</span>
+set(gca,<span class="string">'Fontsize'</span>,15);
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.4, 0.5]);
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_05.png" alt=""> <h2 id="8">Exercise 4: Fitting a psychometric curve to the fake data</h2><pre class="codeinput"><span class="comment">%Now given the simulated fake data, let's try fitting a psychometric</span>
+<span class="comment">%function to the data by maximizing the log likelihood.</span>
+
+<span class="comment">%For simplicity, let's say the only unknown parameter is mu, and we know</span>
+<span class="comment">%sigma and the lapse rate.</span>
+LogL_mu_hyp = @(p) sum(numT_V1st.*log(P_tilde(p, sigma_deltaT, lapse, t_diff))) + <span class="keyword">...</span>
+    sum((numTrials-numT_V1st).*log(1 - P_tilde(p, sigma_deltaT, lapse, t_diff)));
+
+<span class="comment">%For fitting a psychometric curve, here we'll try two methods, which will</span>
+<span class="comment">%give similar results.</span>
+<span class="comment">%----------------------- Method 1: using grid search ----------------------</span>
+<span class="comment">%specify all the mu you want to test and compute its likelihood</span>
+mu_hyp             = -60:1:150;
+<span class="comment">%use arrayfun to compute the log likelihood of every single hypothesized mu</span>
+LogL_mu            = arrayfun(@(idx) LogL_mu_hyp(mu_hyp(idx)), 1:length(mu_hyp));
+<span class="comment">%find the mu that corresponds to the greatest log likelihood</span>
+[max_val, max_idx] = max(LogL_mu);
+mu_hat             = mu_hyp(max_idx);
+
+<span class="comment">%let's plot the log likelihood along with the best-fitting mu and the true</span>
+<span class="comment">%mu we used to simulated the data</span>
+figure
+h1 = plot(mu_hyp, LogL_mu, <span class="string">'lineWidth'</span>, 3); hold <span class="string">on</span>;
+scatter(mu_hyp(max_idx), max_val, 180, <span class="string">'r*'</span>);
+h2 = plot([mu_hat, mu_hat], [min(LogL_mu), max_val],<span class="string">'r-'</span>);
+h3 = plot([mu_delta_t, mu_delta_t], [min(LogL_mu), max_val], <span class="string">'k--'</span>); hold <span class="string">off</span>
+xlabel([<span class="string">'Hypothesized '</span>, <span class="string">'$\mu$'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+ylabel(<span class="string">'$\log L(\mu|data)$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>); box <span class="string">off</span>; grid <span class="string">on</span>
+yticks(round(linspace(min(LogL_mu), max_val, 3),1));
+legend([h1,h2,h3],{<span class="string">'$\log L(\mu|data)$'</span>, <span class="string">'$\hat{\mu}$'</span>, [<span class="string">'True '</span>, <span class="string">'$\mu$'</span>]},<span class="keyword">...</span>
+    <span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+set(gca,<span class="string">'FontSize'</span>,15);
+
+<span class="comment">%----------------------- Method 2: using fmincon --------------------------</span>
+<span class="comment">%We want to maximize the log likelihood function. Equivalently, we want to</span>
+<span class="comment">%minimize the negative log likelihood function (MATLAB likes to minimize</span>
+<span class="comment">%instead of maximize).</span>
+nLogL_mu_hyp = @(p) -sum(numT_V1st.*log(P_tilde(p, sigma_deltaT, lapse, t_diff))) - <span class="keyword">...</span>
+                   sum((numTrials-numT_V1st).*log(1 - P_tilde(p, sigma_deltaT,<span class="keyword">...</span>
+                   lapse, t_diff)));
+
+<span class="comment">%To find the best-fitting mu that minimizes the negative log likelihood,</span>
+<span class="comment">%we will use fmincon.m in MATLAB. To use this function, we need to define</span>
+<span class="comment">%lower and upper bounds for each parameter (i.e., search space) as well as</span>
+<span class="comment">%an initial point for MATLAB to start searching.</span>
+lb      = -60;
+ub      = 150;
+init    = rand*(ub-lb) + lb;
+<span class="comment">%You can also define how many times you want MATLAB to search</span>
+options = optimoptions(@fmincon,<span class="string">'MaxIterations'</span>,1e5,<span class="string">'Display'</span>,<span class="string">'off'</span>);
+
+<span class="comment">%fmincon returns best-fitting parameters that minimize the cost function as</span>
+<span class="comment">%well as the corresponding value for the cost function (in this case, the</span>
+<span class="comment">%negative log likelihood). If you are curious what you can put in those</span>
+<span class="comment">%empty brackets, type help fmincon to find out.</span>
+[mu_hat_, min_val] = fmincon(nLogL_mu_hyp, init,[],[],[],[],lb,ub,[],options);
+
+<span class="comment">%display the best-fitting parameter and check if the answer is very similar</span>
+<span class="comment">%to the one you got from the grid search</span>
+disp(mu_hat_);
+<span class="keyword">if</span> abs(mu_hat - mu_hat_) &lt; 1; disp(<span class="string">'Checked!'</span>); <span class="keyword">end</span>
+disp(min_val);
+
+<span class="comment">%plot the fitted curve</span>
+figure
+plot(t_diff, P_reportV_1st, <span class="string">'Color'</span>,[13, 183, 200]./255, <span class="string">'lineWidth'</span>, 3,<span class="keyword">...</span>
+    <span class="string">'lineStyle'</span>,<span class="string">'--'</span>); hold <span class="string">on</span>;
+plot(t_diff, P_tilde(mu_hat_, sigma_deltaT, lapse, t_diff), <span class="string">'k-'</span>, <span class="string">'lineWidth'</span>, 1); hold <span class="string">on</span>;
+scatter(t_diff, sim_prob_V1st', 300,<span class="string">'filled'</span>, <span class="string">'MarkerFaceColor'</span>,<span class="keyword">...</span>
+    0.5.*[13, 183, 200]./255, <span class="string">'MarkerEdgeAlpha'</span>, 0, <span class="string">'MarkerFaceAlpha'</span>,0.5); hold <span class="string">on</span>
+xlim([-400, 400]); ylim([0,1]); box <span class="string">off</span>;
+xlabel([<span class="string">'$t_A - t_V$'</span>,<span class="string">'(ms)'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+ylabel(<span class="string">'Probability of reporting ''V-first'''</span>); xticks(t_diff(1:2:end));
+yticks([0,0.5,1]); legend({<span class="string">'True psychometric function'</span>,<span class="keyword">...</span>
+    <span class="string">'Best-fitting psychometric function'</span>, <span class="string">'Simulated data'</span>},<span class="keyword">...</span>
+    <span class="string">'Location'</span>,<span class="string">'northwest'</span>); legend <span class="string">boxoff</span>
+set(gca,<span class="string">'Fontsize'</span>,15);
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.4, 0.5]);
+
+<span class="comment">%Note that the tolerance is set to be pretty big because the the bin we use</span>
+<span class="comment">%for mu_hyp is big. If you want to try finner grids</span>
+<span class="comment">%(e.g., mu_hyp = -60:0.01:150), go ahead! Just keep in mind that the finer</span>
+<span class="comment">%the grids are, the longer it's gonna take for you to compute all the log</span>
+<span class="comment">%likelihoods.</span>
+</pre><pre class="codeoutput">   68.9909
+
+Checked!
+   94.4042
+
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_06.png" alt=""> <img vspace="5" hspace="5" src="Lab8_solutions_07.png" alt=""> <h2 id="9">Exercise 4. continued</h2><pre class="codeinput"><span class="comment">%Now let's assume sigma_deltaT is also unknown, so we have two free</span>
+<span class="comment">%parameters. Again, we'll try two methods, which will give similar results.</span>
+sigma_hyp = 10:1:160;
+
+<span class="comment">%YOUR CODE STARTS HERE</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+<span class="comment">%----------------------- Method 1: using grid search ----------------------</span>
+<span class="comment">%we have to first define a new function that takes two free parameters and</span>
+<span class="comment">%computes the negative log likelihood of the parameters</span>
+nLogL_mu_sigma_hyp = @(p) -sum(numT_V1st.*log(P_tilde(p(1), p(2), lapse, t_diff))) - <span class="keyword">...</span>
+    sum((numTrials-numT_V1st).*log(1 - P_tilde(p(1), p(2), lapse, t_diff)));
+
+<span class="comment">%for each combination of mu_hyp and sigma_hyp, call the function</span>
+<span class="comment">%nLogL_mu_sigma_hyp for computing the negative log likelihood</span>
+nLogL_hyp_mu_sig = NaN(length(mu_hyp), length(sigma_hyp));
+<span class="keyword">for</span> i = 1:length(mu_hyp)
+    <span class="keyword">for</span> j = 1:length(sigma_hyp)
+        nLogL_hyp_mu_sig(i,j) = nLogL_mu_sigma_hyp([mu_hyp(i), sigma_hyp(j), lapse]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">%find the value that minimizes the negative log likelihood</span>
+<span class="comment">%Hint: you'll find function ind2sub.m useful</span>
+[min_val, min_idx] = min(nLogL_hyp_mu_sig(:));
+[row, col]         = ind2sub(size(nLogL_hyp_mu_sig), min_idx);
+mu_hat             = mu_hyp(row);
+sigma_hat          = sigma_hyp(col);
+
+<span class="comment">%----------------------- Method 2: using fmincon --------------------------</span>
+<span class="comment">%Again, let's first define the upper, lower bounds and an initialization</span>
+<span class="comment">%for MATLAB to start searching</span>
+lb      = [-100, 10];
+ub      = [150, 200];
+init    = rand(1,length(lb)).*(ub-lb) + lb;
+[estP, min_NLL] = fmincon(nLogL_mu_sigma_hyp, init,[],[],[],[],lb,ub,[],options);
+<span class="comment">%display the best-fitting parameters</span>
+disp(estP);
+
+<span class="comment">%plot the log likelihood as a function of mu_hyp and sigma_hyp using</span>
+<span class="comment">%surf.m along with the best-fitting parameters found using grid search</span>
+<span class="comment">%or fmincon.m.</span>
+[MU_hyp, SIGMA_hyp] = meshgrid(mu_hyp, sigma_hyp);
+figure
+surf(MU_hyp, SIGMA_hyp, nLogL_hyp_mu_sig',<span class="string">'FaceAlpha'</span>, 0.2, <span class="string">'EdgeColor'</span>,<span class="string">'none'</span>); hold <span class="string">on</span>
+plot3(mu_hat, sigma_hat,min_val, <span class="string">'r*'</span>);
+plot3([mu_delta_t,mu_delta_t], [sigma_deltaT, sigma_deltaT],<span class="keyword">...</span>
+    [min(nLogL_hyp_mu_sig(:))-10, max(nLogL_hyp_mu_sig(:))+10],<span class="string">'k-'</span>);
+plot3(mu_delta_t, sigma_deltaT, min(nLogL_hyp_mu_sig(:))-10, <span class="string">'k+'</span>); hold <span class="string">off</span>
+xlabel([<span class="string">'Hypothesized '</span>, <span class="string">'$\mu$'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+ylabel([<span class="string">'Hypothesized '</span>, <span class="string">'$\sigma$'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+zlabel(<span class="string">'$-\log L(\mu,\sigma|data)$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>); box <span class="string">off</span>;
+zlim([min(nLogL_hyp_mu_sig(:))-10, max(nLogL_hyp_mu_sig(:))+10]);
+set(gca,<span class="string">'FontSize'</span>,15);
+<span class="comment">%--------------------------------------------------------------------------</span>
+
+<span class="comment">%plot the fitted curve</span>
+figure
+plot(t_diff, P_reportV_1st, <span class="string">'Color'</span>,[13, 183, 200]./255, <span class="string">'lineWidth'</span>, 3,<span class="keyword">...</span>
+    <span class="string">'lineStyle'</span>,<span class="string">'--'</span>); hold <span class="string">on</span>;
+plot(t_diff, P_tilde(estP(1), estP(2), lapse, t_diff), <span class="string">'k-'</span>, <span class="string">'lineWidth'</span>, 1); hold <span class="string">on</span>;
+scatter(t_diff, sim_prob_V1st', 300,<span class="string">'filled'</span>, <span class="string">'MarkerFaceColor'</span>,<span class="keyword">...</span>
+    0.5.*[13, 183, 200]./255, <span class="string">'MarkerEdgeAlpha'</span>, 0, <span class="string">'MarkerFaceAlpha'</span>,0.5); hold <span class="string">on</span>
+xlim([-400, 400]); ylim([0,1]); box <span class="string">off</span>;
+xlabel([<span class="string">'$t_A - t_V$'</span>,<span class="string">'(ms)'</span>],<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>);
+ylabel(<span class="string">'Probability of reporting ''V-first'''</span>); xticks(t_diff(1:2:end));
+yticks([0,0.5,1]); legend({<span class="string">'True psychometric function'</span>,<span class="keyword">...</span>
+    <span class="string">'Best-fitting psychometric function'</span>, <span class="string">'Simulated data'</span>},<span class="keyword">...</span>
+    <span class="string">'Location'</span>,<span class="string">'northwest'</span>); legend <span class="string">boxoff</span>
+set(gca,<span class="string">'Fontsize'</span>,15);
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.4, 0.5]);
+</pre><pre class="codeoutput">   69.0413   77.6578
+
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_08.png" alt=""> <img vspace="5" hspace="5" src="Lab8_solutions_09.png" alt=""> <h2 id="10">Exercise 5: Bootstrapping</h2><pre class="codeinput"><span class="comment">%Bootstrap uses random sampling with replacement (i.e., say that you have</span>
+<span class="comment">%[1,2,3,4,5] in a magic bag. You randomly draw one number from the bag</span>
+<span class="comment">%each time, and then put it back). This means as you repeatedly sample from</span>
+<span class="comment">%the bag, each number can be selected more/less than once. Bootstrap is</span>
+<span class="comment">%often used when you want to get a confidence interval on estimated</span>
+<span class="comment">%parameters.</span>
+
+<span class="comment">% YOUR CODE START HERE</span>
+<span class="comment">%--------------------------------------------------------------------------</span>
+<span class="comment">%let's bootstrap 1000 times</span>
+numBtst   = 1e3;
+estP_btst = NaN(numBtst, 2);
+minNLL    = NaN(numBtst, 1);
+<span class="keyword">for</span> i = 1:numBtst
+    <span class="comment">%disp(i)</span>
+    <span class="comment">%fill in the function bootstrap</span>
+    [~, nT_V1st_btst] = bootstrap_solutions(t_diff, bool_V1st_, numTrials);
+
+    <span class="comment">%define nLL function given each bootstrapped dataset</span>
+    nLL = @(p) -sum(nT_V1st_btst*log(P_tilde(p(1), p(2), lapse, t_diff))') -<span class="keyword">...</span>
+            sum((numTrials - nT_V1st_btst)*log(1-P_tilde(p(1), p(2), lapse, t_diff))');
+
+    <span class="comment">%fit a psychometric curve to each bootstrapped dataset</span>
+    [estP_btst(i,:), minNLL(i)] = fmincon(nLL,init,[],[],[],[],lb,ub,[],options);
+<span class="keyword">end</span>
+
+<span class="comment">%find 95% confidence interval</span>
+<span class="comment">%first sort the vector in an ascending order</span>
+mu_sorted    = sort(estP_btst(:,1));
+CI_ub_mu     = mu_sorted(ceil(numBtst*0.975)); <span class="comment">%upper bound</span>
+CI_lb_mu     = mu_sorted(floor(numBtst*0.025));<span class="comment">%lower bound</span>
+
+<span class="comment">%do the same for sigma</span>
+sigma_sorted = sort(estP_btst(:,2));
+CI_ub_sigma  = sigma_sorted(ceil(numBtst*0.975));
+CI_lb_sigma  = sigma_sorted(floor(numBtst*0.025));
+
+<span class="comment">%--------------------------------------------------------------------------</span>
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_10.png" alt=""> <h2 id="11">Exercise 5. continued</h2><pre class="codeinput"><span class="comment">%Plot the best-fitting parameters given each bootstrapped dataset</span>
+<span class="comment">%No changes are needed for this section</span>
+
+figure
+subplot(1,2,1)
+<span class="comment">%estimated mu by 1000 bootstrapped datasets</span>
+h1= histogram(estP_btst(:,1),<span class="string">'FaceColor'</span>, <span class="string">'r'</span>, <span class="string">'FaceAlpha'</span>, 0.3,<span class="string">'EdgeColor'</span>,<span class="string">'r'</span>); hold <span class="string">on</span>
+<span class="comment">%estimated mu by the orignal dataset</span>
+h2=plot([estP(1), estP(1)], [0, numBtst*0.3],<span class="string">'r-'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">on</span>;
+<span class="comment">%the lower bound for the 95% bootstrapped confidence interval</span>
+h3=plot([CI_lb_mu, CI_lb_mu], [0, numBtst*0.3],<span class="string">'r--'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">on</span>;
+<span class="comment">%the upper bound for the 95% bootstrapped confidence interval</span>
+plot([CI_ub_mu, CI_ub_mu], [0, numBtst*0.3],<span class="string">'r--'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">on</span>;
+<span class="comment">%the value of mu we used to generate the fake data</span>
+h4=plot([mu_delta_t, mu_delta_t], [0, numBtst*0.3],<span class="string">'k--'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">off</span>
+xlim([min(estP_btst(:,1)-5), max(estP_btst(:,1)+5)]); ylim([0, numBtst*0.3]);
+xlabel(<span class="string">'$\mu$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>); ylabel(<span class="string">'Counts'</span>);box <span class="string">off</span>;
+legend([h1,h2,h3,h4],{<span class="string">'estimates by bootstrapped dataset'</span>, <span class="keyword">...</span>
+    <span class="string">'estimates by the orignal dataset'</span>, <span class="string">'95% bootstrap confidence interval'</span>,<span class="keyword">...</span>
+    <span class="string">'true value used for generating the data'</span>},<span class="string">'Location'</span>, <span class="string">'northwest'</span>);
+set(gca,<span class="string">'FontSize'</span>,15);
+
+<span class="comment">%this subplot is for sigma</span>
+subplot(1,2,2)
+histogram(estP_btst(:,2),<span class="string">'FaceColor'</span>, <span class="string">'b'</span>, <span class="string">'FaceAlpha'</span>, 0.3,<span class="string">'EdgeColor'</span>,<span class="string">'b'</span>); hold <span class="string">on</span>
+plot([estP(2), estP(2)], [0, numBtst*0.3],<span class="string">'b-'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">on</span>
+plot([CI_lb_sigma, CI_lb_sigma], [0, numBtst*0.3],<span class="string">'b--'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">on</span>;
+plot([CI_ub_sigma, CI_ub_sigma], [0, numBtst*0.3],<span class="string">'b--'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">on</span>;
+plot([sigma_deltaT, sigma_deltaT], [0, numBtst*0.3],<span class="string">'k--'</span>, <span class="string">'lineWidth'</span>,3); hold <span class="string">off</span>
+xlim([min(estP_btst(:,2)-5), max(estP_btst(:,2)+5)]); ylim([0, numBtst*0.3]);
+xlabel(<span class="string">'$\sigma$'</span>, <span class="string">'Interpreter'</span>, <span class="string">'latex'</span>); ylabel(<span class="string">'Counts'</span>);box <span class="string">off</span>;
+set(gca,<span class="string">'FontSize'</span>,15);
+set(gcf, <span class="string">'Units'</span>, <span class="string">'Normalized'</span>, <span class="string">'OuterPosition'</span>, [0, 0.04, 0.8, 0.55]);
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_11.png" alt=""> <img vspace="5" hspace="5" src="Lab8_solutions_12.png" alt=""> <h2 id="12">Fun demo: SDT</h2><pre class="codeinput"><span class="comment">%the mu for noise condition</span>
+mu_N_vec  = [3,     3,   3,   3];
+<span class="comment">%the mu for noise + signal condition</span>
+mu_NS_vec = [3.4, 3.8, 4.2, 4.6];
+<span class="comment">%the width of the distribution (assumed to be the same for both conditions)</span>
+sigma_vec = 0.55; <span class="comment">%or 0.7</span>
+<span class="comment">%x-axis</span>
+x         = 0:0.1:8;
+ylim_ub   = 0.1;
+d_prime   = GenerateROC(mu_N_vec, mu_NS_vec, sigma_vec, x, ylim_ub);
+</pre><img vspace="5" hspace="5" src="Lab8_solutions_13.png" alt=""> <img vspace="5" hspace="5" src="Lab8_solutions_14.png" alt=""> <img vspace="5" hspace="5" src="Lab8_solutions_15.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%MathTools Lab 8
+clear all; close all; clc; rng(1);
+
+%% Exercise 1: Estimate the probability of heads, by observing samples
+%Assume we have a unfair coin, the chance of getting a head is greater than
+%the chance of getting a tail (i.e., P('H') = 0.5).
+p_head_true             = 0.7;
+
+%let's throw this coin 150 times, and each time, we compute the likelihood
+%of a range of hypothesized P('H').
+numFlips                = 150;
+p_head_hyp              = 0.01:0.01:0.99;
+
+%initialize the following matrices:
+%flips                : stores binary values (1: head; 0: tail) for each 
+%                           coin flip
+%numHeads             : stores the number of heads you get up until each 
+%                           time point
+%L_p_hyp, LL_p_hyp    : the likelihood / the log likelihood of P('H') given a
+%                           range of hypothesized p at each time point
+%p_hat_byL, p_hat_byLL: the p value that corresponds to the highest
+%                           likelihood value / the highest log likelihood 
+%                           value at each time point
+[flips,numHeads]        = deal(NaN(1,numFlips)); 
+[L_p_hyp, LL_p_hyp]     = deal(NaN(numFlips, length(p_head_hyp)));
+[p_hat_byL, p_hat_byLL] = deal(NaN(1,numFlips));
+
+%YOUR CODE STARTS HERE
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%let's loop through all the coin flips
+for i = 1:numFlips
+    %flip the coin, and see if it's a head to a tail (hint: rand.m)
+    flips(i)          = rand < p_head_true;
+    
+    %compute the number of heads you got so far
+    numHeads(i)       = nansum(flips);
+    
+    %compute the likelihood of each hypothesized p value
+    L_p_hyp(i,:)      = binopdf(numHeads(i), i, p_head_hyp);
+    
+    %compute the log likelihood of each hypothesized p value
+    LL_p_hyp(i,:)     = numHeads(i).*log(p_head_hyp) + ...
+                        (i - numHeads(i)).*log(1 - p_head_hyp);
+                    
+    %find the p value that corresponds to the max likelihood and store it
+    %in p_hat_byL(i)     
+    [~, max_idx_byL]  = max(L_p_hyp(i,:));
+    p_hat_byL(i)      = p_head_hyp(max_idx_byL);
+    
+    %find the p value that corresponds to the max likelihood and store it
+    %in p_hat_byLL(i)      
+    [~, max_idx_byLL] = max(LL_p_hyp(i,:));
+    p_hat_byLL(i)     = p_head_hyp(max_idx_byLL);    
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+%% Exercise 1. continued
+%No changes are needed for this section
+
+figure
+for i = 1:20:numFlips %for plotting, change it to 1:20:numFlips
+    %plot how the likelihood function changes as number of coin flips
+    subplot(1,2,1)
+    plot(p_head_hyp, L_p_hyp(i,:),'lineWidth', 3); hold on;
+    scatter(p_hat_byL(i),max(L_p_hyp(i,:)),180,'r*'); hold on;
+    text(p_hat_byL(i),max(L_p_hyp(i,:))-0.1, ['p_{max} = ', ...
+        num2str(p_hat_byL(i))],'fontSize',15); hold off; box off;
+    xlim([0, 1]); xlabel(['Hypothesized ', '$P(''H'')$'],'Interpreter','latex');
+    ylabel('$L(P(''H'')|data)$','Interpreter','latex'); box off; 
+    set(gca,'FontSize',15);
+    
+    %plot how the log likelihood function changes as number of coin flips
+    subplot(1,2,2)
+    plot(p_head_hyp, LL_p_hyp(i,:),'lineWidth', 3); hold on
+    scatter(p_hat_byLL(i),max(LL_p_hyp(i,:))-0.1,180,'r*'); hold on
+    text(p_hat_byLL(i),max(LL_p_hyp(i,:)), ['p_{max} = ', ...
+        num2str(p_hat_byLL(i))],'fontSize',15); hold off; box off;
+    xlim([0, 1]); xlabel(['Hypothesized ', '$P(''H'')$'],'Interpreter','latex');
+    ylabel('$\log L(P(''H'')|data)$','Interpreter','latex'); box off; 
+    set(gca,'FontSize',15);
+    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.7, 0.5]);
+    sgtitle(['#heads = ', num2str(sum(flips(1:i))), ' out of #flips = ', num2str(i)]);
+    pause(0.01)
+end
+
+%plot the proportion of heads as a function of coin flips 
+%Notice that it converges to p_head_true = 0.7.
+figure
+plot(1:numFlips, numHeads./(1:numFlips), 'k.-', 'lineWidth', 2); hold on
+plot([1, numFlips],[p_head_true, p_head_true], 'rREPLACE_WITH_DASH_DASH', 'lineWidth', 2); hold off
+ylim([0,1]); box off; xlabel('Flip number'); ylabel('Proportion of Heads');
+set(gca,'FontSize',15);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.6, 0.45]);
+
+%% Exercise 2. Estimate the posterior probability of the coin getting heads
+%(incorporating prior knowledge)
+
+%first we assume three different possible priors
+%1. given past experience, you think it's most likely that coins are fair
+prior_p_head_fair   = normpdf(p_head_hyp, 0.5,0.1);
+prior_p_head_fair   = prior_p_head_fair./sum(prior_p_head_fair);
+
+%2. you are in a underground casino, and you suspect that the coin in unfair
+prior_p_head_biased = betapdf(p_head_hyp, 2, 5);
+prior_p_head_biased = prior_p_head_biased./sum(prior_p_head_biased);
+
+%3. you are a new born baby, and you have never seen a coin before
+prior_p_head_uni    = ones(1,length(p_head_hyp))./length(p_head_hyp);
+prior_all = [prior_p_head_fair; prior_p_head_biased; prior_p_head_uni];
+ttl       = {'Suspect fair', 'Suspect biased', 'No idea'};
+
+%visualize the priors
+figure
+for i = 1:size(prior_all,1)
+    subplot(1,size(prior_all,1),i)
+    plot(p_head_hyp, prior_all(i,:), 'lineWidth', 3); box off; grid on
+    title(ttl{i}); xlabel('Hypothesized P(''H'')'); ylabel('Probability');
+    set(gca,'FontSize',15);
+end
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.8, 0.5]);
+
+%compute the posterior each time you get a new coin flip
+posterior_p_hyp = NaN(numFlips, size(prior_all,1), length(p_head_hyp));
+L_p_hyp_1flip   = NaN(numFlips, length(p_head_hyp));
+
+%YOUR CODE STARTS HERE
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+for i = 1:numFlips
+    %if this is your first coin flip, use the prior we define above
+    if i == 1; prior = prior_all;
+    %if you've already had some observations of the coin flips, the updated
+    %prior of the current trial is the posterior from the previous trial.
+    else; prior = squeeze(posterior_p_hyp(i-1,:,:)); 
+    end
+    
+    %compute the likelihood of P('H') given the current coin flip (just 1
+    %observation)
+    L_p_hyp_1flip(i,:) = binopdf(flips(i), 1, p_head_hyp);
+    
+    %compute the posterior probability of P('H') by taking the prior into
+    %account (make sure the posterior probability sums up to 1)
+    for j = 1:size(prior_all,1)
+        posterior_p_hyp_temp = L_p_hyp_1flip(i,:).*prior(j,:);
+        posterior_p_hyp(i,j,:) = posterior_p_hyp_temp./sum(posterior_p_hyp_temp);
+    end
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+%% Exercise 2. continued
+%No changes are needed for this section
+figure
+for t = 1:numFlips %for plotting, change it to 1:20:numFlips
+    %visualize the priors (which are updating on each trial)
+    for i = 1:size(prior_all,1)
+        subplot(3,size(prior_all,1),i)
+        if t == 1; plot(p_head_hyp, prior_all(i,:), 'lineWidth', 3); 
+        else; plot(p_head_hyp, squeeze(posterior_p_hyp(t-1,i,:)), 'lineWidth', 3);  end
+        box off; grid on
+        if t == 1; title(ttl{i}); else; title(['Updated prior ', num2str(i)]);end
+        xlabel('Hypothesized P(''H'')'); ylabel('Probability');
+        set(gca,'FontSize',15);
+    end 
+
+    %visualize the likelihood given only one observation
+    subplot(3,size(prior_all,1),5)
+    plot(p_head_hyp, L_p_hyp_1flip(t,:), 'lineWidth', 3); box off; grid on
+    if flips(t); r = 'H'; else; r = 'T'; end
+    title(['Likelihood of P(''H''), Given coin flip = ', r]); 
+    set(gca,'FontSize',15);
+
+    %visualize the posterior probability of P('H')
+    for i = 1:size(prior_all,1) 
+        subplot(3,size(prior_all,1),6+i)
+        plot(p_head_hyp, squeeze(posterior_p_hyp(t,i,:)), 'lineWidth', 3); 
+        box off; grid on
+        title('Posterior of P(''H'')'); xlabel('Hypothesized P(''H'')'); 
+        ylabel('Probability'); set(gca,'FontSize',15);    
+    end
+    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.8,1]);
+    pause(0.05)
+end
+
+%You're probably wondering why we updated the likelihood of P('H') when
+%more observations come in (lines 4-93), but here we update the prior and
+%only compute the likelihood of P('H') of the current coin flip 
+%(lines 100-180). Mathematically they are the same! 
+%updated likelihood given all past coin flips x original prior 
+%= likelihood of the current coin flip x updated prior given all past coin flips 
+
+%% Exercise 3: Simulate 2IFC
+%In each trial, participants are presented with an auditory and a visual
+%stimulus with a temporal discrepancy between them. The discrepancy can
+%have various levels, ranging from -400 to 400 ms with an increment of 50
+%ms. Positive values represent the visual stimulus coming before the
+%auditory stimulus; negative values represent the auditory stimulus coming
+%first. After stimulus presentation, participants are asked to report
+%whether they judge the temporal order, i.e., report which stimulus comes
+%first (V or A). Each temporal discrepancy (a.k.a. stimulus onset
+%asynchrony; SOA) is tested multiple times.
+
+%let's first define levels of SOA (in ms)
+t_diff        = -400:50:400;
+%the number of levels
+len_deltaT    = length(t_diff);
+%the number of tested trials for each level
+numTrials     = 20; 
+
+%sounds are normally perceived faster as visual stimuli by ~60ms. 
+%In other words, participants perceive an auditory and a visual stimulus 
+%as simultaneous when the auditory stimulus is delayed by 60ms.
+mu_delta_t    = 60; 
+%Sigma controls participants' threshold. A high value represents
+%participants are really bad at the task; a low value means participants
+%are able to tell even if the temporal offset is very small.
+sigma_deltaT  = 80;
+
+%On a small proportion of trials, observers will respond independently of 
+%the stimulus level. For example, observers might have missed the
+%presentation of the stimulus, perhaps due to a sneeze or a momentary lapse
+%of attention. On such trials, observers may produce an incorrect response
+%even if the stimulus level was so high that they would normally have
+%produced a correct response. As a result of these lapses, the psychometric
+%function will asymptote to a value that's slightly less than 1 when 
+%t_A - t_V is large, and asymptote to a value that's slightly greater than 
+%0 when t_A - t_V is small.
+lapse         = 0.05;
+
+%Define the cumulative Gaussian
+P_tilde       = @(mu, sig,lambda, x) lambda/2 + (1-lambda).*normcdf(x, mu, sig);
+
+%YOUR CODE STARTS HERE
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%pass the variables we've defined into the function P_tilde to compute the
+%probability of reporting 'V-first'
+P_reportV_1st = P_tilde(mu_delta_t, sigma_deltaT, lapse, t_diff);
+
+%For simulating data, here we'll try two methods, which will give the same
+%results.
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Method 1: using for loopsREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+randNum       = NaN(len_deltaT, numTrials);
+numT_V1st     = NaN(1, len_deltaT); 
+sim_prob_V1st = NaN(1, len_deltaT); 
+for i = 1:len_deltaT %for each SOA 
+    %we first generate random numbers (size = 1 x numTrials) from the 
+    %standard uniform distribution
+    randNum(i,:)     = rand(1, numTrials);
+    
+    %get logicals (booleans) for whether the random numbers are smaller
+    %than the predicted probability at stimulus level i
+    %1: 'V-first' response
+    %0: 'V-second' or 'A-first' response
+    bool_V1st        = randNum(i,:) < P_reportV_1st(i);
+    
+    %compute the number of simulated 'V-first' responses
+    numT_V1st(i)     = sum(bool_V1st);
+    
+    %compute the probability of 'V-first' responses
+    sim_prob_V1st(i) = numT_V1st(i)/numTrials;
+end
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH Method 2: using matrices REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%we first replicate the vector P_reportV_1st to match the size of the
+%matrix randNum
+P_reportV_1st_rep = repmat(P_reportV_1st',[1,numTrials]);
+
+%then we get logicals (booleans) for whether the random numbers are smaller
+%than the predicted probability at all stimulus levels at the same time
+bool_V1st_        = randNum < P_reportV_1st_rep;
+
+%compute the number of simulated 'V-first' responses (be careful with the
+%dimension you choose for summation)
+numT_V1st_        = sum(bool_V1st_,2);
+
+%compute the probability of 'V-first' responses at all stimulus levels at 
+%the same time
+sim_prob_V1st_    = numT_V1st_'/numTrials;
+
+
+%if your calculation is correct, then sim_prob_V1sit_ should be the same as
+%sim_prob_V1st. Check:
+if isequal(round(sim_prob_V1st,4), round(sim_prob_V1st_,4)); disp('Check!'); end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+%% Exercise 3. continued
+%Now let's visualize the psychometric curve and simulated data. If the 
+%code you write above is correct, then it should be very close to the curve.
+
+%Hard to tell? Try increase numTrials from 20 to 1000.
+%(The code below does not require changes)
+
+figure
+plot(t_diff, P_reportV_1st, 'Color',[13, 183, 200]./255, 'lineWidth', 3,...
+    'lineStyle','REPLACE_WITH_DASH_DASH'); hold on;
+scatter(t_diff, sim_prob_V1st', 300,'filled', 'MarkerFaceColor',...
+    0.5.*[13, 183, 200]./255, 'MarkerEdgeAlpha', 0, 'MarkerFaceAlpha',0.5); hold on
+xlim([-400, 400]); ylim([0,1]); box off; 
+xlabel(['$t_A - t_V$','(ms)'],'Interpreter','latex'); 
+ylabel('Probability of reporting ''V-first'''); xticks(t_diff(1:2:end)); 
+yticks([0,0.5,1]); legend({'Psychometric function',...
+    'Simulated data'},'Location','northwest'); legend boxoff
+set(gca,'Fontsize',15);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.4, 0.5]);
+
+%% Exercise 4: Fitting a psychometric curve to the fake data
+%Now given the simulated fake data, let's try fitting a psychometric
+%function to the data by maximizing the log likelihood. 
+
+%For simplicity, let's say the only unknown parameter is mu, and we know
+%sigma and the lapse rate.
+LogL_mu_hyp = @(p) sum(numT_V1st.*log(P_tilde(p, sigma_deltaT, lapse, t_diff))) + ...
+    sum((numTrials-numT_V1st).*log(1 - P_tilde(p, sigma_deltaT, lapse, t_diff)));
+
+%For fitting a psychometric curve, here we'll try two methods, which will 
+%give similar results.
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Method 1: using grid search REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH 
+%specify all the mu you want to test and compute its likelihood
+mu_hyp             = -60:1:150;        
+%use arrayfun to compute the log likelihood of every single hypothesized mu
+LogL_mu            = arrayfun(@(idx) LogL_mu_hyp(mu_hyp(idx)), 1:length(mu_hyp));
+%find the mu that corresponds to the greatest log likelihood
+[max_val, max_idx] = max(LogL_mu);
+mu_hat             = mu_hyp(max_idx);
+
+%let's plot the log likelihood along with the best-fitting mu and the true
+%mu we used to simulated the data
+figure
+h1 = plot(mu_hyp, LogL_mu, 'lineWidth', 3); hold on; 
+scatter(mu_hyp(max_idx), max_val, 180, 'r*');
+h2 = plot([mu_hat, mu_hat], [min(LogL_mu), max_val],'r-');
+h3 = plot([mu_delta_t, mu_delta_t], [min(LogL_mu), max_val], 'kREPLACE_WITH_DASH_DASH'); hold off
+xlabel(['Hypothesized ', '$\mu$'],'Interpreter','latex');
+ylabel('$\log L(\mu|data)$','Interpreter','latex'); box off; grid on
+yticks(round(linspace(min(LogL_mu), max_val, 3),1)); 
+legend([h1,h2,h3],{'$\log L(\mu|data)$', '$\hat{\mu}$', ['True ', '$\mu$']},...
+    'Interpreter','latex');
+set(gca,'FontSize',15);
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Method 2: using fmincon REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH 
+%We want to maximize the log likelihood function. Equivalently, we want to
+%minimize the negative log likelihood function (MATLAB likes to minimize
+%instead of maximize).
+nLogL_mu_hyp = @(p) -sum(numT_V1st.*log(P_tilde(p, sigma_deltaT, lapse, t_diff))) - ...
+                   sum((numTrials-numT_V1st).*log(1 - P_tilde(p, sigma_deltaT,...
+                   lapse, t_diff)));
+
+%To find the best-fitting mu that minimizes the negative log likelihood, 
+%we will use fmincon.m in MATLAB. To use this function, we need to define 
+%lower and upper bounds for each parameter (i.e., search space) as well as 
+%an initial point for MATLAB to start searching. 
+lb      = -60; 
+ub      = 150;
+init    = rand*(ub-lb) + lb;
+%You can also define how many times you want MATLAB to search
+options = optimoptions(@fmincon,'MaxIterations',1e5,'Display','off');
+
+%fmincon returns best-fitting parameters that minimize the cost function as
+%well as the corresponding value for the cost function (in this case, the
+%negative log likelihood). If you are curious what you can put in those
+%empty brackets, type help fmincon to find out.
+[mu_hat_, min_val] = fmincon(nLogL_mu_hyp, init,[],[],[],[],lb,ub,[],options);   
+
+%display the best-fitting parameter and check if the answer is very similar
+%to the one you got from the grid search
+disp(mu_hat_);
+if abs(mu_hat - mu_hat_) < 1; disp('Checked!'); end
+disp(min_val);
+
+%plot the fitted curve
+figure
+plot(t_diff, P_reportV_1st, 'Color',[13, 183, 200]./255, 'lineWidth', 3,...
+    'lineStyle','REPLACE_WITH_DASH_DASH'); hold on;
+plot(t_diff, P_tilde(mu_hat_, sigma_deltaT, lapse, t_diff), 'k-', 'lineWidth', 1); hold on;
+scatter(t_diff, sim_prob_V1st', 300,'filled', 'MarkerFaceColor',...
+    0.5.*[13, 183, 200]./255, 'MarkerEdgeAlpha', 0, 'MarkerFaceAlpha',0.5); hold on
+xlim([-400, 400]); ylim([0,1]); box off; 
+xlabel(['$t_A - t_V$','(ms)'],'Interpreter','latex'); 
+ylabel('Probability of reporting ''V-first'''); xticks(t_diff(1:2:end)); 
+yticks([0,0.5,1]); legend({'True psychometric function',...
+    'Best-fitting psychometric function', 'Simulated data'},...
+    'Location','northwest'); legend boxoff
+set(gca,'Fontsize',15);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.4, 0.5]);
+
+%Note that the tolerance is set to be pretty big because the the bin we use
+%for mu_hyp is big. If you want to try finner grids 
+%(e.g., mu_hyp = -60:0.01:150), go ahead! Just keep in mind that the finer
+%the grids are, the longer it's gonna take for you to compute all the log
+%likelihoods.
+
+%% Exercise 4. continued
+%Now let's assume sigma_deltaT is also unknown, so we have two free
+%parameters. Again, we'll try two methods, which will give similar results.
+sigma_hyp = 10:1:160;
+
+%YOUR CODE STARTS HERE
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Method 1: using grid search REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH 
+%we have to first define a new function that takes two free parameters and
+%computes the negative log likelihood of the parameters
+nLogL_mu_sigma_hyp = @(p) -sum(numT_V1st.*log(P_tilde(p(1), p(2), lapse, t_diff))) - ...
+    sum((numTrials-numT_V1st).*log(1 - P_tilde(p(1), p(2), lapse, t_diff)));
+
+%for each combination of mu_hyp and sigma_hyp, call the function 
+%nLogL_mu_sigma_hyp for computing the negative log likelihood
+nLogL_hyp_mu_sig = NaN(length(mu_hyp), length(sigma_hyp));
+for i = 1:length(mu_hyp)
+    for j = 1:length(sigma_hyp)
+        nLogL_hyp_mu_sig(i,j) = nLogL_mu_sigma_hyp([mu_hyp(i), sigma_hyp(j), lapse]);
+    end
+end
+
+%find the value that minimizes the negative log likelihood
+%Hint: you'll find function ind2sub.m useful
+[min_val, min_idx] = min(nLogL_hyp_mu_sig(:));
+[row, col]         = ind2sub(size(nLogL_hyp_mu_sig), min_idx);
+mu_hat             = mu_hyp(row);
+sigma_hat          = sigma_hyp(col);
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH- Method 2: using fmincon REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH 
+%Again, let's first define the upper, lower bounds and an initialization
+%for MATLAB to start searching
+lb      = [-100, 10]; 
+ub      = [150, 200];
+init    = rand(1,length(lb)).*(ub-lb) + lb;
+[estP, min_NLL] = fmincon(nLogL_mu_sigma_hyp, init,[],[],[],[],lb,ub,[],options);   
+%display the best-fitting parameters
+disp(estP);
+
+%plot the log likelihood as a function of mu_hyp and sigma_hyp using
+%surf.m along with the best-fitting parameters found using grid search
+%or fmincon.m. 
+[MU_hyp, SIGMA_hyp] = meshgrid(mu_hyp, sigma_hyp);
+figure
+surf(MU_hyp, SIGMA_hyp, nLogL_hyp_mu_sig','FaceAlpha', 0.2, 'EdgeColor','none'); hold on
+plot3(mu_hat, sigma_hat,min_val, 'r*'); 
+plot3([mu_delta_t,mu_delta_t], [sigma_deltaT, sigma_deltaT],...
+    [min(nLogL_hyp_mu_sig(:))-10, max(nLogL_hyp_mu_sig(:))+10],'k-'); 
+plot3(mu_delta_t, sigma_deltaT, min(nLogL_hyp_mu_sig(:))-10, 'k+'); hold off
+xlabel(['Hypothesized ', '$\mu$'],'Interpreter','latex');
+ylabel(['Hypothesized ', '$\sigma$'],'Interpreter','latex');
+zlabel('$-\log L(\mu,\sigma|data)$','Interpreter','latex'); box off; 
+zlim([min(nLogL_hyp_mu_sig(:))-10, max(nLogL_hyp_mu_sig(:))+10]);
+set(gca,'FontSize',15);
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+%plot the fitted curve
+figure
+plot(t_diff, P_reportV_1st, 'Color',[13, 183, 200]./255, 'lineWidth', 3,...
+    'lineStyle','REPLACE_WITH_DASH_DASH'); hold on;
+plot(t_diff, P_tilde(estP(1), estP(2), lapse, t_diff), 'k-', 'lineWidth', 1); hold on;
+scatter(t_diff, sim_prob_V1st', 300,'filled', 'MarkerFaceColor',...
+    0.5.*[13, 183, 200]./255, 'MarkerEdgeAlpha', 0, 'MarkerFaceAlpha',0.5); hold on
+xlim([-400, 400]); ylim([0,1]); box off; 
+xlabel(['$t_A - t_V$','(ms)'],'Interpreter','latex'); 
+ylabel('Probability of reporting ''V-first'''); xticks(t_diff(1:2:end)); 
+yticks([0,0.5,1]); legend({'True psychometric function',...
+    'Best-fitting psychometric function', 'Simulated data'},...
+    'Location','northwest'); legend boxoff
+set(gca,'Fontsize',15);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.4, 0.5]);
+
+%% Exercise 5: Bootstrapping
+%Bootstrap uses random sampling with replacement (i.e., say that you have
+%[1,2,3,4,5] in a magic bag. You randomly draw one number from the bag
+%each time, and then put it back). This means as you repeatedly sample from
+%the bag, each number can be selected more/less than once. Bootstrap is
+%often used when you want to get a confidence interval on estimated 
+%parameters. 
+
+% YOUR CODE START HERE
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%let's bootstrap 1000 times
+numBtst   = 1e3;
+estP_btst = NaN(numBtst, 2);
+minNLL    = NaN(numBtst, 1);
+for i = 1:numBtst
+    %disp(i)
+    %fill in the function bootstrap
+    [~, nT_V1st_btst] = bootstrap_solutions(t_diff, bool_V1st_, numTrials);
+    
+    %define nLL function given each bootstrapped dataset
+    nLL = @(p) -sum(nT_V1st_btst*log(P_tilde(p(1), p(2), lapse, t_diff))') -...
+            sum((numTrials - nT_V1st_btst)*log(1-P_tilde(p(1), p(2), lapse, t_diff))');
+        
+    %fit a psychometric curve to each bootstrapped dataset
+    [estP_btst(i,:), minNLL(i)] = fmincon(nLL,init,[],[],[],[],lb,ub,[],options);  
+end
+
+%find 95% confidence interval
+%first sort the vector in an ascending order
+mu_sorted    = sort(estP_btst(:,1)); 
+CI_ub_mu     = mu_sorted(ceil(numBtst*0.975)); %upper bound
+CI_lb_mu     = mu_sorted(floor(numBtst*0.025));%lower bound
+
+%do the same for sigma
+sigma_sorted = sort(estP_btst(:,2));
+CI_ub_sigma  = sigma_sorted(ceil(numBtst*0.975));
+CI_lb_sigma  = sigma_sorted(floor(numBtst*0.025));
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+%% Exercise 5. continued
+%Plot the best-fitting parameters given each bootstrapped dataset
+%No changes are needed for this section
+
+figure
+subplot(1,2,1)
+%estimated mu by 1000 bootstrapped datasets
+h1= histogram(estP_btst(:,1),'FaceColor', 'r', 'FaceAlpha', 0.3,'EdgeColor','r'); hold on
+%estimated mu by the orignal dataset
+h2=plot([estP(1), estP(1)], [0, numBtst*0.3],'r-', 'lineWidth',3); hold on;
+%the lower bound for the 95% bootstrapped confidence interval
+h3=plot([CI_lb_mu, CI_lb_mu], [0, numBtst*0.3],'rREPLACE_WITH_DASH_DASH', 'lineWidth',3); hold on;
+%the upper bound for the 95% bootstrapped confidence interval
+plot([CI_ub_mu, CI_ub_mu], [0, numBtst*0.3],'rREPLACE_WITH_DASH_DASH', 'lineWidth',3); hold on;
+%the value of mu we used to generate the fake data
+h4=plot([mu_delta_t, mu_delta_t], [0, numBtst*0.3],'kREPLACE_WITH_DASH_DASH', 'lineWidth',3); hold off
+xlim([min(estP_btst(:,1)-5), max(estP_btst(:,1)+5)]); ylim([0, numBtst*0.3]); 
+xlabel('$\mu$', 'Interpreter', 'latex'); ylabel('Counts');box off;
+legend([h1,h2,h3,h4],{'estimates by bootstrapped dataset', ...
+    'estimates by the orignal dataset', '95% bootstrap confidence interval',...
+    'true value used for generating the data'},'Location', 'northwest');
+set(gca,'FontSize',15);
+
+%this subplot is for sigma
+subplot(1,2,2)
+histogram(estP_btst(:,2),'FaceColor', 'b', 'FaceAlpha', 0.3,'EdgeColor','b'); hold on
+plot([estP(2), estP(2)], [0, numBtst*0.3],'b-', 'lineWidth',3); hold on
+plot([CI_lb_sigma, CI_lb_sigma], [0, numBtst*0.3],'bREPLACE_WITH_DASH_DASH', 'lineWidth',3); hold on;
+plot([CI_ub_sigma, CI_ub_sigma], [0, numBtst*0.3],'bREPLACE_WITH_DASH_DASH', 'lineWidth',3); hold on;
+plot([sigma_deltaT, sigma_deltaT], [0, numBtst*0.3],'kREPLACE_WITH_DASH_DASH', 'lineWidth',3); hold off
+xlim([min(estP_btst(:,2)-5), max(estP_btst(:,2)+5)]); ylim([0, numBtst*0.3]); 
+xlabel('$\sigma$', 'Interpreter', 'latex'); ylabel('Counts');box off;
+set(gca,'FontSize',15);
+set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 0.8, 0.55]);
+
+%% Fun demo: SDT
+%the mu for noise condition
+mu_N_vec  = [3,     3,   3,   3];
+%the mu for noise + signal condition
+mu_NS_vec = [3.4, 3.8, 4.2, 4.6]; 
+%the width of the distribution (assumed to be the same for both conditions)
+sigma_vec = 0.55; %or 0.7
+%x-axis
+x         = 0:0.1:8;
+ylim_ub   = 0.1;
+d_prime   = GenerateROC(mu_N_vec, mu_NS_vec, sigma_vec, x, ylim_ub);
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

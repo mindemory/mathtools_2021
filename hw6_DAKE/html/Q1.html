@@ -1,0 +1,522 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q1</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-18"><meta name="DC.source" content="Q1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#6">b)</a></li><li><a href="#15">c)</a></li><li><a href="#17">d)</a></li><li><a href="#18">Functions</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a)</h2><p>The kernel is a weighting matrix that provides the weightage to different stimuli. The runGaussNoiseExpt then computes the stimuli and whether there were spikes across the duration specified by the variable duration. The linear-filter response can be obtained by multiplying the stimuli with the flattended-kernel (linear-filter). From the graph, we can see that the spikes seem to appear only when the stimuli are positive and above a certain threshold. However, there appears to be noise in the sense that presence of a positive stimulus does not necessarily imply a spike.</p><pre class="codeinput">kernel_squared = [1 2 1; 2 4 2; 1 2 1]/6; <span class="comment">% spatial kernel</span>
+kernel = kernel_squared(:); <span class="comment">% flattening the kernel</span>
+duration = 100; <span class="comment">% number of samples</span>
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+
+lin_filter_response = stimuli * kernel;
+figure()
+plot(lin_filter_response, <span class="string">'DisplayName'</span>, <span class="string">'Linear Filter response'</span>)
+hold <span class="string">on</span>;
+plot(spikes, <span class="string">'DisplayName'</span>, <span class="string">'Spikes'</span>);
+legend()
+xlabel(<span class="string">'Time'</span>)
+ylabel(<span class="string">'Response'</span>)
+</pre><img vspace="5" hspace="5" src="Q1_01.png" alt=""> <p>Projecting the stimuli and the stimuli corresponding to the spikes, we would expect the spikes to occur only when the stimuli are positive. Also, the weightage for each stimulus is determined by the kernel. For instance, the weightage given to stimulus 1 is 1/6, stimulus 5 is 4/6, to stimulus 6 is 2/6 and so on. Indeed this is what we can see from the projections. Here are few example plots that verify the same.</p><pre class="codeinput">figure();
+subplot(2, 2, 1)
+scatter(stimuli(:, 1), stimuli(:, 6));
+hold <span class="string">on</span>;
+scatter(stimuli(spikes, 1), stimuli(spikes, 6), <span class="string">'r'</span>)
+xlabel(<span class="string">'stimulus 1'</span>)
+ylabel(<span class="string">'stimulus 6'</span>)
+title(<span class="string">'stimulus 1 and 6, 100 samples'</span>)
+axis <span class="string">equal</span>;
+
+subplot(2, 2, 2)
+scatter(stimuli(:, 1), stimuli(:, 5));
+hold <span class="string">on</span>;
+scatter(stimuli(spikes, 1), stimuli(spikes, 5), <span class="string">'r'</span>)
+xlabel(<span class="string">'stimulus 1'</span>)
+ylabel(<span class="string">'stimulus 5'</span>)
+title(<span class="string">'stimulus 1 and 5, 100 samples'</span>)
+axis <span class="string">equal</span>;
+
+duration = 1e4;
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+subplot(2, 2, 3)
+scatter(stimuli(:, 1), stimuli(:, 6));
+hold <span class="string">on</span>;
+scatter(stimuli(spikes, 1), stimuli(spikes, 6), <span class="string">'r'</span>)
+xlabel(<span class="string">'stimulus 1'</span>)
+ylabel(<span class="string">'stimulus 6'</span>)
+title(<span class="string">'stimulus 1 and 6, 1e4 samples'</span>)
+axis <span class="string">equal</span>;
+
+subplot(2, 2, 4)
+scatter(stimuli(:, 1), stimuli(:, 5));
+hold <span class="string">on</span>;
+scatter(stimuli(spikes, 1), stimuli(spikes, 5), <span class="string">'r'</span>)
+xlabel(<span class="string">'stimulus 1'</span>)
+ylabel(<span class="string">'stimulus 5'</span>)
+title(<span class="string">'stimulus 1 and 5, 1e4 samples'</span>)
+axis <span class="string">equal</span>;
+</pre><img vspace="5" hspace="5" src="Q1_02.png" alt=""> <h2 id="6">b)</h2><p>Spike-triggered average is a weighted-average of the scaled stimuli by the spikes. It can be computed using the formula:</p><p><img src="Q1_eq12696398074326158026.png" alt="$$STA = \frac{1}{n} \sum_i^n x' y $$" style="width:81px;height:31px;"></p><p>where x is the scaled stimulus vector obtained by subtracting mean of the stimuli from each stimulus, and y is the spikes vector, n is the count of spikes.</p><pre class="codeinput">duration = 100; <span class="comment">% number of samples</span>
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+
+scaled_stimuli = stimuli - mean(stimuli); <span class="comment">% scaling stimuli</span>
+spike_count = sum(spikes); <span class="comment">% count of spikes</span>
+STA = (scaled_stimuli' * spikes)./spike_count; <span class="comment">% spike-triggered average</span>
+
+STA_normalized = STA./(sqrt(sum(STA.^2))); <span class="comment">% normalizing STA</span>
+STA_squared = reshape(STA_normalized, [3, 3]); <span class="comment">% reshaping normalized STA into a square matrix</span>
+</pre><p>Plotting the normalized STA and kernel as grayscale images, we can see that they are similar to each other. The minor differences between the kernel and STA can be accounted for the noise in the computation of spikes.</p><pre class="codeinput">figure()
+subplot(1, 2, 1)
+imagesc(STA_squared)
+colormap(gray)
+title(<span class="string">'STA'</span>)
+
+subplot(1, 2, 2)
+imagesc(kernel_squared)
+colormap(gray)
+title(<span class="string">'kernel'</span>)
+</pre><img vspace="5" hspace="5" src="Q1_03.png" alt=""> <p>The difference between the kernel and STA can be computed using bias and variance. The estimation bias is the mean difference between the kernel and mean STA across multiple runs. Similarly, the estimation variance is given as the mean squared difference between the kernel and mean STA across runs. The estimation bias and estimation variance can be computed for a range of durations. In order to create a log-log plot, we have to make sure that the estimation bias is positive. Hence here absolute values of difference are taken. The values can become negative especially when the sample size is low where the kernel values can be higher than the mean STA across runs.</p><pre class="codeinput">durations = [100, 400, 1600, 6400, 25600, 102400]; <span class="comment">% range of durations</span>
+runs = 100; <span class="comment">% total number of runs</span>
+
+STA_across_runs = zeros(length(durations), runs, length(kernel)); <span class="comment">% initializing STAs</span>
+<span class="keyword">for</span> i = 1:length(durations)
+    duration = durations(i);
+    <span class="keyword">for</span> run = 1:runs
+        STA_across_runs(i, run, :) = get_STA(kernel, duration); <span class="comment">% computing normalized STAs for each run and duration</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Computing estimation bias</span>
+mean_STA_across_runs = squeeze(mean(STA_across_runs, 2));
+kernel_oned = ones(length(durations), 1) * kernel';
+diff_kernel_STA = kernel_oned - mean_STA_across_runs;
+ave_diff_kernel = mean(abs(diff_kernel_STA), 2); <span class="comment">% absolute difference is taken to ensure that log-values can be computed</span>
+
+<span class="comment">% Computing estimation varince</span>
+squared_diff_kernel_STA = (kernel_oned - mean_STA_across_runs).^2;
+var_diff_kernel = mean(squared_diff_kernel_STA, 2);
+
+figure()
+h = loglog(durations, ave_diff_kernel, <span class="string">'bo-'</span>, durations, <span class="keyword">...</span>
+    sqrt(var_diff_kernel), <span class="string">'ro-'</span>);
+xlabel(<span class="string">'Duration'</span>)
+set(h(1), <span class="string">'LineWidth'</span>, 2)
+set(h(2), <span class="string">'LineWidth'</span>, 2)
+set(gca, <span class="string">'LineWidth'</span>, 1.5)
+set(gca, <span class="string">'FontSize'</span>, 14)
+legend(<span class="string">'bias'</span>, <span class="string">'sqrt(variance)'</span>)
+</pre><img vspace="5" hspace="5" src="Q1_04.png" alt=""> <p>From the plot we see that both estimation bias and variance decrease monotonically as a function of duration. Therefore, we can see that with an increase in the sample size, the effect of noise is reduced. Hence, for higher sample sizes, the normalized STA is a good estimate of the kernel with both low bias and low variance.</p><h2 id="15">c)</h2><pre class="codeinput">duration = 6400;
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+scaled_stimuli = stimuli - mean(stimuli);
+spike_count = sum(spikes);
+<span class="keyword">if</span> spike_count &lt;= 0.01
+    STA_normalized = 0;
+<span class="keyword">else</span>
+    STA = (scaled_stimuli' * spikes)./(spike_count);
+    STA_normalized = STA./(sqrt(sum(STA.^2)));
+<span class="keyword">end</span>
+</pre><pre class="codeinput">stimuli_projection = stimuli * STA_normalized;
+[stimuli_projection_sorted, proj_index] = sort(stimuli_projection, <span class="string">'descend'</span>);
+spike_reordered = spikes(proj_index);
+
+bin_width = 200;
+bin_size = 1:bin_width:duration;
+stimuli_projection_mean = zeros(length(bin_size));
+spike_reordered_mean = zeros(length(bin_size));
+
+<span class="keyword">for</span> bin_ = 1:length(bin_size)
+    bin_lb = bin_size(bin_);
+    bin_ub = bin_width * bin_;
+
+    stimuli_projection_mean(bin_) = mean(stimuli_projection_sorted(bin_lb: bin_ub), 1);
+    spike_reordered_mean(bin_) = mean(spike_reordered(bin_lb: bin_ub), 1);
+<span class="keyword">end</span>
+
+figure()
+plot(stimuli_projection_mean, spike_reordered_mean, <span class="string">'r*-'</span>, <span class="string">'LineWidth'</span>, 2)
+set(gca, <span class="string">'LineWidth'</span>, 1.5)
+set(gca, <span class="string">'FontSize'</span>, 14)
+xlabel(<span class="string">'mean projection'</span>)
+ylabel(<span class="string">'mean spike count'</span>)
+title(<span class="string">'Spiking nonlinearity'</span>)
+</pre><img vspace="5" hspace="5" src="Q1_05.png" alt=""> <h2 id="17">d)</h2><pre class="codeinput">bootstrap_times = 100;
+numBins = 120;
+
+stimuli_proj_min = floor(min(stimuli_projection_sorted));
+stimuli_proj_max = ceil(max(stimuli_projection_sorted));
+bins = linspace(stimuli_proj_min, stimuli_proj_max, numBins);
+stimuli_projection_shuffled_mean = zeros(numBins, bootstrap_times);
+spike_reordered_shuffled_mean = zeros(numBins, bootstrap_times);
+
+<span class="keyword">for</span> i = 1:bootstrap_times
+    new_indices = randi(duration, 1, duration);
+    stimuli_projection_shuffled = stimuli_projection(new_indices);
+    spike_reordered_shuffled = spikes(new_indices);
+    dicret_binned_idx = discretize(stimuli_projection_shuffled, bins);
+    <span class="keyword">for</span> kk = 1:numBins
+        stimuli_projection_shuffled_binned = stimuli_projection_shuffled(dicret_binned_idx == kk);
+        stimuli_projection_shuffled_mean(kk, i) = mean(stimuli_projection_shuffled_binned, 1);
+        spike_reordered_shuffled_binned = spike_reordered_shuffled(dicret_binned_idx == kk);
+        spike_reordered_shuffled_mean(kk, i) = mean(spike_reordered_shuffled_binned, 1);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+stimuli_projection_shuffled_bootstrap_mean = mean(stimuli_projection_shuffled_mean, 2);
+stimuli_projection_shuffled_bootstrap_stdev = std(stimuli_projection_shuffled_mean, 0, 2);
+spike_reordered_shuffled_bootstrap_mean = mean(spike_reordered_shuffled_mean, 2);
+spike_reordered_shuffled_bootstrap_stdev = std(spike_reordered_shuffled_mean, 0, 2);
+
+figure()
+errorbar(stimuli_projection_shuffled_bootstrap_mean, <span class="keyword">...</span>
+    spike_reordered_shuffled_bootstrap_mean, <span class="keyword">...</span>
+    spike_reordered_shuffled_bootstrap_stdev, <span class="string">'r*-'</span>, <span class="string">'LineWidth'</span>, 1)
+set(gca, <span class="string">'LineWidth'</span>, 1.5)
+set(gca, <span class="string">'FontSize'</span>, 14)
+xlabel(<span class="string">'mean projection shuffled'</span>)
+ylabel(<span class="string">'mean spike count shuffled'</span>)
+title(<span class="string">'Bootstrap spiking nonlinearity'</span>)
+</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <h2 id="18">Functions</h2><pre class="codeinput"><span class="keyword">function</span> STA_normalized = get_STA(kernel, duration)
+    <span class="comment">% The function computes normalized STA using the same procedure as in</span>
+    <span class="comment">% (a) given a kernel and duration. First it runs the runGaussNoiseExpt</span>
+    <span class="comment">% to compute the spikes and stimuli. It then scales the stimuli by its</span>
+    <span class="comment">% mean. Next it computes the STA by computing a dot-product between the</span>
+    <span class="comment">% scaled stimuli and spikes and taking an average of the product. The</span>
+    <span class="comment">% STA is then normalized. The function also takes into account the</span>
+    <span class="comment">% scenarios where runGaussNoiseExpt can end up creating 0 spikes. In</span>
+    <span class="comment">% this case, the STA is not defined. The function approximates such</span>
+    <span class="comment">% scenarios as having 0 STA.</span>
+    [spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+    scaled_stimuli = stimuli - mean(stimuli);
+    spike_count = sum(spikes);
+    <span class="keyword">if</span> spike_count &lt;= 0.01
+        STA_normalized = 0;
+    <span class="keyword">else</span>
+        STA = (scaled_stimuli' * spikes)./(spike_count);
+        STA_normalized = STA./(sqrt(sum(STA.^2)));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%% a)
+% The kernel is a weighting matrix that provides the weightage to different
+% stimuli. The runGaussNoiseExpt then computes the stimuli and whether
+% there were spikes across the duration specified by the variable duration.
+% The linear-filter response can be obtained by multiplying the stimuli
+% with the flattended-kernel (linear-filter). From the graph, we can see
+% that the spikes seem to appear only when the stimuli are positive and
+% above a certain threshold. However, there appears to be noise in the
+% sense that presence of a positive stimulus does not necessarily imply a
+% spike. 
+%%
+kernel_squared = [1 2 1; 2 4 2; 1 2 1]/6; % spatial kernel
+kernel = kernel_squared(:); % flattening the kernel
+duration = 100; % number of samples
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+
+lin_filter_response = stimuli * kernel; 
+figure()
+plot(lin_filter_response, 'DisplayName', 'Linear Filter response')
+hold on;
+plot(spikes, 'DisplayName', 'Spikes');
+legend()
+xlabel('Time')
+ylabel('Response')
+
+%%
+% Projecting the stimuli and the stimuli corresponding to the spikes, we
+% would expect the spikes to occur only when the stimuli are positive.
+% Also, the weightage for each stimulus is determined by the kernel. For
+% instance, the weightage given to stimulus 1 is 1/6, stimulus 5 is 4/6, to
+% stimulus 6 is 2/6 and so on. Indeed this is what we can see from the projections.
+% Here are few example plots that verify the
+% same.
+%%
+figure();
+subplot(2, 2, 1)
+scatter(stimuli(:, 1), stimuli(:, 6));
+hold on;
+scatter(stimuli(spikes, 1), stimuli(spikes, 6), 'r')
+xlabel('stimulus 1')
+ylabel('stimulus 6')
+title('stimulus 1 and 6, 100 samples')
+axis equal;
+
+subplot(2, 2, 2)
+scatter(stimuli(:, 1), stimuli(:, 5));
+hold on;
+scatter(stimuli(spikes, 1), stimuli(spikes, 5), 'r')
+xlabel('stimulus 1')
+ylabel('stimulus 5')
+title('stimulus 1 and 5, 100 samples')
+axis equal;
+
+duration = 1e4;
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+subplot(2, 2, 3)
+scatter(stimuli(:, 1), stimuli(:, 6));
+hold on;
+scatter(stimuli(spikes, 1), stimuli(spikes, 6), 'r')
+xlabel('stimulus 1')
+ylabel('stimulus 6')
+title('stimulus 1 and 6, 1e4 samples')
+axis equal;
+
+subplot(2, 2, 4)
+scatter(stimuli(:, 1), stimuli(:, 5));
+hold on;
+scatter(stimuli(spikes, 1), stimuli(spikes, 5), 'r')
+xlabel('stimulus 1')
+ylabel('stimulus 5')
+title('stimulus 1 and 5, 1e4 samples')
+axis equal;
+
+%% b)
+% Spike-triggered average is a weighted-average of the scaled stimuli 
+% by the spikes. It can be computed using the formula:
+%%
+% $$STA = \frac{1}{n} \sum_i^n x' y $$
+%%
+% where x is the scaled stimulus vector obtained by subtracting
+% mean of the stimuli from each stimulus, and y is the spikes vector, n is
+% the count of spikes.
+%%
+duration = 100; % number of samples
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+
+scaled_stimuli = stimuli - mean(stimuli); % scaling stimuli
+spike_count = sum(spikes); % count of spikes
+STA = (scaled_stimuli' * spikes)./spike_count; % spike-triggered average
+
+STA_normalized = STA./(sqrt(sum(STA.^2))); % normalizing STA
+STA_squared = reshape(STA_normalized, [3, 3]); % reshaping normalized STA into a square matrix
+
+%%
+% Plotting the normalized STA and kernel as grayscale images, we can see
+% that they are similar to each other. The minor differences between the
+% kernel and STA can be accounted for the noise in the computation of
+% spikes.
+%%
+figure()
+subplot(1, 2, 1)
+imagesc(STA_squared)
+colormap(gray)
+title('STA')
+
+subplot(1, 2, 2)
+imagesc(kernel_squared)
+colormap(gray)
+title('kernel')
+
+%%
+% The difference between the kernel and STA can be computed using bias and
+% variance. The estimation bias is the mean difference between the kernel
+% and mean STA across multiple runs. Similarly, the estimation variance is
+% given as the mean squared difference between the kernel and mean STA
+% across runs. The estimation bias and estimation variance can be computed
+% for a range of durations. In order to create a log-log plot, we have to make sure that
+% the estimation bias is positive. Hence here absolute values of difference
+% are taken. The values can become negative especially when the sample size is
+% low where the kernel values can be higher than the mean STA across runs.
+%%
+durations = [100, 400, 1600, 6400, 25600, 102400]; % range of durations
+runs = 100; % total number of runs
+
+STA_across_runs = zeros(length(durations), runs, length(kernel)); % initializing STAs
+for i = 1:length(durations)
+    duration = durations(i);
+    for run = 1:runs
+        STA_across_runs(i, run, :) = get_STA(kernel, duration); % computing normalized STAs for each run and duration
+    end
+end
+
+% Computing estimation bias
+mean_STA_across_runs = squeeze(mean(STA_across_runs, 2));
+kernel_oned = ones(length(durations), 1) * kernel';
+diff_kernel_STA = kernel_oned - mean_STA_across_runs; 
+ave_diff_kernel = mean(abs(diff_kernel_STA), 2); % absolute difference is taken to ensure that log-values can be computed
+
+% Computing estimation varince
+squared_diff_kernel_STA = (kernel_oned - mean_STA_across_runs).^2;
+var_diff_kernel = mean(squared_diff_kernel_STA, 2);
+
+figure()
+h = loglog(durations, ave_diff_kernel, 'bo-', durations, ...
+    sqrt(var_diff_kernel), 'ro-');
+xlabel('Duration')
+set(h(1), 'LineWidth', 2)
+set(h(2), 'LineWidth', 2)
+set(gca, 'LineWidth', 1.5)
+set(gca, 'FontSize', 14)
+legend('bias', 'sqrt(variance)')
+
+%%
+% From the plot we see that both estimation bias and variance decrease
+% monotonically as a function of duration. Therefore, we can see that with
+% an increase in the sample size, the effect of noise is reduced. Hence,
+% for higher sample sizes, the normalized STA is a good estimate of the
+% kernel with both low bias and low variance.
+
+%% c)
+duration = 6400;
+[spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+scaled_stimuli = stimuli - mean(stimuli);
+spike_count = sum(spikes);
+if spike_count <= 0.01
+    STA_normalized = 0;
+else
+    STA = (scaled_stimuli' * spikes)./(spike_count);
+    STA_normalized = STA./(sqrt(sum(STA.^2)));
+end
+
+%%
+stimuli_projection = stimuli * STA_normalized;
+[stimuli_projection_sorted, proj_index] = sort(stimuli_projection, 'descend');
+spike_reordered = spikes(proj_index);
+
+bin_width = 200;
+bin_size = 1:bin_width:duration;
+stimuli_projection_mean = zeros(length(bin_size));
+spike_reordered_mean = zeros(length(bin_size));
+
+for bin_ = 1:length(bin_size)
+    bin_lb = bin_size(bin_);
+    bin_ub = bin_width * bin_;
+
+    stimuli_projection_mean(bin_) = mean(stimuli_projection_sorted(bin_lb: bin_ub), 1);
+    spike_reordered_mean(bin_) = mean(spike_reordered(bin_lb: bin_ub), 1);
+end
+
+figure()
+plot(stimuli_projection_mean, spike_reordered_mean, 'r*-', 'LineWidth', 2)
+set(gca, 'LineWidth', 1.5)
+set(gca, 'FontSize', 14)
+xlabel('mean projection')
+ylabel('mean spike count')
+title('Spiking nonlinearity')
+
+%% d)
+bootstrap_times = 100;
+numBins = 120;
+
+stimuli_proj_min = floor(min(stimuli_projection_sorted));
+stimuli_proj_max = ceil(max(stimuli_projection_sorted));
+bins = linspace(stimuli_proj_min, stimuli_proj_max, numBins);
+stimuli_projection_shuffled_mean = zeros(numBins, bootstrap_times);
+spike_reordered_shuffled_mean = zeros(numBins, bootstrap_times);
+
+for i = 1:bootstrap_times
+    new_indices = randi(duration, 1, duration);
+    stimuli_projection_shuffled = stimuli_projection(new_indices);
+    spike_reordered_shuffled = spikes(new_indices);
+    dicret_binned_idx = discretize(stimuli_projection_shuffled, bins);
+    for kk = 1:numBins
+        stimuli_projection_shuffled_binned = stimuli_projection_shuffled(dicret_binned_idx == kk);
+        stimuli_projection_shuffled_mean(kk, i) = mean(stimuli_projection_shuffled_binned, 1);
+        spike_reordered_shuffled_binned = spike_reordered_shuffled(dicret_binned_idx == kk);
+        spike_reordered_shuffled_mean(kk, i) = mean(spike_reordered_shuffled_binned, 1);
+    end
+end
+
+stimuli_projection_shuffled_bootstrap_mean = mean(stimuli_projection_shuffled_mean, 2);
+stimuli_projection_shuffled_bootstrap_stdev = std(stimuli_projection_shuffled_mean, 0, 2);
+spike_reordered_shuffled_bootstrap_mean = mean(spike_reordered_shuffled_mean, 2);
+spike_reordered_shuffled_bootstrap_stdev = std(spike_reordered_shuffled_mean, 0, 2);
+
+figure()
+errorbar(stimuli_projection_shuffled_bootstrap_mean, ...
+    spike_reordered_shuffled_bootstrap_mean, ...
+    spike_reordered_shuffled_bootstrap_stdev, 'r*-', 'LineWidth', 1)
+set(gca, 'LineWidth', 1.5)
+set(gca, 'FontSize', 14)
+xlabel('mean projection shuffled')
+ylabel('mean spike count shuffled')
+title('Bootstrap spiking nonlinearity')
+
+%% Functions
+function STA_normalized = get_STA(kernel, duration)
+    % The function computes normalized STA using the same procedure as in
+    % (a) given a kernel and duration. First it runs the runGaussNoiseExpt
+    % to compute the spikes and stimuli. It then scales the stimuli by its
+    % mean. Next it computes the STA by computing a dot-product between the
+    % scaled stimuli and spikes and taking an average of the product. The
+    % STA is then normalized. The function also takes into account the
+    % scenarios where runGaussNoiseExpt can end up creating 0 spikes. In
+    % this case, the STA is not defined. The function approximates such
+    % scenarios as having 0 STA.
+    [spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
+    scaled_stimuli = stimuli - mean(stimuli);
+    spike_count = sum(spikes);
+    if spike_count <= 0.01
+        STA_normalized = 0;
+    else
+        STA = (scaled_stimuli' * spikes)./(spike_count);
+        STA_normalized = STA./(sqrt(sum(STA.^2)));
+    end
+end
+##### SOURCE END #####
+--></body></html>

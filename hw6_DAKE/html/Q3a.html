@@ -1,0 +1,401 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Q3a</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-18"><meta name="DC.source" content="Q3a.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><p>The goal here is perform linear-regression with L1 and L2 regularization. For the penalization, we can have a range of <img src="Q3a_eq02701502151986338838.png" alt="$$\lambda $$" style="width:6px;height:8px;"> 's (the penalization parameters). First the data is split into train and test set. A linear-regression model with either ridge regularization or lasso regularization is trained on the training set and evaluated on both train and test sets. The mse is then plotted. The goal is to choose the penalization such that the test error is minimized. The minimum of mse test is then used to compute the optimum lambdas and hence the optimum betas.</p><p>For lasso regularization, the lasso() function of MATLAB is used. For ridge-regression the close-form solution is used:</p><p><img src="Q3a_eq05346003777348501377.png" alt="$$\beta = (X'X * \lambda I)^{-1} (X'y) $$" style="width:112px;height:13px;"></p><pre class="codeinput">load(<span class="string">'regress1.mat'</span>)
+
+X = [x.^0 x.^1 x.^2 x.^3 x.^4 x.^5]; <span class="comment">% creating data matrix</span>
+train_size = floor(0.95 * size(X, 1)); <span class="comment">% 95% training size</span>
+
+lambdas = 0:0.01:1; <span class="comment">% range of lambdas</span>
+cv_times = 1e3; <span class="comment">% number of cross-validations</span>
+
+<span class="comment">% Initializing mean squared errors</span>
+mse_train_ridge = zeros(cv_times, length(lambdas));
+mse_test_ridge = zeros(cv_times, length(lambdas));
+mse_train_lasso = zeros(cv_times, length(lambdas));
+mse_test_lasso = zeros(cv_times, length(lambdas));
+
+<span class="comment">% Initializing betas</span>
+beta_lasso_ = zeros(cv_times, size(X, 2), length(lambdas));
+beta_ridge_ = zeros(cv_times, size(X, 2), length(lambdas));
+
+<span class="keyword">for</span> i = 1:cv_times
+    <span class="comment">% creating train and test sets</span>
+    train_indices = randperm(size(X, 1), train_size);
+    test_indices = setdiff(1:size(X, 1), train_indices);
+    X_train = X(train_indices, :);
+    X_test = X(test_indices, :);
+    y_train = y(train_indices);
+    y_test = y(test_indices);
+
+    <span class="comment">% computing $$\beta $$ 's using LASSO regularization</span>
+    beta_lasso_train = lasso(X_train, y_train, <span class="string">'Lambda'</span>, lambdas, <span class="keyword">...</span>
+        <span class="string">'Intercept'</span>, true, <span class="string">'Standardize'</span>, false);
+    beta_lasso_(i, :, :) = beta_lasso_train;
+    <span class="keyword">for</span> ll = 1:length(lambdas)
+        lambda = lambdas(ll);
+
+        <span class="comment">% computing $$\beta $$ 's using Ridge regularization</span>
+        beta_ridge_train = (X_train' * X_train + lambda * eye(size(X_train, 2))) <span class="keyword">...</span>
+            \ (X_train' * y_train); <span class="comment">% closed-form solution of ride-regression.</span>
+        beta_ridge_(i, :, ll) = beta_ridge_train;
+
+        <span class="comment">% Making predictions and computing MSE for Ridge</span>
+        y_pred_train_ridge = X_train * beta_ridge_train;
+        y_pred_test_ridge = X_test * beta_ridge_train;
+        mse_train_ridge(i, ll) = mean((y_train - y_pred_train_ridge).^2);
+        mse_test_ridge(i, ll) = mean((y_test - y_pred_test_ridge).^2);
+
+        <span class="comment">% Making predictions and computing MSE for LASSO</span>
+        y_pred_train_lasso = X_train * beta_lasso_train(:, ll);
+        y_pred_test_lasso = X_test * beta_lasso_train(:, ll);
+        mse_train_lasso(i, ll) = mean((y_train - y_pred_train_lasso).^2);
+        mse_test_lasso(i, ll) = mean((y_test - y_pred_test_lasso).^2);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Computing mean MSE and standard error for train and test sets for Ridge</span>
+mean_mse_train_ridge = mean(mse_train_ridge, 1);
+mean_mse_test_ridge = mean(mse_test_ridge, 1);
+stderror_mse_train_ridge = std(mse_train_ridge, 1)./sqrt(size(X, 1));
+stderror_mse_test_ridge = std(mse_test_ridge, 1)./sqrt(size(X, 1));
+
+<span class="comment">% Computing mean MSE and standard error for train and test sets for LASSO</span>
+mean_mse_train_lasso = mean(mse_train_lasso, 1);
+mean_mse_test_lasso = mean(mse_test_lasso, 1);
+stderror_mse_train_lasso = std(mse_train_lasso, 1)./sqrt(size(X, 1));
+stderror_mse_test_lasso = std(mse_test_lasso, 1)./sqrt(size(X, 1));
+</pre><pre class="codeinput">figure()
+subplot(2, 1, 1)
+errorbar(lambdas, mean_mse_train_ridge, stderror_mse_train_ridge, <span class="keyword">...</span>
+   <span class="string">'DisplayName'</span>, <span class="string">'train ridge'</span>)
+hold <span class="string">on</span>;
+errorbar(lambdas, mean_mse_test_ridge, stderror_mse_test_ridge, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'test ridge'</span>)
+xlabel(<span class="string">'\lambda'</span>)
+ylabel(<span class="string">'MSE'</span>)
+title(<span class="string">'ridge regularization'</span>)
+legend()
+
+subplot(2, 1, 2)
+errorbar(lambdas, mean_mse_train_lasso, stderror_mse_train_lasso, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'train lasso'</span>)
+hold <span class="string">on</span>;
+errorbar(lambdas, mean_mse_test_lasso, stderror_mse_test_lasso, <span class="keyword">...</span>
+    <span class="string">'DisplayName'</span>, <span class="string">'test lasso'</span>)
+xlabel(<span class="string">'\lambda'</span>)
+ylabel(<span class="string">'MSE'</span>)
+title(<span class="string">'lasso regularization'</span>)
+legend()
+</pre><img vspace="5" hspace="5" src="Q3a_01.png" alt=""> <p>Computing optimum lambdas and corresponding betas</p><pre class="codeinput">[~, ridge_param_index] = min(mean_mse_test_ridge(2: end));
+[~, lasso_param_index] = min(mean_mse_test_lasso(2: end));
+ridge_lambda_optim = lambdas(ridge_param_index)
+lasso_lambda_optim = lambdas(lasso_param_index)
+</pre><pre class="codeoutput">
+ridge_lambda_optim =
+
+    0.1200
+
+
+lasso_lambda_optim =
+
+    0.0300
+
+</pre><p>average beta, average MSE and error in optimum betas were computed across CVs to ensure that the obtained beta optima for ridge and lasso are not stable.</p><pre class="codeinput">beta_ridge_train_avg = mean(beta_ridge_(:, :, ridge_param_index), 1)
+beta_lasso_train_avg = mean(beta_lasso_(:, :, lasso_param_index), 1)
+beta_ridge_train_error = std(beta_ridge_(:, :, ridge_param_index), 0, 1)
+beta_lasso_train_error = std(beta_lasso_(:, :, lasso_param_index), 0, 1)
+mean_mse_ridge_test_avg = mean(mse_train_ridge(:, ridge_param_index), 1)
+mean_mse_lasso_test_avg = mean(mse_train_lasso(:, lasso_param_index), 1)
+</pre><pre class="codeoutput">
+beta_ridge_train_avg =
+
+   -1.8146   -1.1158   -0.1257    0.1014    0.2441   -0.0299
+
+
+beta_lasso_train_avg =
+
+         0   -0.9726         0   -0.0001    0.1848   -0.0004
+
+
+beta_ridge_train_error =
+
+    0.0182    0.0238    0.0407    0.0196    0.0174    0.0066
+
+
+beta_lasso_train_error =
+
+         0    0.0107         0    0.0011    0.0028    0.0013
+
+
+mean_mse_ridge_test_avg =
+
+    0.0692
+
+
+mean_mse_lasso_test_avg =
+
+    3.4616
+
+</pre><p>Computing optimum betas using the optimum lambdas computed</p><pre class="codeinput">train_indices = randperm(size(X, 1), train_size);
+test_indices = setdiff(1:size(X, 1), train_indices);
+X_train = X(train_indices, :);
+X_test = X(test_indices, :);
+y_train = y(train_indices);
+y_test = y(test_indices);
+
+beta_ridge_train_optim = (X_train' * X_train + ridge_lambda_optim * <span class="keyword">...</span>
+    eye(size(X_train, 2))) \ (X_train' * y_train)
+beta_lasso_train_optim = lasso(X_train, y_train, <span class="string">'Lambda'</span>, lasso_lambda_optim, <span class="keyword">...</span>
+        <span class="string">'Intercept'</span>, true, <span class="string">'Standardize'</span>, false)
+</pre><pre class="codeoutput">
+beta_ridge_train_optim =
+
+   -1.7942
+   -1.1216
+   -0.1622
+    0.1129
+    0.2561
+   -0.0343
+
+
+beta_lasso_train_optim =
+
+         0
+   -0.9798
+         0
+         0
+    0.1840
+         0
+
+</pre><p>We can see that there are differences in the betas optained through ridge vs lasso regularization. Also there are differences in the optimum models obtained in the lab vs in this exercise. The goal in the lab assignment was to find an optimum order of polynomial model. Here the goal is to compute the optimum penalization to the linear model of order 5. Ridge-regularization penalizes so that the model does not end up overfitting the training set. We can also see that the coefficient selected for x^5 is very small. And hence ridge regularization penalizes to select an order 5 model with a small coefficient for the 5th order variable. The lasso regularization also aims at minimizing overfit. However, it uses absolute value of weights instead of squared values used in ridge regression. Therefore, the model also acts as feature selection model. Here, the coefficients for x^0, x^2, x^3, x^5 are very small or close to 0. And hence lasso suggests that x^1 and x^4 are the most important features in capturing the data structures. Therefore, overall all three methods hint towards an order 4 polynomial to be the best fit for the data. However, there are differences in the model selected based on whether regularization is employed and if so what kind of penalization term is used.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+
+%%
+% The goal here is perform linear-regression with L1 and L2 regularization.
+% For the penalization, we can have a range of $$\lambda $$ 's (the
+% penalization parameters). First the data is split into train and test
+% set. A linear-regression model with either ridge regularization or lasso
+% regularization is trained on the training set and evaluated on both train
+% and test sets. The mse is then plotted. The goal is to choose the
+% penalization such that the test error is minimized. The minimum of mse test
+% is then used to compute the optimum lambdas and hence the optimum betas.
+%%
+% For lasso regularization, the lasso() function of MATLAB is used. For
+% ridge-regression the close-form solution is used:
+%%
+% $$\beta = (X'X * \lambda I)^{-1} (X'y) $$
+%%
+load('regress1.mat')
+
+X = [x.^0 x.^1 x.^2 x.^3 x.^4 x.^5]; % creating data matrix
+train_size = floor(0.95 * size(X, 1)); % 95% training size
+
+lambdas = 0:0.01:1; % range of lambdas
+cv_times = 1e3; % number of cross-validations
+
+% Initializing mean squared errors
+mse_train_ridge = zeros(cv_times, length(lambdas));
+mse_test_ridge = zeros(cv_times, length(lambdas));
+mse_train_lasso = zeros(cv_times, length(lambdas));
+mse_test_lasso = zeros(cv_times, length(lambdas));
+
+% Initializing betas
+beta_lasso_ = zeros(cv_times, size(X, 2), length(lambdas));
+beta_ridge_ = zeros(cv_times, size(X, 2), length(lambdas));
+
+for i = 1:cv_times
+    % creating train and test sets
+    train_indices = randperm(size(X, 1), train_size);
+    test_indices = setdiff(1:size(X, 1), train_indices);
+    X_train = X(train_indices, :);
+    X_test = X(test_indices, :);
+    y_train = y(train_indices);
+    y_test = y(test_indices);
+    
+    % computing $$\beta $$ 's using LASSO regularization
+    beta_lasso_train = lasso(X_train, y_train, 'Lambda', lambdas, ...
+        'Intercept', true, 'Standardize', false);
+    beta_lasso_(i, :, :) = beta_lasso_train;
+    for ll = 1:length(lambdas)
+        lambda = lambdas(ll);
+        
+        % computing $$\beta $$ 's using Ridge regularization
+        beta_ridge_train = (X_train' * X_train + lambda * eye(size(X_train, 2))) ...
+            \ (X_train' * y_train); % closed-form solution of ride-regression.
+        beta_ridge_(i, :, ll) = beta_ridge_train;
+        
+        % Making predictions and computing MSE for Ridge
+        y_pred_train_ridge = X_train * beta_ridge_train;
+        y_pred_test_ridge = X_test * beta_ridge_train;
+        mse_train_ridge(i, ll) = mean((y_train - y_pred_train_ridge).^2);
+        mse_test_ridge(i, ll) = mean((y_test - y_pred_test_ridge).^2);
+
+        % Making predictions and computing MSE for LASSO
+        y_pred_train_lasso = X_train * beta_lasso_train(:, ll);
+        y_pred_test_lasso = X_test * beta_lasso_train(:, ll);
+        mse_train_lasso(i, ll) = mean((y_train - y_pred_train_lasso).^2);
+        mse_test_lasso(i, ll) = mean((y_test - y_pred_test_lasso).^2);
+    end
+end
+
+% Computing mean MSE and standard error for train and test sets for Ridge
+mean_mse_train_ridge = mean(mse_train_ridge, 1);
+mean_mse_test_ridge = mean(mse_test_ridge, 1);
+stderror_mse_train_ridge = std(mse_train_ridge, 1)./sqrt(size(X, 1));
+stderror_mse_test_ridge = std(mse_test_ridge, 1)./sqrt(size(X, 1));
+
+% Computing mean MSE and standard error for train and test sets for LASSO
+mean_mse_train_lasso = mean(mse_train_lasso, 1);
+mean_mse_test_lasso = mean(mse_test_lasso, 1);
+stderror_mse_train_lasso = std(mse_train_lasso, 1)./sqrt(size(X, 1));
+stderror_mse_test_lasso = std(mse_test_lasso, 1)./sqrt(size(X, 1));
+
+%%
+figure()
+subplot(2, 1, 1)
+errorbar(lambdas, mean_mse_train_ridge, stderror_mse_train_ridge, ...
+   'DisplayName', 'train ridge')
+hold on;
+errorbar(lambdas, mean_mse_test_ridge, stderror_mse_test_ridge, ...
+    'DisplayName', 'test ridge')
+xlabel('\lambda')
+ylabel('MSE')
+title('ridge regularization')
+legend()
+
+subplot(2, 1, 2)
+errorbar(lambdas, mean_mse_train_lasso, stderror_mse_train_lasso, ...
+    'DisplayName', 'train lasso')
+hold on;
+errorbar(lambdas, mean_mse_test_lasso, stderror_mse_test_lasso, ...
+    'DisplayName', 'test lasso')
+xlabel('\lambda')
+ylabel('MSE')
+title('lasso regularization')
+legend()
+
+%%
+% Computing optimum lambdas and corresponding betas
+[~, ridge_param_index] = min(mean_mse_test_ridge(2: end));
+[~, lasso_param_index] = min(mean_mse_test_lasso(2: end));
+ridge_lambda_optim = lambdas(ridge_param_index)
+lasso_lambda_optim = lambdas(lasso_param_index)
+
+%%
+% average beta, average MSE and error in optimum betas were computed across
+% CVs to ensure that the obtained beta optima for ridge and lasso are not
+% stable.
+%%
+beta_ridge_train_avg = mean(beta_ridge_(:, :, ridge_param_index), 1)
+beta_lasso_train_avg = mean(beta_lasso_(:, :, lasso_param_index), 1)
+beta_ridge_train_error = std(beta_ridge_(:, :, ridge_param_index), 0, 1)
+beta_lasso_train_error = std(beta_lasso_(:, :, lasso_param_index), 0, 1)
+mean_mse_ridge_test_avg = mean(mse_train_ridge(:, ridge_param_index), 1)
+mean_mse_lasso_test_avg = mean(mse_train_lasso(:, lasso_param_index), 1)
+%%
+% Computing optimum betas using the optimum lambdas computed
+%%
+train_indices = randperm(size(X, 1), train_size);
+test_indices = setdiff(1:size(X, 1), train_indices);
+X_train = X(train_indices, :);
+X_test = X(test_indices, :);
+y_train = y(train_indices);
+y_test = y(test_indices);
+
+beta_ridge_train_optim = (X_train' * X_train + ridge_lambda_optim * ...
+    eye(size(X_train, 2))) \ (X_train' * y_train)
+beta_lasso_train_optim = lasso(X_train, y_train, 'Lambda', lasso_lambda_optim, ...
+        'Intercept', true, 'Standardize', false)
+
+%%
+% We can see that there are differences in the betas optained through ridge
+% vs lasso regularization. Also there are differences in the optimum models
+% obtained in the lab vs in this exercise. The goal in the lab assignment
+% was to find an optimum order of polynomial model. Here the goal is to
+% compute the optimum penalization to the linear model of order 5.
+% Ridge-regularization penalizes so that the model does not end up
+% overfitting the training set. We can also see that the coefficient
+% selected for x^5 is very small. And hence ridge regularization penalizes
+% to select an order 5 model with a small coefficient for the 5th order
+% variable. The lasso regularization also aims at minimizing overfit.
+% However, it uses absolute value of weights instead of squared values used
+% in ridge regression. Therefore, the model also acts as feature selection
+% model. Here, the coefficients for x^0, x^2, x^3, x^5 are very small or
+% close to 0. And hence lasso suggests that x^1 and x^4 are the most
+% important features in capturing the data structures. Therefore, overall
+% all three methods hint towards an order 4 polynomial to be the best fit
+% for the data. However, there are differences in the model selected based
+% on whether regularization is employed and if so what kind of penalization
+% term is used.
+
+##### SOURCE END #####
+--></body></html>
