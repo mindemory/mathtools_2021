@@ -212,6 +212,12 @@ ylabel('mean spike count')
 title('Spiking nonlinearity')
 
 %% d)
+% Repeating the computation of nonlinearity with bootstrapping, first we
+% fix the bins so that the results are comparable across the samples. Then
+% we resample with replacement and bin the data into the pre-defined bins.
+% And recompute the nonlinearity. Doing so, we see that indeed the
+% nonlinearity is preserved and appears to saturate.
+%%
 bootstrap_times = 100;
 numBins = 120;
 

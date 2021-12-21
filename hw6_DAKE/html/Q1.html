@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q1</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-18"><meta name="DC.source" content="Q1.m"><style type="text/css">
+      --><title>Q1</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-20"><meta name="DC.source" content="Q1.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#6">b)</a></li><li><a href="#15">c)</a></li><li><a href="#17">d)</a></li><li><a href="#18">Functions</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#6">b)</a></li><li><a href="#15">c)</a></li><li><a href="#19">d)</a></li><li><a href="#21">Functions</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
 </pre><h2 id="2">a)</h2><p>The kernel is a weighting matrix that provides the weightage to different stimuli. The runGaussNoiseExpt then computes the stimuli and whether there were spikes across the duration specified by the variable duration. The linear-filter response can be obtained by multiplying the stimuli with the flattended-kernel (linear-filter). From the graph, we can see that the spikes seem to appear only when the stimuli are positive and above a certain threshold. However, there appears to be noise in the sense that presence of a positive stimulus does not necessarily imply a spike.</p><pre class="codeinput">kernel_squared = [1 2 1; 2 4 2; 1 2 1]/6; <span class="comment">% spatial kernel</span>
 kernel = kernel_squared(:); <span class="comment">% flattening the kernel</span>
 duration = 100; <span class="comment">% number of samples</span>
@@ -168,7 +168,7 @@ set(h(2), <span class="string">'LineWidth'</span>, 2)
 set(gca, <span class="string">'LineWidth'</span>, 1.5)
 set(gca, <span class="string">'FontSize'</span>, 14)
 legend(<span class="string">'bias'</span>, <span class="string">'sqrt(variance)'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_04.png" alt=""> <p>From the plot we see that both estimation bias and variance decrease monotonically as a function of duration. Therefore, we can see that with an increase in the sample size, the effect of noise is reduced. Hence, for higher sample sizes, the normalized STA is a good estimate of the kernel with both low bias and low variance.</p><h2 id="15">c)</h2><pre class="codeinput">duration = 6400;
+</pre><img vspace="5" hspace="5" src="Q1_04.png" alt=""> <p>From the plot we see that both estimation bias and variance decrease monotonically as a function of duration. Therefore, we can see that with an increase in the sample size, the effect of noise is reduced. Hence, for higher sample sizes, the normalized STA is a good estimate of the kernel with both low bias and low variance.</p><h2 id="15">c)</h2><p>Computing STA-normalized for a duration of 6400:</p><pre class="codeinput">duration = 6400;
 [spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
 scaled_stimuli = stimuli - mean(stimuli);
 spike_count = sum(spikes);
@@ -178,21 +178,20 @@ spike_count = sum(spikes);
     STA = (scaled_stimuli' * spikes)./(spike_count);
     STA_normalized = STA./(sqrt(sum(STA.^2)));
 <span class="keyword">end</span>
-</pre><pre class="codeinput">stimuli_projection = stimuli * STA_normalized;
-[stimuli_projection_sorted, proj_index] = sort(stimuli_projection, <span class="string">'descend'</span>);
-spike_reordered = spikes(proj_index);
+</pre><p>In order to compute the non-linearity index, first we project the stimuli onto the normalized STA. The projected stimuli are then reordered in a descending order. The indices are then used to reorder the spikes. Then both the reordered projected stimuli and reordered spikes are binned into 32 equally spaced bins. For each bin, mean is computed. The graph of these means is the non-linearity index. We can see that indeed there is non-linearity in the spikes as a function of projected stimuli. Specifically, we can see that the spikes are 0 for the case where projected stimuli are less than 1. Only after the projected stimuli are greater than 1, does a spike occur. After this, there still appears some non-linearity and the number of spikes appear to grow exponentially with the projected-stimuli.</p><pre class="codeinput">stimuli_projection = stimuli * STA_normalized; <span class="comment">% stimuli projection onto STA</span>
+[stimuli_projection_sorted, proj_index] = sort(stimuli_projection, <span class="string">'descend'</span>); <span class="comment">% sorted projected stimuli</span>
+spike_reordered = spikes(proj_index); <span class="comment">% sorting spikes</span>
 
 bin_width = 200;
-bin_size = 1:bin_width:duration;
+bin_size = 1:bin_width:duration; <span class="comment">% bin edges</span>
 stimuli_projection_mean = zeros(length(bin_size));
 spike_reordered_mean = zeros(length(bin_size));
 
 <span class="keyword">for</span> bin_ = 1:length(bin_size)
-    bin_lb = bin_size(bin_);
-    bin_ub = bin_width * bin_;
-
-    stimuli_projection_mean(bin_) = mean(stimuli_projection_sorted(bin_lb: bin_ub), 1);
-    spike_reordered_mean(bin_) = mean(spike_reordered(bin_lb: bin_ub), 1);
+    bin_lb = bin_size(bin_); <span class="comment">% lower-bound of bin</span>
+    bin_ub = bin_width * bin_; <span class="comment">% upper-bound of bin</span>
+    stimuli_projection_mean(bin_) = mean(stimuli_projection_sorted(bin_lb: bin_ub), 1); <span class="comment">% computing mean projection stimuli for each bin</span>
+    spike_reordered_mean(bin_) = mean(spike_reordered(bin_lb: bin_ub), 1); <span class="comment">% computing mean count of spikes for each bin</span>
 <span class="keyword">end</span>
 
 figure()
@@ -202,20 +201,28 @@ set(gca, <span class="string">'FontSize'</span>, 14)
 xlabel(<span class="string">'mean projection'</span>)
 ylabel(<span class="string">'mean spike count'</span>)
 title(<span class="string">'Spiking nonlinearity'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_05.png" alt=""> <h2 id="17">d)</h2><pre class="codeinput">bootstrap_times = 100;
+</pre><img vspace="5" hspace="5" src="Q1_05.png" alt=""> <h2 id="19">d)</h2><p>Repeating the computation of nonlinearity with bootstrapping, first we fix the bins so that the results are comparable across the samples. Then we resample with replacement and bin the data into the pre-defined bins. And recompute the nonlinearity. Doing so, we see that indeed the nonlinearity is preserved and appears to saturate.</p><pre class="codeinput">bootstrap_times = 100;
 numBins = 120;
 
+<span class="comment">% computing edges of fixed bins for bootstrapping</span>
 stimuli_proj_min = floor(min(stimuli_projection_sorted));
 stimuli_proj_max = ceil(max(stimuli_projection_sorted));
 bins = linspace(stimuli_proj_min, stimuli_proj_max, numBins);
+
 stimuli_projection_shuffled_mean = zeros(numBins, bootstrap_times);
 spike_reordered_shuffled_mean = zeros(numBins, bootstrap_times);
 
 <span class="keyword">for</span> i = 1:bootstrap_times
+    <span class="comment">% shuffling indices and using these to shuffle projected stimuli and</span>
+    <span class="comment">% spikes</span>
     new_indices = randi(duration, 1, duration);
     stimuli_projection_shuffled = stimuli_projection(new_indices);
     spike_reordered_shuffled = spikes(new_indices);
+
+    <span class="comment">% binning the shuffled projected stimuli into 32 bins</span>
     dicret_binned_idx = discretize(stimuli_projection_shuffled, bins);
+
+    <span class="comment">% computing mean of projected stimuli and spikes</span>
     <span class="keyword">for</span> kk = 1:numBins
         stimuli_projection_shuffled_binned = stimuli_projection_shuffled(dicret_binned_idx == kk);
         stimuli_projection_shuffled_mean(kk, i) = mean(stimuli_projection_shuffled_binned, 1);
@@ -238,7 +245,7 @@ set(gca, <span class="string">'FontSize'</span>, 14)
 xlabel(<span class="string">'mean projection shuffled'</span>)
 ylabel(<span class="string">'mean spike count shuffled'</span>)
 title(<span class="string">'Bootstrap spiking nonlinearity'</span>)
-</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <h2 id="18">Functions</h2><pre class="codeinput"><span class="keyword">function</span> STA_normalized = get_STA(kernel, duration)
+</pre><img vspace="5" hspace="5" src="Q1_06.png" alt=""> <h2 id="21">Functions</h2><pre class="codeinput"><span class="keyword">function</span> STA_normalized = get_STA(kernel, duration)
     <span class="comment">% The function computes normalized STA using the same procedure as in</span>
     <span class="comment">% (a) given a kernel and duration. First it runs the runGaussNoiseExpt</span>
     <span class="comment">% to compute the spikes and stimuli. It then scales the stimuli by its</span>
@@ -422,6 +429,8 @@ legend('bias', 'sqrt(variance)')
 % kernel with both low bias and low variance.
 
 %% c)
+% Computing STA-normalized for a duration of 6400:
+%%
 duration = 6400;
 [spikes, stimuli] = runGaussNoiseExpt(kernel, duration);
 scaled_stimuli = stimuli - mean(stimuli);
@@ -434,21 +443,33 @@ else
 end
 
 %%
-stimuli_projection = stimuli * STA_normalized;
-[stimuli_projection_sorted, proj_index] = sort(stimuli_projection, 'descend');
-spike_reordered = spikes(proj_index);
+% In order to compute the non-linearity index, first we project the stimuli
+% onto the normalized STA. The projected stimuli are then reordered in a
+% descending order. The indices are then used to reorder the spikes. Then
+% both the reordered projected stimuli and reordered spikes are binned into
+% 32 equally spaced bins. For each bin, mean is computed. The graph of
+% these means is the non-linearity index. We can see that indeed there is
+% non-linearity in the spikes as a function of projected stimuli.
+% Specifically, we can see that the spikes are 0 for the case where
+% projected stimuli are less than 1. Only after the projected stimuli are
+% greater than 1, does a spike occur. After this, there still appears some
+% non-linearity and the number of spikes appear to grow exponentially with
+% the projected-stimuli.
+%%
+stimuli_projection = stimuli * STA_normalized; % stimuli projection onto STA
+[stimuli_projection_sorted, proj_index] = sort(stimuli_projection, 'descend'); % sorted projected stimuli
+spike_reordered = spikes(proj_index); % sorting spikes
 
 bin_width = 200;
-bin_size = 1:bin_width:duration;
+bin_size = 1:bin_width:duration; % bin edges
 stimuli_projection_mean = zeros(length(bin_size));
 spike_reordered_mean = zeros(length(bin_size));
 
 for bin_ = 1:length(bin_size)
-    bin_lb = bin_size(bin_);
-    bin_ub = bin_width * bin_;
-
-    stimuli_projection_mean(bin_) = mean(stimuli_projection_sorted(bin_lb: bin_ub), 1);
-    spike_reordered_mean(bin_) = mean(spike_reordered(bin_lb: bin_ub), 1);
+    bin_lb = bin_size(bin_); % lower-bound of bin
+    bin_ub = bin_width * bin_; % upper-bound of bin
+    stimuli_projection_mean(bin_) = mean(stimuli_projection_sorted(bin_lb: bin_ub), 1); % computing mean projection stimuli for each bin
+    spike_reordered_mean(bin_) = mean(spike_reordered(bin_lb: bin_ub), 1); % computing mean count of spikes for each bin
 end
 
 figure()
@@ -460,20 +481,34 @@ ylabel('mean spike count')
 title('Spiking nonlinearity')
 
 %% d)
+% Repeating the computation of nonlinearity with bootstrapping, first we
+% fix the bins so that the results are comparable across the samples. Then
+% we resample with replacement and bin the data into the pre-defined bins.
+% And recompute the nonlinearity. Doing so, we see that indeed the
+% nonlinearity is preserved and appears to saturate.
+%%
 bootstrap_times = 100;
 numBins = 120;
 
+% computing edges of fixed bins for bootstrapping
 stimuli_proj_min = floor(min(stimuli_projection_sorted));
 stimuli_proj_max = ceil(max(stimuli_projection_sorted));
 bins = linspace(stimuli_proj_min, stimuli_proj_max, numBins);
+
 stimuli_projection_shuffled_mean = zeros(numBins, bootstrap_times);
 spike_reordered_shuffled_mean = zeros(numBins, bootstrap_times);
 
 for i = 1:bootstrap_times
+    % shuffling indices and using these to shuffle projected stimuli and
+    % spikes
     new_indices = randi(duration, 1, duration);
     stimuli_projection_shuffled = stimuli_projection(new_indices);
     spike_reordered_shuffled = spikes(new_indices);
+    
+    % binning the shuffled projected stimuli into 32 bins
     dicret_binned_idx = discretize(stimuli_projection_shuffled, bins);
+
+    % computing mean of projected stimuli and spikes 
     for kk = 1:numBins
         stimuli_projection_shuffled_binned = stimuli_projection_shuffled(dicret_binned_idx == kk);
         stimuli_projection_shuffled_mean(kk, i) = mean(stimuli_projection_shuffled_binned, 1);

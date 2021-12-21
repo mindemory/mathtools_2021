@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Q2</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-17"><meta name="DC.source" content="Q2.m"><style type="text/css">
+      --><title>Q2</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-12-20"><meta name="DC.source" content="Q2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,25 +67,26 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a)</a></li><li><a href="#3">b)</a></li><li><a href="#4">c)</a></li><li><a href="#5">d)</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
-</pre><h2 id="2">a)</h2><pre class="codeinput">load(<span class="string">'fisherData.mat'</span>)
-mean_data1 = mean(data1);
-mean_data2 = mean(data2);
-w = mean_data2 - mean_data1;
-w_norm = sqrt(sum(w.^2));
-w_hat = w./w_norm;
-midpoint_data = (mean_data1 + mean_data2)/2;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">a) Prototype Classifier</a></li><li><a href="#57">NOTE: For some reason this has been printed at the end of the document.</a></li><li><a href="#58">b) Fischer's Linear Discriminant Classifier</a></li><li><a href="#84">c) Regularized Fischer's discriminant Classifier</a></li><li><a href="#88">d) Quadratic Classifier</a></li><li><a href="#106">Functions</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">a) Prototype Classifier</h2><p>The purpose of a classifier is to find a decision boundary where the posterior probability of a datapoint x that belongs to the dataset X belonging to classes C1 and C2 are the same. Therefore, in terms of posterior probabilities, the goal of a Maximum Likelihood Classifier is to equate:</p><p><img src="Q2_eq05866480494203227779.png" alt="$$p(x \epsilon C_1 | X = x) = p(x \epsilon C_2 | X = x) $$" style="width:156px;height:11px;"></p><p>Using Bayes' rule, we have:</p><p><img src="Q2_eq14924317717307943570.png" alt="$$\frac{p(X = x | x \epsilon C_1) p(x \epsilon C_1)}{p(X = x)} =&#xA;\frac{p(X = x | x \epsilon C_2) p(x \epsilon C_2)}{p(X = x)} $$" style="width:235px;height:26px;"></p><p>Let the priors be:</p><p><img src="Q2_eq10842120975540758406.png" alt="$$p(x \epsilon C_1) = p_1 $$" style="width:61px;height:11px;"></p><p>and</p><p><img src="Q2_eq15050434067314815921.png" alt="$$p(x \epsilon C_2) = p_2 $$" style="width:61px;height:11px;"></p><p>And the likelihoods be:</p><p><img src="Q2_eq11970981156522644442.png" alt="$$p(X = x | x \epsilon C_1) = f_1(x) $$" style="width:110px;height:11px;"></p><p>and</p><p><img src="Q2_eq02683710453480545123.png" alt="$$p(X = x | x \epsilon C_2) = f_2(x) $$" style="width:110px;height:11px;"></p><p>The denominator is the net sum of posterior probabilities of the datapoint belonging to each class. Therefore, we can summarize as:</p><p><img src="Q2_eq04251739117240795246.png" alt="$$\frac{f_1(x) p_1}{f_1(x) p_1 + f_2(x) p_2} =&#xA;\frac{f_2(x) p_2}{f_1(x) p_1 + f_2(x) p_2} $$" style="width:183px;height:26px;"></p><p>The denominators in the equality can be ignored and hence we have:</p><p><img src="Q2_eq13313750715408241166.png" alt="$$ f_1(x) p_1 = f_2(x) p_2 $$" style="width:83px;height:11px;"></p><p>Now if the data are drawn from Gaussian distributions, then we have:</p><p><img src="Q2_eq09124017961678249978.png" alt="$$f_1(x) = \frac{1}{\sqrt{(2\pi)^d |\Sigma_1 |}} e^{-\frac{(x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1)}{2}}$$" style="width:162px;height:30px;"></p><p>and</p><p><img src="Q2_eq06104265646448431266.png" alt="$$f_2(x) = \frac{1}{\sqrt{(2\pi)^d |\Sigma_2 |}} e^{-\frac{(x - \mu_2)^T \Sigma_2^{-1} (x - \mu_2)}{2}}$$" style="width:162px;height:30px;"></p><p>where, <img src="Q2_eq02839804688944914454.png" alt="$$x,\ \mu_1,\ \mu_2 \epsilon R^d $$" style="width:63px;height:13px;">, and <img src="Q2_eq04470309872175547982.png" alt="$$\Sigma_1,\ \Sigma_2 \epsilon R^{d \times d} $$" style="width:60px;height:13px;"></p><p>In the scenario where the covariances of the two classes are scalar multiples of identity matrix, we have:</p><p><img src="Q2_eq14763410990337236820.png" alt="$$\Sigma_1 = s_1 I = s_1,\ \Sigma_2 = s_2 I = s_2 $$" style="width:140px;height:10px;"></p><p>Thus, the equality becomes:</p><p><img src="Q2_eq11388199283840502933.png" alt="$$\frac{1}{\sqrt{(2\pi)^d s_1}} e^{-\frac{(x - \mu_1)^T&#xA;s_1^{-1} (x - \mu_1)}{2}} p_1 = \frac{1}{\sqrt{(2\pi)^d s_2}}&#xA;e^{-\frac{(x - \mu_2)^T s_2^{-1} (x - \mu_2)}{2}} p_2 $$" style="width:261px;height:30px;"></p><p>Therefore:</p><p><img src="Q2_eq14641913574193605243.png" alt="$$\frac{p_1}{\sqrt{s_1}} e^{-\frac{(x - \mu_1)^T&#xA;s_1^{-1} (x - \mu_1)}{2}}  = \frac{p_2}{\sqrt{s_2}}&#xA;e^{-\frac{(x - \mu_2)^T s_2^{-1} (x - \mu_2)}{2}} $$" style="width:186px;height:28px;"></p><p>Taking natural logarithms on both sides, we get:</p><p><img src="Q2_eq04226982788866841824.png" alt="$$ln(\frac{p_1}{\sqrt{s_1}}) - \frac{(x - \mu_1)^T&#xA;s_1^{-1} (x - \mu_1)}{2}  = ln(\frac{p_2}{\sqrt{s_2}})&#xA;-\frac{(x - \mu_2)^T s_2^{-1} (x - \mu_2)}{2} $$" style="width:326px;height:29px;"></p><p>Therefore,</p><p><img src="Q2_eq07531406442249538284.png" alt="$$ln(\frac{p_1}{\sqrt{s_1}}) - \frac{(x - \mu_1)^T&#xA;(x - \mu_1)}{2s_1}  = ln(\frac{p_2}{\sqrt{s_2}})&#xA;-\frac{(x - \mu_2)^T (x - \mu_2)}{2s_2} $$" style="width:295px;height:28px;"></p><p>Now we can expand the product of vectors as:</p><p><img src="Q2_eq15983166634482875075.png" alt="$$(x - \mu_1)^T (x - \mu_1) = x^T x - \mu_1^T x - x^T \mu_1 + \mu_1^T&#xA;\mu_1 = x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1 $$" style="width:336px;height:13px;"></p><p>Hence we can expand the equality as:</p><p><img src="Q2_eq01592734744456939597.png" alt="$$ln(\frac{p_1}{\sqrt{s_1}}) - \frac{x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1}{2s_1}&#xA;= ln(\frac{p_2}{\sqrt{s_2}}) - \frac{x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2}{2s_2} $$" style="width:322px;height:28px;"></p><p>Rearranging terms, we get:</p><p><img src="Q2_eq15899233845406074445.png" alt="$$\frac{x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2}{2s_2} - \frac{x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1}{2s_1}&#xA;= ln(\frac{p_2}{\sqrt{s_2}}) - ln(\frac{p_1}{\sqrt{s_1}}) $$" style="width:322px;height:28px;"></p><p>Multiplying both sides by <img src="Q2_eq10715932005579967930.png" alt="$$2s_1 s_2 $$" style="width:24px;height:9px;">, we get:</p><p><img src="Q2_eq10170292828166823299.png" alt="$$s_1 (x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - s_2 (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)&#xA;= (2s_1 s_2)\times (ln(\frac{p_2}{\sqrt{s_2}}) - ln(\frac{p_1}{\sqrt{s_1}})) $$" style="width:408px;height:24px;"></p><p>Hence, we have:</p><p><img src="Q2_eq06910690735639344136.png" alt="$$s_1 (x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - s_2 (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)&#xA;= (2s_1 s_2)\times (ln(\frac{p_2 \sqrt{s_1}}{p_1 \sqrt{s_2}})) $$" style="width:365px;height:27px;"></p><p>The decision boundary exists for the case where <img src="Q2_eq12977210366605634132.png" alt="$$p_1 = p_2 $$" style="width:34px;height:8px;">. Hence at the boundary, we get:</p><p><img src="Q2_eq11050000899131806213.png" alt="$$s_1 (x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - s_2 (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)&#xA;= (2s_1 s_2)\times (ln(\frac{\sqrt{s_1}}{\sqrt{s_2}})) $$" style="width:355px;height:27px;"></p><p>Also, the linear discriminant "prototype classifier" assumes that the covariances of both the classes is equal. Therefore, we have <img src="Q2_eq06408647580597900909.png" alt="$$s_1 = s_2 $$" style="width:33px;height:7px;"></p><p><img src="Q2_eq10091786016900843561.png" alt="$$(x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)&#xA;= 2s_1^2 \times (ln(1)) $$" style="width:301px;height:13px;"></p><p>Therefore,</p><p><img src="Q2_eq10463166412976461770.png" alt="$$ 2 x^T (\mu_1 - \mu_2) + \mu_2^T \mu_2  - \mu_1^T \mu_1 = 0 $$" style="width:156px;height:13px;"></p><p>Therefore, we can classify the data as belonging to class 1 when:</p><p><img src="Q2_eq09041026994092207889.png" alt="$$ x^T (\mu_1 - \mu_2) &gt; \frac{\mu_1^T \mu_1 - \mu_2^T \mu_2}{2}  $$" style="width:134px;height:25px;"></p><p>Otherwise, the datapoint belongs to class 2.</p><p>The discriminant vector here is:</p><p><img src="Q2_eq11137527093415764893.png" alt="$$w = \mu_1 - \mu_2 $$" style="width:58px;height:8px;"></p><p>And the criterion is:</p><p><img src="Q2_eq08049163976820903683.png" alt="$$c = \frac{\mu_1^T \mu_1 - \mu_2^T \mu_2}{2}$$" style="width:82px;height:25px;"></p><pre class="codeinput">load(<span class="string">'fisherData.mat'</span>)
+mean_data1 = mean(data1); <span class="comment">% mean of data1</span>
+mean_data2 = mean(data2); <span class="comment">% mean of data2</span>
+w = mean_data2 - mean_data1; <span class="comment">% the discriminant vector</span>
+w_norm = sqrt(sum(w.^2)); <span class="comment">% norm of discriminant vector</span>
+w_hat = w./w_norm; <span class="comment">% unit discriminant vector</span>
+midpoint_data = (mean_data1 + mean_data2)/2; <span class="comment">% midpoint between means of two datasets</span>
 
 figure();
 scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
 hold <span class="string">on</span>;
 scatter(data2(:, 1), data2(:, 2), <span class="string">'ro'</span>, <span class="string">'DisplayName'</span>, <span class="string">'cat vocalizations'</span>);
-
 plot([midpoint_data(1) - w_hat(1)/2, midpoint_data(1) + w_hat(1)/2], <span class="keyword">...</span>
     [midpoint_data(2) - w_hat(2)/2, midpoint_data(2) + w_hat(2)/2], <span class="keyword">...</span>
     <span class="string">'m-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'w hat'</span>, <span class="string">'LineWidth'</span>, 1.5)
 axis <span class="string">equal</span>;
-x_dec_boundary = xlim;
+
+x_dec_boundary = xlim; <span class="comment">% x limits of the graph</span>
+<span class="comment">% Computing decision boundary given w_hat</span>
 y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat);
 
 plot(x_dec_boundary, y_dec_boundary, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
@@ -96,18 +97,18 @@ xlim(x_dec_boundary)
 title(<span class="string">'Prototype Classifier'</span>)
 legend(<span class="string">'Location'</span>, <span class="string">'northeastoutside'</span>);
 
-frac_correctly_classified = classification_performance(data1, <span class="keyword">...</span>
+<span class="comment">% Computing fraction correctly classified by the classifier</span>
+</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <h2 id="57">NOTE: For some reason this has been printed at the end of the document.</h2><pre class="codeinput">frac_correctly_classified_prototype = classification_performance(data1, <span class="keyword">...</span>
     data2, x_dec_boundary, y_dec_boundary, w_hat)
 </pre><pre class="codeoutput">
-frac_correctly_classified =
+frac_correctly_classified_prototype =
 
     0.7357
 
-</pre><img vspace="5" hspace="5" src="Q2_01.png" alt=""> <h2 id="3">b)</h2><pre class="codeinput"><span class="comment">%cov_data1 = (data1' * data1)./(size(data1 , 1) - 1);</span>
-<span class="comment">%cov_data2 = (data2' * data2)./(size(data2, 1) - 1);</span>
-cov_data1 = cov(data1); cov_data2 = cov(data2);
-cov_combined = (cov_data1 + cov_data2)/2;
-w_hat_fisch = cov_combined \ w';<span class="comment">% \ cov_combined;</span>
+</pre><h2 id="58">b) Fischer's Linear Discriminant Classifier</h2><p>The Fischer's Linear Discriminant assumes that the covariances of the two matrices are identical. However, they need not be multiples of identity matrix. Hence, the equation of the decision boundary is:</p><p><img src="Q2_eq04316320432863391808.png" alt="$$\frac{1}{\sqrt{(2\pi)^d |\Sigma |}} e^{-\frac{(x - \mu_1)^T&#xA;\Sigma^{-1} (x - \mu_1)}{2}} p_1 = \frac{1}{\sqrt{(2\pi)^d |\Sigma |}}&#xA;e^{-\frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2}} p_2 $$" style="width:273px;height:28px;"></p><p>where, <img src="Q2_eq16984611381961526352.png" alt="$$\Sigma = \Sigma_1 = \Sigma_2 $$" style="width:61px;height:10px;"></p><p>Therefore,</p><p><img src="Q2_eq04681387435354839982.png" alt="$$ e^{-\frac{(x - \mu_1)^T&#xA;\Sigma^{-1} (x - \mu_1)}{2}} p_1 =&#xA;e^{-\frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2}} p_2 $$" style="width:168px;height:17px;"></p><p>Taking natural logarithms on both sides:</p><p><img src="Q2_eq00638304660085679962.png" alt="$$ -\frac{(x - \mu_1)^T&#xA;\Sigma^{-1} (x - \mu_1)}{2} + ln(p_1) =&#xA;-\frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2} + ln(p_2) $$" style="width:326px;height:25px;"></p><p>Rearranging terms, we get:</p><p><img src="Q2_eq08237924811298960456.png" alt="$$ -\frac{(x - \mu_1)^T \Sigma^{-1} (x - \mu_1)}{2}&#xA;+ \frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2} = ln(p_2) - ln(p_1)&#xA;= ln(\frac{p_2}{p_1})$$" style="width:363px;height:27px;"></p><p>At the decision boundary, we have: <img src="Q2_eq12977210366605634132.png" alt="$$p_1 = p_2 $$" style="width:34px;height:8px;">, therefore, we get:</p><p><img src="Q2_eq09823897322056072799.png" alt="$$ -\frac{(x - \mu_1)^T \Sigma^{-1} (x - \mu_1)}{2}&#xA;+ \frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2} = 0 $$" style="width:253px;height:25px;"></p><p>Expanding the vector-matrix multiplications in the numerator and using the fact that covariance matrices are symmetric, we get:</p><p><img src="Q2_eq13689718565072707414.png" alt="$$(x - \mu_1)^T \Sigma^{-1} (x - \mu_1) = (x^T - \mu_1^T) \Sigma^{-1} (x&#xA;- \mu_1) $$" style="width:221px;height:13px;"></p><p><img src="Q2_eq14701059130337445415.png" alt="$$ = x^T \Sigma^{-1} x - x^T \Sigma^{-1} \mu_1 - \mu_1^T \Sigma^{-1} x +&#xA;\mu_1^T \Sigma^{-1} \mu_1 = x^T \Sigma^{-1} x - x^T \Sigma^{-1} \mu_1 - (\mu_1 (\Sigma^T)^{-1} x^T)^T +&#xA;\mu_1^T \Sigma^{-1} \mu_1 $$" style="width:456px;height:13px;"></p><p><img src="Q2_eq13448657991222601517.png" alt="$$ = x^T \Sigma^{-1} x - x^T \Sigma^{-1} \mu_1 - x^T \Sigma^{-1} \mu_1 +&#xA;\mu_1^T \Sigma^{-1} \mu_1 = x^T \Sigma^{-1} x - 2 x^T \Sigma^{-1} \mu_1 +&#xA;\mu_1^T \Sigma^{-1} \mu_1 $$" style="width:381px;height:13px;"></p><p>Thus, the equality becomes:</p><p><img src="Q2_eq12913405229535672810.png" alt="$$ -(x^T \Sigma^{-1} x - 2 x^T \Sigma^{-1} \mu_1 +&#xA;\mu_1^T \Sigma^{-1} \mu_1)&#xA;+ (x^T \Sigma^{-1} x - 2 x^T \Sigma^{-1} \mu_2 +&#xA;\mu_2^T \Sigma^{-1} \mu_2) = 0 $$" style="width:365px;height:13px;"></p><p><img src="Q2_eq13464260933118497929.png" alt="$$ 2 x^T \Sigma^{-1} (\mu_1 - \mu_2) +&#xA;(\mu_1 - \mu_2)^T \Sigma^{-1} (\mu_1 - \mu_2) = 0 $$" style="width:226px;height:13px;"></p><p>Therefore, we can say that the datapoint belongs to Class 1 if:</p><p><img src="Q2_eq01717040289375434792.png" alt="$$ x^T \Sigma^{-1} (\mu_1 - \mu_2) &gt; - (\mu_1 - \mu_2)^T \Sigma^{-1} (\mu_1 - \mu_2) $$" style="width:210px;height:13px;"></p><p>Thus, the discriminant vector becomes:</p><p><img src="Q2_eq04977756179161906032.png" alt="$$w = \Sigma^{-1} (\mu_1 - \mu_2) $$" style="width:84px;height:13px;"></p><p>where, <img src="Q2_eq05601860497223735838.png" alt="$$\Sigma = \frac{\Sigma_1 + \Sigma_2}{2} $$" style="width:62px;height:23px;"></p><p>and the criterion is:</p><p><img src="Q2_eq06683674394889751038.png" alt="$$c = - (\mu_1 - \mu_2)^T \Sigma^{-1} (\mu_1 - \mu_2) $$" style="width:140px;height:13px;"></p><pre class="codeinput">cov_data1 = cov(data1); <span class="comment">% covariance of data 1</span>
+cov_data2 = cov(data2); <span class="comment">% covariance of data 2</span>
+cov_combined = (cov_data1 + cov_data2)/2; <span class="comment">% combined covariance</span>
+w_hat_fisch = cov_combined \ w'; <span class="comment">% Fischer's discriminant vector</span>
 
 figure();
 scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
@@ -119,7 +120,8 @@ plot([midpoint_data(1) - w_hat_fisch(1)/2, midpoint_data(1) + w_hat_fisch(1)/2],
     <span class="string">'m-'</span>, <span class="string">'DisplayName'</span>, <span class="string">'w hat'</span>, <span class="string">'LineWidth'</span>, 1.5)
 axis <span class="string">equal</span>;
 
-x_dec_boundary = xlim;
+x_dec_boundary = xlim; <span class="comment">% x limits of the graph</span>
+<span class="comment">% Computing decision boundary given w_hat</span>
 y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat_fisch);
 
 plot(x_dec_boundary, y_dec_boundary, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2, <span class="keyword">...</span>
@@ -130,22 +132,25 @@ xlim(x_dec_boundary)
 title(<span class="string">"Fischer's Linear Discriminant Classifier"</span>)
 legend(<span class="string">'Location'</span>, <span class="string">'northeastoutside'</span>)
 
-frac_correctly_classified = classification_performance(data1, <span class="keyword">...</span>
+<span class="comment">% Computing fraction correctly classified by the classifier</span>
+frac_correctly_classified_fischer = classification_performance(data1, <span class="keyword">...</span>
     data2, x_dec_boundary, y_dec_boundary, w_hat_fisch)
 </pre><pre class="codeoutput">
-frac_correctly_classified =
+frac_correctly_classified_fischer =
 
     0.7571
 
-</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <h2 id="4">c)</h2><pre class="codeinput">lambdas = 0:0.05:1;
+</pre><img vspace="5" hspace="5" src="Q2_02.png" alt=""> <h2 id="84">c) Regularized Fischer's discriminant Classifier</h2><pre class="codeinput">lambdas = 0:0.05:1; <span class="comment">% weighting of covariance matrices</span>
 runs = 1e3;
 
 train_size = floor(0.95 * size(data1, 1));
 frac_correctly_classified_cv = zeros(length(lambdas), runs);
+
 <span class="keyword">for</span> run = 1:runs
     <span class="keyword">for</span> ll = 1:length(lambdas)
         lambda = lambdas(ll);
 
+        <span class="comment">% Splitting train and test sets</span>
         train1_indices = randperm(size(data1, 1), train_size);
         test1_indices = setdiff(1:size(data1, 1), train1_indices);
         train2_indices = randperm(size(data2, 1), train_size);
@@ -156,98 +161,168 @@ frac_correctly_classified_cv = zeros(length(lambdas), runs);
         test1 = data1(test1_indices, :);
         test2 = data2(test2_indices, :);
 
+        <span class="comment">% Computing the discriminant vector for the regularized Fischer</span>
         mean_train1 = mean(train1);
         mean_train2 = mean(train2);
         w = mean_train2 - mean_train1;
         w = w./sqrt(sum(w.^2));
-
         midpoint_train = (mean_train1 + mean_train2)/2;
 
-        <span class="comment">%cov_train1 = (train1' * train1)./(size(train1, 1) - 1);</span>
-        <span class="comment">%cov_train2 = (train2' * train2)./(size(train2, 1) - 1);</span>
         cov_train1 = cov(train1); cov_train2 = cov(train2);
         cov_combined = (cov_train1 + cov_train2)/2;
-
         cov_estimated = (1 - lambda) .* cov_combined + lambda .* eye(2);
-        w_hat_estim = cov_estimated \ w';<span class="comment">% \ cov_estimated;</span>
+        w_hat_estim = cov_estimated \ w';
 
-        x_dec_boundary = xlim;
+        x_dec_boundary = xlim; <span class="comment">% x limits of the graph</span>
+        <span class="comment">% Computing decision boundary given w_hat</span>
         y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_train, <span class="keyword">...</span>
             w_hat_estim);
 
+        <span class="comment">% Computing fraction correctly classified by the classifier</span>
         frac_correctly_classified_cv(ll, run) = classification_performance(test1, <span class="keyword">...</span>
             test2, x_dec_boundary, y_dec_boundary, w_hat_estim);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 
+<span class="comment">% Computing mean and error of correctly classified datapoints over runs</span>
 frac_correctly_classified_mean = mean(frac_correctly_classified_cv, 2);
 frac_correctly_classified_stderror = std(frac_correctly_classified_cv, 0, 2)<span class="keyword">...</span>
-    ./sqrt(size(frac_correctly_classified_mean, 1));
+    ./sqrt(size(frac_correctly_classified_mean, 2));
 
 figure()
 errorbar(lambdas, frac_correctly_classified_mean, frac_correctly_classified_stderror)
 xlabel(<span class="string">'\lambda'</span>)
 ylabel(<span class="string">'proportion correctly classified'</span>)
 title(<span class="string">"Fischer's Linear Discriminant Classifier cross-validation"</span>)
-</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <h2 id="5">d)</h2><pre class="codeinput">figure();
+</pre><img vspace="5" hspace="5" src="Q2_03.png" alt=""> <p>We can see that there are huge errorbars across the range of lambdas when checking for accuracy of classification. This is because of the choice of 95-5 classification for a small dataset of size 140. For smaller datasets, it is essential for the test set to be representative of the training set. Hence an ideal way to test the classifiers would be have a larger test size. Running the same approach with a 60-40 classification:</p><pre class="codeinput">train_size = floor(0.6 * size(data1, 1));
+frac_correctly_classified_cv = zeros(length(lambdas), runs);
+
+<span class="keyword">for</span> run = 1:runs
+    <span class="keyword">for</span> ll = 1:length(lambdas)
+        lambda = lambdas(ll);
+
+        <span class="comment">% Splitting train and test sets</span>
+        train1_indices = randperm(size(data1, 1), train_size);
+        test1_indices = setdiff(1:size(data1, 1), train1_indices);
+        train2_indices = randperm(size(data2, 1), train_size);
+        test2_indices = setdiff(1:size(data2, 1), train2_indices);
+
+        train1 = data1(train1_indices, :);
+        train2 = data2(train2_indices, :);
+        test1 = data1(test1_indices, :);
+        test2 = data2(test2_indices, :);
+
+        <span class="comment">% Computing the discriminant vector for the regularized Fischer</span>
+        mean_train1 = mean(train1);
+        mean_train2 = mean(train2);
+        w = mean_train2 - mean_train1;
+        w = w./sqrt(sum(w.^2));
+        midpoint_train = (mean_train1 + mean_train2)/2;
+
+        cov_train1 = cov(train1); cov_train2 = cov(train2);
+        cov_combined = (cov_train1 + cov_train2)/2;
+        cov_estimated = (1 - lambda) .* cov_combined + lambda .* eye(2);
+        w_hat_estim = cov_estimated \ w';
+
+        x_dec_boundary = xlim; <span class="comment">% x limits of the graph</span>
+        <span class="comment">% Computing decision boundary given w_hat</span>
+        y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_train, <span class="keyword">...</span>
+            w_hat_estim);
+
+        <span class="comment">% Computing fraction correctly classified by the classifier</span>
+        frac_correctly_classified_cv(ll, run) = classification_performance(test1, <span class="keyword">...</span>
+            test2, x_dec_boundary, y_dec_boundary, w_hat_estim);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Computing mean and error of correctly classified datapoints over runs</span>
+frac_correctly_classified_mean = mean(frac_correctly_classified_cv, 2);
+frac_correctly_classified_stderror = std(frac_correctly_classified_cv, 0, 2)<span class="keyword">...</span>
+    ./sqrt(size(frac_correctly_classified_mean, 2));
+
+figure()
+errorbar(lambdas, frac_correctly_classified_mean, frac_correctly_classified_stderror)
+xlabel(<span class="string">'\lambda'</span>)
+ylabel(<span class="string">'proportion correctly classified'</span>)
+title(<span class="string">"Fischer's Linear Discriminant Classifier cross-validation"</span>)
+</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <p>We can now see that there is a trend in the performance of the classifier with an increase in lambda. Specifically, we see that there is a decrease in classification accuracy as a function of lambda. This suggests that a a Fischer's Linear Discriminant classifier is better than a prototype classifier for this dataset.</p><h2 id="88">d) Quadratic Classifier</h2><p>For QDA, the covariances of the two datasets are not assumed to be the same, thus the equation of the decision boundary becomes:</p><p><img src="Q2_eq03421006342104382385.png" alt="$$\frac{1}{\sqrt{(2\pi)^d |\Sigma_1 |}} e^{-\frac{(x - \mu_1)^T&#xA;\Sigma_1^{-1} (x - \mu_1)}{2}} p_1 = \frac{1}{\sqrt{(2\pi)^d |\Sigma_2 |}}&#xA;e^{-\frac{(x - \mu_2)^T \Sigma_2 ^{-1} (x - \mu_2)}{2}} p_2 $$" style="width:282px;height:30px;"></p><p>Taking natural logarithms on both sides, we get:</p><p><img src="Q2_eq16776332707895411480.png" alt="$$ -\frac{d}{2}ln(2\pi ) - \frac{1}{2} ln(|\Sigma_1 |) - \frac{1}{2} (x -&#xA;\mu_1)^T \Sigma_1^{-1} (x - \mu_1) + ln(p_1) = -\frac{d}{2}ln(2\pi ) -&#xA;\frac{1}{2} ln(|\Sigma_2 |) - \frac{1}{2} (x - \mu_2)^T \Sigma_2^{-1}&#xA;(x - \mu_2) + ln(p_2) $$" style="width:560px;height:23px;"></p><p>For the decision boundary, we have <img src="Q2_eq12977210366605634132.png" alt="$$p_1 = p_2 $$" style="width:34px;height:8px;"> and multiplying both sides by 2, we get:</p><p><img src="Q2_eq00054707512355180739.png" alt="$$ ln(|\Sigma_1 |) + (x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1) =&#xA;ln(|\Sigma_2 |) + (x - \mu_2)^T \Sigma_2^{-1} (x - \mu_2) $$" style="width:321px;height:13px;"></p><p>Rearranging terms, we get:</p><p><img src="Q2_eq04054250908579356583.png" alt="$$ (x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1) - (x - \mu_2)^T \Sigma_2^{-1}&#xA;(x - \mu_2) = ln(|\Sigma_2 |) - ln(|\Sigma_1 |)  $$" style="width:320px;height:13px;"></p><p>Therefore,</p><p><img src="Q2_eq17366766574350083923.png" alt="$$ (x^T \Sigma_1^{-1} x - \mu_1^T \Sigma_1^{-1} x - x^T \Sigma_1^{-1} \mu_1 + \mu_1^T \Sigma_1^{-1} \mu_1) -&#xA;(x^T \Sigma_2^{-1} x - \mu_2^T \Sigma_2^{-1} x - x^T \Sigma_2^{-1} \mu_2 + \mu_2^T \Sigma_2^{-1} \mu_2)&#xA;= ln(\frac{|\Sigma_2 |}{|\Sigma_1 |})  $$" style="width:480px;height:26px;"></p><p>Therefore,</p><p><img src="Q2_eq16976395133230958235.png" alt="$$ x^T (\Sigma_1 - \Sigma_2)^{-1} x - 2(\Sigma_1^{-1} \mu_1 - \Sigma_2^{-1} \mu_2)^T x +&#xA;(\mu_1^T \Sigma_1^{-1} \mu_1) - \mu_2^T \Sigma_2^{-1} \mu_2) - ln(\frac{|\Sigma_2 |}{|\Sigma_1 |}) = 0  $$" style="width:385px;height:26px;"></p><p>Therefore, the decision is Class 1 if:</p><p>$ x^T (\Sigma_1 - \Sigma_2)^{-1} x - 2(\Sigma_1^{-1} \mu_1 - \Sigma_2^{-1} \mu_2)^T x + (\mu_1^T \Sigma_1^{-1} \mu_1) - \mu_2^T \Sigma_2^{-1} \mu_2) - ln(\frac{|\Sigma_2 <tt>}{</tt>\Sigma_1 |}) - 2 ln(\frac{p_1}{p_2}) &lt; 0  $$</p><p>And the decision is Class 2, otherwise.</p><pre class="codeinput">figure();
 scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
 hold <span class="string">on</span>;
 scatter(data2(:, 1), data2(:, 2), <span class="string">'ro'</span>, <span class="string">'DisplayName'</span>, <span class="string">'cat vocalizations'</span>);
 
+<span class="comment">% Creating XY a matrix of co-ordinates of datapoints that span the space of</span>
+<span class="comment">% the graph</span>
 xx_ = xlim;
 yy_ = ylim;
 pps = 4*1e2;
 xx = linspace(xx_(1), xx_(2), pps);
-yy = linspace(yy_(1), yy_(2), pps);
+yy = linspace(xx_(1), xx_(2), pps);
 [X, Y] = meshgrid(xx, yy);
 XY = [X(:) Y(:)];
+
+<span class="comment">% Computing likelihood for each datapoint coming from a given distribution</span>
 p1 = mvnpdf(XY, mean_data1, cov_data1);
 p2 = mvnpdf(XY, mean_data2, cov_data2);
 diff_p = p1 - p2;
 scatter(XY(:, 1), XY(:, 2), [], diff_p, <span class="string">'MarkerFaceAlpha'</span>, 0.2, <span class="keyword">...</span>
-    <span class="string">'MarkerEdgeAlpha'</span>, 0.2)
+     <span class="string">'MarkerEdgeAlpha'</span>, 0.2)
 
-dec_x = zeros(length(diff_p), 1);
-dec_y = zeros(length(diff_p), 1);
-<span class="keyword">for</span> i = 1:length(diff_p)
-    <span class="keyword">if</span> diff_p(i) &lt;= 0.01
-        dec_x(i) = XY(i, 1);
-        dec_y(i) = XY(i, 2);
-    <span class="keyword">end</span>
+p1_Quadratic = reshape(p1,length(yy),length(xx));
+p2_Quadratic = reshape(p2,length(yy),length(xx));
+
+idx_Ygrid = zeros(1,length(xx));
+
+<span class="comment">% The boundary condition is when p1_Quadratic = p2_Quadratic. However, to</span>
+<span class="comment">% avoid underflow error we are instead equating log(p1_Quadratic) =</span>
+<span class="comment">% log(p2_Quadratic).</span>
+logDiff = (log(p1_Quadratic) - log(p2_Quadratic)) &lt; 1e-3;
+
+<span class="comment">% Next we compute the decision boundary by checking for the minimum value</span>
+<span class="comment">% of logDiff that equates to 0 in the xy plane. The first datapoint is</span>
+<span class="comment">% selected as values below that indicate that datapoint belongs to the</span>
+<span class="comment">% cluster 2.</span>
+<span class="keyword">for</span> kk = 1:length(xx)
+    idx_Ygrid(kk) = length(yy) - find(flipud(logDiff(:,kk)) == 0,1);
 <span class="keyword">end</span>
-plot(dec_x, dec_y, <span class="string">'k*'</span>)
-</pre><img vspace="5" hspace="5" src="Q2_04.png" alt=""> <pre class="codeinput">p1_data1 = mvnpdf(data1, mean_data1, cov_data1);
+
+plot(xx,yy(idx_Ygrid),<span class="string">'k-'</span>,<span class="string">'LineWidth'</span>,2, <span class="string">'DisplayName'</span>, <span class="string">'Boundary'</span>);
+scatter(data1(:, 1), data1(:, 2), <span class="string">'b*'</span>, <span class="string">'DisplayName'</span>, <span class="string">'dog vocalizations'</span>);
+scatter(data2(:, 1), data2(:, 2), <span class="string">'ro'</span>, <span class="string">'DisplayName'</span>, <span class="string">'cat vocalizations'</span>);
+plot(mean_data1(1),mean_data1(2),<span class="string">'b+'</span>,<span class="string">'LineWidth'</span>,3);
+plot(mean_data2(1),mean_data2(2),<span class="string">'r+'</span>,<span class="string">'LineWidth'</span>,3); hold <span class="string">off</span>;
+legend()
+</pre><img vspace="5" hspace="5" src="Q2_05.png" alt=""> <p>Next we compute the probability of each datapoint coming from a Gaussian distribution given by the mean and covariance of either cluster. The quadratic classifier will call the cluster based on whether the probability of one is greater than the other.</p><pre class="codeinput">p1_data1 = mvnpdf(data1, mean_data1, cov_data1);
 p2_data1 = mvnpdf(data1, mean_data2, cov_data2);
-p1_data2 = mvnpdf(data2, mean_data1, cov_data2);
+p1_data2 = mvnpdf(data2, mean_data1, cov_data1);
 p2_data2 = mvnpdf(data2, mean_data2, cov_data2);
 
-correct_data1 = sum(p1_data1 &gt; p2_data1);
-correct_data2 = sum(p2_data2 &gt; p1_data2);
+correct_data1 = sum(p1_data1 &gt;= p2_data1)
+correct_data2 = sum(p2_data2 &gt;= p1_data2)
 
-frac_correctly_classified = (correct_data1 + correct_data2)./<span class="keyword">...</span>
-    (2 * size(data1, 1))
+frac_correctly_classified_qda_ = (correct_data1 + correct_data2)./<span class="keyword">...</span>
+     (2 * size(data1, 1))
 </pre><pre class="codeoutput">
-frac_correctly_classified =
+correct_data1 =
 
-    0.8143
+    60
 
-</pre><pre class="codeinput"><span class="keyword">function</span> samples = nRandn(mean, cov, num)
-    <span class="comment">% The function draws samples from an N-dimensional normal distribution.</span>
-    <span class="comment">% It does so my first drawing samples from an N-dimensional normal</span>
-    <span class="comment">% distribution of 0 mean and identity covariance matrix. It then</span>
-    <span class="comment">% transforms the data using a matrix M to have the covariance "cov".</span>
-    <span class="comment">% Lastly, it translates the data to have the mean "mean".</span>
 
-    N = length(mean);
-    [V, D] = eig(cov);  <span class="comment">% Eigen value decomposition of covariance matrix</span>
-    M = V * sqrt(D); <span class="comment">% Transformation matrix is given as product of V and square-root of eigenvalues</span>
-    samp = randn(num, N); <span class="comment">% Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix</span>
-    samples = repmat(mean, num , 1) + samp * M';
-<span class="keyword">end</span>
+correct_data2 =
 
-<span class="keyword">function</span> y_dec_boundary = decision_boundary(x_dec_boundary, <span class="keyword">...</span>
+    52
+
+
+frac_correctly_classified_qda_ =
+
+    0.8000
+
+</pre><p>We can see that the QDA performs better than prototype, LDA, or regularized LDA for this dataset. However, this might not always be the case. For datasets that have equal covariances or a scalar multiple of identity as a covariance matrix, it makes sense to use simpler classifiers like LDA or prototype as they have fewer parameters to optimize on and hence the chances of overfitting would be less.</p><h2 id="106">Functions</h2><pre class="codeinput"><span class="keyword">function</span> y_dec_boundary = decision_boundary(x_dec_boundary, <span class="keyword">...</span>
     midpoint_data, w_hat)
-
+    <span class="comment">% The function computes a decision boundary given the discriminant</span>
+    <span class="comment">% vector. It uses the information that decision boundary is</span>
+    <span class="comment">% perpendicular to the discriminant vector and that it passes through</span>
+    <span class="comment">% the midpoint between the means of two datasets. The equation of line</span>
+    <span class="comment">% can then be used to compute the decision boundary.</span>
     dec_boundary_slope = -(w_hat(1))/(w_hat(2));
     y_dec_boundary(1) = midpoint_data(2) + dec_boundary_slope * <span class="keyword">...</span>
         (x_dec_boundary(1) - midpoint_data(1));
@@ -257,40 +332,222 @@ frac_correctly_classified =
 
 <span class="keyword">function</span> frac_correctly_classified = classification_performance(data1, <span class="keyword">...</span>
     data2, x_dec_boundary, y_dec_boundary, w_hat)
+    <span class="comment">% The function computes the fraction of datapoints that are correctly</span>
+    <span class="comment">% classified by the given linear classifier. It computes the expected</span>
+    <span class="comment">% y-value given x-value of each datapoint were that datapoint to lie on</span>
+    <span class="comment">% the decision boundary. It then uses the predicted y-value and the</span>
+    <span class="comment">% actual y-value to decide the class of the datapoint and checks it with</span>
+    <span class="comment">% the true class of the datapoint.</span>
 
     dec_boundary_slope = -(w_hat(1))/(w_hat(2));
+
     x_ones = ones(size(data1(:, 1))) .* x_dec_boundary(1);
     y_ones = ones(size(data1(:, 1))) .* y_dec_boundary(1);
+
     y_data1 = y_ones + dec_boundary_slope * (data1(:, 1) - x_ones);
     y_data2 = y_ones + dec_boundary_slope * (data2(:, 1) - x_ones);
+
     correct_data1 = sum(y_data1 &gt;= data1(:, 2));
     correct_data2 = sum(y_data2 &lt;= data2(:, 2));
+
     frac_correctly_classified = (correct_data1 + correct_data2)./<span class="keyword">...</span>
         (2 * size(data1, 1));
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> count_correct = frac_correctly_classified_qda(data, cov1, cov2, mean1, mean2, <span class="keyword">...</span>
+    p1, p2, data_num)
+    <span class="comment">% An attempt was made to compute the correctly classified datapoints using the</span>
+    <span class="comment">% closed-form solution. No clue why it doesn't work.</span>
+    decs = zeros(size(data, 1), 1);
+    <span class="keyword">for</span> ss = 1:size(data, 1)
+        x = data(ss, :);
+        decs(ss) = x * inv(cov1 - cov2) * x' - 2 * (inv(cov1) * mean1' - <span class="keyword">...</span>
+            inv(cov2) * mean2')' * x' + ((mean1 * inv(cov1) * mean1') - (mean2 * <span class="keyword">...</span>
+            inv(cov2) * mean2')) - log(det(cov2)./det(cov1)) - 2 * log(p1(ss)./p2(ss));
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> data_num == 1
+        count_correct = sum(decs &lt; 0);
+    <span class="keyword">else</span>
+        count_correct = sum(decs &gt; 0);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> boundary = dec_bound_qda(XY, cov1, cov2, mean1, mean2)
+    <span class="comment">% An attempt was made to compute the decision boundary using the</span>
+    <span class="comment">% closed-form solution. No clue why it doesn't work.</span>
+    x = []; y = [];
+    <span class="keyword">for</span> ss = 1:size(XY, 1)
+        xy = XY(ss, :);
+        decs = xy * inv(cov1 - cov2) * xy' - 2 * (inv(cov1) * mean1' - <span class="keyword">...</span>
+            inv(cov2) * mean2')' * xy' + ((mean1 * inv(cov1) * mean1') - (mean2 * <span class="keyword">...</span>
+            inv(cov2) * mean2')) - log(det(cov2)./det(cov1));
+        <span class="keyword">if</span> decs &lt; 1e-2
+            x = [x, xy(2)];
+            y = [y, xy(1)];
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    boundary = [x(:) y(:)];
 <span class="keyword">end</span>
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clear; close all; clc;
 
-%% a)
+%% a) Prototype Classifier
+% The purpose of a classifier is to find a decision boundary where the
+% posterior probability of a datapoint x that belongs to the dataset X
+% belonging to classes C1 and C2 are the same. Therefore, in terms of
+% posterior probabilities, the goal of a Maximum Likelihood Classifier is
+% to equate:
+%%
+% $$p(x \epsilon C_1 | X = x) = p(x \epsilon C_2 | X = x) $$
+%%
+% Using Bayes' rule, we have:
+%%
+% $$\frac{p(X = x | x \epsilon C_1) p(x \epsilon C_1)}{p(X = x)} =
+% \frac{p(X = x | x \epsilon C_2) p(x \epsilon C_2)}{p(X = x)} $$
+%%
+% Let the priors be:
+%%
+% $$p(x \epsilon C_1) = p_1 $$
+%% 
+% and
+%%
+% $$p(x \epsilon C_2) = p_2 $$
+%%
+% And the likelihoods be:
+%%
+% $$p(X = x | x \epsilon C_1) = f_1(x) $$
+%% 
+% and
+%%
+% $$p(X = x | x \epsilon C_2) = f_2(x) $$
+%%
+% The denominator is the net sum of posterior probabilities of the datapoint 
+% belonging to each class. Therefore, we can summarize as:
+%%
+% $$\frac{f_1(x) p_1}{f_1(x) p_1 + f_2(x) p_2} =
+% \frac{f_2(x) p_2}{f_1(x) p_1 + f_2(x) p_2} $$
+%%
+% The denominators in the equality can be ignored and hence we have:
+%%
+% $$ f_1(x) p_1 = f_2(x) p_2 $$
+%%
+% Now if the data are drawn from Gaussian distributions, then we have:
+%%
+% $$f_1(x) = \frac{1}{\sqrt{(2\pi)^d |\Sigma_1 |}} e^{-\frac{(x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1)}{2}}$$ 
+%%
+% and
+%%
+% $$f_2(x) = \frac{1}{\sqrt{(2\pi)^d |\Sigma_2 |}} e^{-\frac{(x - \mu_2)^T \Sigma_2^{-1} (x - \mu_2)}{2}}$$ 
+%%
+% where, $$x,\ \mu_1,\ \mu_2 \epsilon R^d $$, and $$\Sigma_1,\ \Sigma_2
+% \epsilon R^{d \times d} $$
+%%
+% In the scenario where the covariances of the two classes are scalar
+% multiples of identity matrix, we have:
+%%
+% $$\Sigma_1 = s_1 I = s_1,\ \Sigma_2 = s_2 I = s_2 $$
+%%
+% Thus, the equality becomes:
+%%
+% $$\frac{1}{\sqrt{(2\pi)^d s_1}} e^{-\frac{(x - \mu_1)^T
+% s_1^{-1} (x - \mu_1)}{2}} p_1 = \frac{1}{\sqrt{(2\pi)^d s_2}} 
+% e^{-\frac{(x - \mu_2)^T s_2^{-1} (x - \mu_2)}{2}} p_2 $$
+%%
+% Therefore:
+%%
+% $$\frac{p_1}{\sqrt{s_1}} e^{-\frac{(x - \mu_1)^T
+% s_1^{-1} (x - \mu_1)}{2}}  = \frac{p_2}{\sqrt{s_2}} 
+% e^{-\frac{(x - \mu_2)^T s_2^{-1} (x - \mu_2)}{2}} $$
+%%
+% Taking natural logarithms on both sides, we get:
+%%
+% $$ln(\frac{p_1}{\sqrt{s_1}}) - \frac{(x - \mu_1)^T
+% s_1^{-1} (x - \mu_1)}{2}  = ln(\frac{p_2}{\sqrt{s_2}})
+% -\frac{(x - \mu_2)^T s_2^{-1} (x - \mu_2)}{2} $$
+%%
+% Therefore,
+%%
+% $$ln(\frac{p_1}{\sqrt{s_1}}) - \frac{(x - \mu_1)^T
+% (x - \mu_1)}{2s_1}  = ln(\frac{p_2}{\sqrt{s_2}})
+% -\frac{(x - \mu_2)^T (x - \mu_2)}{2s_2} $$
+%%
+% Now we can expand the product of vectors as:
+%%
+% $$(x - \mu_1)^T (x - \mu_1) = x^T x - \mu_1^T x - x^T \mu_1 + \mu_1^T
+% \mu_1 = x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1 $$
+%%
+% Hence we can expand the equality as:
+%%
+% $$ln(\frac{p_1}{\sqrt{s_1}}) - \frac{x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1}{2s_1}  
+% = ln(\frac{p_2}{\sqrt{s_2}}) - \frac{x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2}{2s_2} $$
+%%
+% Rearranging terms, we get:
+%%
+% $$\frac{x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2}{2s_2} - \frac{x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1}{2s_1}  
+% = ln(\frac{p_2}{\sqrt{s_2}}) - ln(\frac{p_1}{\sqrt{s_1}}) $$
+%%
+% Multiplying both sides by $$2s_1 s_2 $$, we get:
+%%
+% $$s_1 (x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - s_2 (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)  
+% = (2s_1 s_2)\times (ln(\frac{p_2}{\sqrt{s_2}}) - ln(\frac{p_1}{\sqrt{s_1}})) $$
+%%
+% Hence, we have:
+%%
+% $$s_1 (x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - s_2 (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)  
+% = (2s_1 s_2)\times (ln(\frac{p_2 \sqrt{s_1}}{p_1 \sqrt{s_2}})) $$
+%%
+% The decision boundary exists for the case where $$p_1 = p_2 $$. Hence at the boundary, we
+% get:
+%%
+% $$s_1 (x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - s_2 (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)  
+% = (2s_1 s_2)\times (ln(\frac{\sqrt{s_1}}{\sqrt{s_2}})) $$
+%%
+% Also, the linear discriminant "prototype classifier" assumes that the
+% covariances of both the classes is equal. Therefore, we have $$s_1 = s_2
+% $$
+%%
+% $$(x^T x - 2 x^T \mu_2 + \mu_2^T \mu_2) - (x^T x - 2 x^T \mu_1 + \mu_1^T \mu_1)  
+% = 2s_1^2 \times (ln(1)) $$
+%%
+% Therefore,
+%%
+% $$ 2 x^T (\mu_1 - \mu_2) + \mu_2^T \mu_2  - \mu_1^T \mu_1 = 0 $$
+%%
+% Therefore, we can classify the data as belonging to class 1 when:
+%%
+% $$ x^T (\mu_1 - \mu_2) > \frac{\mu_1^T \mu_1 - \mu_2^T \mu_2}{2}  $$
+%%
+% Otherwise, the datapoint belongs to class 2.
+%%
+% The discriminant vector here is:
+%% 
+% $$w = \mu_1 - \mu_2 $$
+%%
+% And the criterion is:
+%% 
+% $$c = \frac{\mu_1^T \mu_1 - \mu_2^T \mu_2}{2}$$
+%%
 load('fisherData.mat')
-mean_data1 = mean(data1);
-mean_data2 = mean(data2);
-w = mean_data2 - mean_data1;
-w_norm = sqrt(sum(w.^2));
-w_hat = w./w_norm;
-midpoint_data = (mean_data1 + mean_data2)/2;
+mean_data1 = mean(data1); % mean of data1
+mean_data2 = mean(data2); % mean of data2
+w = mean_data2 - mean_data1; % the discriminant vector
+w_norm = sqrt(sum(w.^2)); % norm of discriminant vector
+w_hat = w./w_norm; % unit discriminant vector
+midpoint_data = (mean_data1 + mean_data2)/2; % midpoint between means of two datasets
 
 figure();
 scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
 hold on;
 scatter(data2(:, 1), data2(:, 2), 'ro', 'DisplayName', 'cat vocalizations');
-
 plot([midpoint_data(1) - w_hat(1)/2, midpoint_data(1) + w_hat(1)/2], ...
     [midpoint_data(2) - w_hat(2)/2, midpoint_data(2) + w_hat(2)/2], ...
     'm-', 'DisplayName', 'w hat', 'LineWidth', 1.5)
 axis equal;
-x_dec_boundary = xlim;
+
+x_dec_boundary = xlim; % x limits of the graph
+% Computing decision boundary given w_hat
 y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat);
 
 plot(x_dec_boundary, y_dec_boundary, 'k-', 'LineWidth', 2, ...
@@ -301,15 +558,87 @@ xlim(x_dec_boundary)
 title('Prototype Classifier')
 legend('Location', 'northeastoutside');
 
-frac_correctly_classified = classification_performance(data1, ...
+% Computing fraction correctly classified by the classifier
+%% NOTE: For some reason this has been printed at the end of the document.
+frac_correctly_classified_prototype = classification_performance(data1, ...
     data2, x_dec_boundary, y_dec_boundary, w_hat)
 
-%% b)
-%cov_data1 = (data1' * data1)./(size(data1 , 1) - 1);
-%cov_data2 = (data2' * data2)./(size(data2, 1) - 1);
-cov_data1 = cov(data1); cov_data2 = cov(data2);
-cov_combined = (cov_data1 + cov_data2)/2;
-w_hat_fisch = cov_combined \ w';% \ cov_combined;
+%% b) Fischer's Linear Discriminant Classifier
+% The Fischer's Linear Discriminant assumes that the covariances of the two
+% matrices are identical. However, they need not be multiples of identity
+% matrix. Hence, the equation of the decision boundary is:
+%%
+% $$\frac{1}{\sqrt{(2\pi)^d |\Sigma |}} e^{-\frac{(x - \mu_1)^T
+% \Sigma^{-1} (x - \mu_1)}{2}} p_1 = \frac{1}{\sqrt{(2\pi)^d |\Sigma |}} 
+% e^{-\frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2}} p_2 $$
+%%
+% where, $$\Sigma = \Sigma_1 = \Sigma_2 $$
+%%
+% Therefore,
+%%
+% $$ e^{-\frac{(x - \mu_1)^T
+% \Sigma^{-1} (x - \mu_1)}{2}} p_1 =  
+% e^{-\frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2}} p_2 $$
+%%
+% Taking natural logarithms on both sides:
+%%
+% $$ -\frac{(x - \mu_1)^T
+% \Sigma^{-1} (x - \mu_1)}{2} + ln(p_1) =  
+% -\frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2} + ln(p_2) $$
+%%
+% Rearranging terms, we get:
+%%
+% $$ -\frac{(x - \mu_1)^T \Sigma^{-1} (x - \mu_1)}{2}   
+% + \frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2} = ln(p_2) - ln(p_1) 
+% = ln(\frac{p_2}{p_1})$$
+%%
+% At the decision boundary, we have: $$p_1 = p_2 $$, therefore, we get:
+%%
+% $$ -\frac{(x - \mu_1)^T \Sigma^{-1} (x - \mu_1)}{2}   
+% + \frac{(x - \mu_2)^T \Sigma ^{-1} (x - \mu_2)}{2} = 0 $$
+%%
+% Expanding the vector-matrix multiplications in the numerator and using the fact that 
+% covariance matrices are symmetric, we get:
+%% 
+% $$(x - \mu_1)^T \Sigma^{-1} (x - \mu_1) = (x^T - \mu_1^T) \Sigma^{-1} (x
+% - \mu_1) $$
+%%
+% $$ = x^T \Sigma^{-1} x - x^T \Sigma^{-1} \mu_1 - \mu_1^T \Sigma^{-1} x +
+% \mu_1^T \Sigma^{-1} \mu_1 = x^T \Sigma^{-1} x - x^T \Sigma^{-1} \mu_1 - (\mu_1 (\Sigma^T)^{-1} x^T)^T +
+% \mu_1^T \Sigma^{-1} \mu_1 $$
+%% 
+% $$ = x^T \Sigma^{-1} x - x^T \Sigma^{-1} \mu_1 - x^T \Sigma^{-1} \mu_1 +
+% \mu_1^T \Sigma^{-1} \mu_1 = x^T \Sigma^{-1} x - 2 x^T \Sigma^{-1} \mu_1 +
+% \mu_1^T \Sigma^{-1} \mu_1 $$
+%%
+% Thus, the equality becomes:
+%%
+% $$ -(x^T \Sigma^{-1} x - 2 x^T \Sigma^{-1} \mu_1 +
+% \mu_1^T \Sigma^{-1} \mu_1)   
+% + (x^T \Sigma^{-1} x - 2 x^T \Sigma^{-1} \mu_2 +
+% \mu_2^T \Sigma^{-1} \mu_2) = 0 $$
+%%
+% $$ 2 x^T \Sigma^{-1} (\mu_1 - \mu_2) +
+% (\mu_1 - \mu_2)^T \Sigma^{-1} (\mu_1 - \mu_2) = 0 $$
+%%
+% Therefore, we can say that the datapoint belongs to Class 1 if:
+%%
+% $$ x^T \Sigma^{-1} (\mu_1 - \mu_2) > - (\mu_1 - \mu_2)^T \Sigma^{-1} (\mu_1 - \mu_2) $$
+%%
+% Thus, the discriminant vector becomes:
+%%
+% $$w = \Sigma^{-1} (\mu_1 - \mu_2) $$
+%%
+% where, $$\Sigma = \frac{\Sigma_1 + \Sigma_2}{2} $$
+%%
+% and the criterion is:
+%% 
+% $$c = - (\mu_1 - \mu_2)^T \Sigma^{-1} (\mu_1 - \mu_2) $$
+%%
+cov_data1 = cov(data1); % covariance of data 1
+cov_data2 = cov(data2); % covariance of data 2
+cov_combined = (cov_data1 + cov_data2)/2; % combined covariance
+w_hat_fisch = cov_combined \ w'; % Fischer's discriminant vector
 
 figure();
 scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
@@ -321,7 +650,8 @@ plot([midpoint_data(1) - w_hat_fisch(1)/2, midpoint_data(1) + w_hat_fisch(1)/2],
     'm-', 'DisplayName', 'w hat', 'LineWidth', 1.5)
 axis equal;
 
-x_dec_boundary = xlim;
+x_dec_boundary = xlim; % x limits of the graph
+% Computing decision boundary given w_hat 
 y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_data, w_hat_fisch);
 
 plot(x_dec_boundary, y_dec_boundary, 'k-', 'LineWidth', 2, ...
@@ -332,19 +662,22 @@ xlim(x_dec_boundary)
 title("Fischer's Linear Discriminant Classifier")
 legend('Location', 'northeastoutside')
 
-frac_correctly_classified = classification_performance(data1, ...
+% Computing fraction correctly classified by the classifier
+frac_correctly_classified_fischer = classification_performance(data1, ...
     data2, x_dec_boundary, y_dec_boundary, w_hat_fisch)
 
-%% c)
-lambdas = 0:0.05:1;
+%% c) Regularized Fischer's discriminant Classifier
+lambdas = 0:0.05:1; % weighting of covariance matrices
 runs = 1e3;
 
 train_size = floor(0.95 * size(data1, 1));
 frac_correctly_classified_cv = zeros(length(lambdas), runs);
+
 for run = 1:runs
     for ll = 1:length(lambdas)
         lambda = lambdas(ll);
         
+        % Splitting train and test sets
         train1_indices = randperm(size(data1, 1), train_size);
         test1_indices = setdiff(1:size(data1, 1), train1_indices);
         train2_indices = randperm(size(data2, 1), train_size);
@@ -354,34 +687,34 @@ for run = 1:runs
         train2 = data2(train2_indices, :);
         test1 = data1(test1_indices, :);
         test2 = data2(test2_indices, :);
-    
+        
+        % Computing the discriminant vector for the regularized Fischer
         mean_train1 = mean(train1);
         mean_train2 = mean(train2);
         w = mean_train2 - mean_train1;
         w = w./sqrt(sum(w.^2));
-    
         midpoint_train = (mean_train1 + mean_train2)/2;
     
-        %cov_train1 = (train1' * train1)./(size(train1, 1) - 1);
-        %cov_train2 = (train2' * train2)./(size(train2, 1) - 1);
         cov_train1 = cov(train1); cov_train2 = cov(train2);
         cov_combined = (cov_train1 + cov_train2)/2;
-    
         cov_estimated = (1 - lambda) .* cov_combined + lambda .* eye(2);
-        w_hat_estim = cov_estimated \ w';% \ cov_estimated;
+        w_hat_estim = cov_estimated \ w';
     
-        x_dec_boundary = xlim;
+        x_dec_boundary = xlim; % x limits of the graph
+        % Computing decision boundary given w_hat 
         y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_train, ...
             w_hat_estim);
-    
+        
+        % Computing fraction correctly classified by the classifier
         frac_correctly_classified_cv(ll, run) = classification_performance(test1, ...
             test2, x_dec_boundary, y_dec_boundary, w_hat_estim);
     end
 end
 
+% Computing mean and error of correctly classified datapoints over runs
 frac_correctly_classified_mean = mean(frac_correctly_classified_cv, 2);
 frac_correctly_classified_stderror = std(frac_correctly_classified_cv, 0, 2)...
-    ./sqrt(size(frac_correctly_classified_mean, 1));
+    ./sqrt(size(frac_correctly_classified_mean, 2));
 
 figure()
 errorbar(lambdas, frac_correctly_classified_mean, frac_correctly_classified_stderror)
@@ -389,65 +722,197 @@ xlabel('\lambda')
 ylabel('proportion correctly classified')
 title("Fischer's Linear Discriminant Classifier cross-validation")
 
-%% d)
+%%
+% We can see that there are huge errorbars across the range of lambdas when
+% checking for accuracy of classification. This is because of the
+% choice of 95-5 classification for a small dataset of size 140. For
+% smaller datasets, it is essential for the test set to be representative
+% of the training set. Hence an ideal way to test the classifiers would be
+% have a larger test size. Running the same approach with a 60-40
+% classification: 
+%%
+train_size = floor(0.6 * size(data1, 1));
+frac_correctly_classified_cv = zeros(length(lambdas), runs);
+
+for run = 1:runs
+    for ll = 1:length(lambdas)
+        lambda = lambdas(ll);
+        
+        % Splitting train and test sets
+        train1_indices = randperm(size(data1, 1), train_size);
+        test1_indices = setdiff(1:size(data1, 1), train1_indices);
+        train2_indices = randperm(size(data2, 1), train_size);
+        test2_indices = setdiff(1:size(data2, 1), train2_indices);
+        
+        train1 = data1(train1_indices, :);
+        train2 = data2(train2_indices, :);
+        test1 = data1(test1_indices, :);
+        test2 = data2(test2_indices, :);
+        
+        % Computing the discriminant vector for the regularized Fischer
+        mean_train1 = mean(train1);
+        mean_train2 = mean(train2);
+        w = mean_train2 - mean_train1;
+        w = w./sqrt(sum(w.^2));
+        midpoint_train = (mean_train1 + mean_train2)/2;
+    
+        cov_train1 = cov(train1); cov_train2 = cov(train2);
+        cov_combined = (cov_train1 + cov_train2)/2;
+        cov_estimated = (1 - lambda) .* cov_combined + lambda .* eye(2);
+        w_hat_estim = cov_estimated \ w';
+    
+        x_dec_boundary = xlim; % x limits of the graph
+        % Computing decision boundary given w_hat 
+        y_dec_boundary = decision_boundary(x_dec_boundary, midpoint_train, ...
+            w_hat_estim);
+        
+        % Computing fraction correctly classified by the classifier
+        frac_correctly_classified_cv(ll, run) = classification_performance(test1, ...
+            test2, x_dec_boundary, y_dec_boundary, w_hat_estim);
+    end
+end
+
+% Computing mean and error of correctly classified datapoints over runs
+frac_correctly_classified_mean = mean(frac_correctly_classified_cv, 2);
+frac_correctly_classified_stderror = std(frac_correctly_classified_cv, 0, 2)...
+    ./sqrt(size(frac_correctly_classified_mean, 2));
+
+figure()
+errorbar(lambdas, frac_correctly_classified_mean, frac_correctly_classified_stderror)
+xlabel('\lambda')
+ylabel('proportion correctly classified')
+title("Fischer's Linear Discriminant Classifier cross-validation")
+
+%%
+% We can now see that there is a trend in the performance of the classifier
+% with an increase in lambda. Specifically, we see that there is a decrease
+% in classification accuracy as a function of lambda. This suggests that a
+% a Fischer's Linear Discriminant classifier is better than a prototype
+% classifier for this dataset.
+
+%% d) Quadratic Classifier
+% For QDA, the covariances of the two datasets are not assumed to be the
+% same, thus the equation of the decision boundary becomes:
+%%
+% $$\frac{1}{\sqrt{(2\pi)^d |\Sigma_1 |}} e^{-\frac{(x - \mu_1)^T
+% \Sigma_1^{-1} (x - \mu_1)}{2}} p_1 = \frac{1}{\sqrt{(2\pi)^d |\Sigma_2 |}} 
+% e^{-\frac{(x - \mu_2)^T \Sigma_2 ^{-1} (x - \mu_2)}{2}} p_2 $$
+%%
+% Taking natural logarithms on both sides, we get:
+%%
+% $$ -\frac{d}{2}ln(2\pi ) - \frac{1}{2} ln(|\Sigma_1 |) - \frac{1}{2} (x -
+% \mu_1)^T \Sigma_1^{-1} (x - \mu_1) + ln(p_1) = -\frac{d}{2}ln(2\pi ) - 
+% \frac{1}{2} ln(|\Sigma_2 |) - \frac{1}{2} (x - \mu_2)^T \Sigma_2^{-1} 
+% (x - \mu_2) + ln(p_2) $$
+%%
+% For the decision boundary, we have $$p_1 = p_2 $$ and multiplying both
+% sides by 2, we get:
+%%
+% $$ ln(|\Sigma_1 |) + (x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1) = 
+% ln(|\Sigma_2 |) + (x - \mu_2)^T \Sigma_2^{-1} (x - \mu_2) $$
+%%
+% Rearranging terms, we get:
+%%
+% $$ (x - \mu_1)^T \Sigma_1^{-1} (x - \mu_1) - (x - \mu_2)^T \Sigma_2^{-1}
+% (x - \mu_2) = ln(|\Sigma_2 |) - ln(|\Sigma_1 |)  $$
+%%
+% Therefore,
+%%
+% $$ (x^T \Sigma_1^{-1} x - \mu_1^T \Sigma_1^{-1} x - x^T \Sigma_1^{-1} \mu_1 + \mu_1^T \Sigma_1^{-1} \mu_1) - 
+% (x^T \Sigma_2^{-1} x - \mu_2^T \Sigma_2^{-1} x - x^T \Sigma_2^{-1} \mu_2 + \mu_2^T \Sigma_2^{-1} \mu_2) 
+% = ln(\frac{|\Sigma_2 |}{|\Sigma_1 |})  $$
+%%
+% Therefore,
+%%
+% $$ x^T (\Sigma_1 - \Sigma_2)^{-1} x - 2(\Sigma_1^{-1} \mu_1 - \Sigma_2^{-1} \mu_2)^T x + 
+% (\mu_1^T \Sigma_1^{-1} \mu_1) - \mu_2^T \Sigma_2^{-1} \mu_2) - ln(\frac{|\Sigma_2 |}{|\Sigma_1 |}) = 0  $$
+%%
+% Therefore, the decision is Class 1 if:
+%% 
+% $ x^T (\Sigma_1 - \Sigma_2)^{-1} x - 2(\Sigma_1^{-1} \mu_1 - \Sigma_2^{-1} \mu_2)^T x + 
+% (\mu_1^T \Sigma_1^{-1} \mu_1) - \mu_2^T \Sigma_2^{-1} \mu_2) - ln(\frac{|\Sigma_2 |}{|\Sigma_1 |}) 
+% - 2 ln(\frac{p_1}{p_2}) < 0  $$
+%%
+% And the decision is Class 2, otherwise.
+%%
 figure();
 scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
 hold on;
 scatter(data2(:, 1), data2(:, 2), 'ro', 'DisplayName', 'cat vocalizations');
 
+% Creating XY a matrix of co-ordinates of datapoints that span the space of
+% the graph
 xx_ = xlim;
 yy_ = ylim;
 pps = 4*1e2;
 xx = linspace(xx_(1), xx_(2), pps);
-yy = linspace(yy_(1), yy_(2), pps);
+yy = linspace(xx_(1), xx_(2), pps);
 [X, Y] = meshgrid(xx, yy);
 XY = [X(:) Y(:)];
+
+% Computing likelihood for each datapoint coming from a given distribution
 p1 = mvnpdf(XY, mean_data1, cov_data1);
 p2 = mvnpdf(XY, mean_data2, cov_data2);
 diff_p = p1 - p2;
 scatter(XY(:, 1), XY(:, 2), [], diff_p, 'MarkerFaceAlpha', 0.2, ...
-    'MarkerEdgeAlpha', 0.2)
+     'MarkerEdgeAlpha', 0.2)
 
-dec_x = zeros(length(diff_p), 1);
-dec_y = zeros(length(diff_p), 1);
-for i = 1:length(diff_p)
-    if diff_p(i) <= 0.01
-        dec_x(i) = XY(i, 1);
-        dec_y(i) = XY(i, 2);
-    end
+p1_Quadratic = reshape(p1,length(yy),length(xx));
+p2_Quadratic = reshape(p2,length(yy),length(xx));
+
+idx_Ygrid = zeros(1,length(xx));
+
+% The boundary condition is when p1_Quadratic = p2_Quadratic. However, to
+% avoid underflow error we are instead equating log(p1_Quadratic) =
+% log(p2_Quadratic).
+logDiff = (log(p1_Quadratic) - log(p2_Quadratic)) < 1e-3;
+
+% Next we compute the decision boundary by checking for the minimum value
+% of logDiff that equates to 0 in the xy plane. The first datapoint is
+% selected as values below that indicate that datapoint belongs to the
+% cluster 2.
+for kk = 1:length(xx)
+    idx_Ygrid(kk) = length(yy) - find(flipud(logDiff(:,kk)) == 0,1);
 end
-plot(dec_x, dec_y, 'k*')
 
+plot(xx,yy(idx_Ygrid),'k-','LineWidth',2, 'DisplayName', 'Boundary');
+scatter(data1(:, 1), data1(:, 2), 'b*', 'DisplayName', 'dog vocalizations');
+scatter(data2(:, 1), data2(:, 2), 'ro', 'DisplayName', 'cat vocalizations');
+plot(mean_data1(1),mean_data1(2),'b+','LineWidth',3);
+plot(mean_data2(1),mean_data2(2),'r+','LineWidth',3); hold off;
+legend()
 %%
+% Next we compute the probability of each datapoint coming from a Gaussian
+% distribution given by the mean and covariance of either cluster. The
+% quadratic classifier will call the cluster based on whether the
+% probability of one is greater than the other.
 p1_data1 = mvnpdf(data1, mean_data1, cov_data1);
 p2_data1 = mvnpdf(data1, mean_data2, cov_data2);
-p1_data2 = mvnpdf(data2, mean_data1, cov_data2);
+p1_data2 = mvnpdf(data2, mean_data1, cov_data1);
 p2_data2 = mvnpdf(data2, mean_data2, cov_data2);
 
-correct_data1 = sum(p1_data1 > p2_data1);
-correct_data2 = sum(p2_data2 > p1_data2);
+correct_data1 = sum(p1_data1 >= p2_data1)
+correct_data2 = sum(p2_data2 >= p1_data2)
 
-frac_correctly_classified = (correct_data1 + correct_data2)./...
-    (2 * size(data1, 1))
+frac_correctly_classified_qda_ = (correct_data1 + correct_data2)./...
+     (2 * size(data1, 1))
+
 %%
+% We can see that the QDA performs better than prototype, LDA, or
+% regularized LDA for this dataset. However, this might not always be the
+% case. For datasets that have equal covariances or a scalar multiple of
+% identity as a covariance matrix, it makes sense to use simpler
+% classifiers like LDA or prototype as they have fewer parameters to
+% optimize on and hence the chances of overfitting would be less.
 
-function samples = nRandn(mean, cov, num)
-    % The function draws samples from an N-dimensional normal distribution.
-    % It does so my first drawing samples from an N-dimensional normal
-    % distribution of 0 mean and identity covariance matrix. It then
-    % transforms the data using a matrix M to have the covariance "cov".
-    % Lastly, it translates the data to have the mean "mean".
-
-    N = length(mean);
-    [V, D] = eig(cov);  % Eigen value decomposition of covariance matrix
-    M = V * sqrt(D); % Transformation matrix is given as product of V and square-root of eigenvalues
-    samp = randn(num, N); % Drawing samples from N-dimensional normal distribution with mean 0 and identity covariance matrix
-    samples = repmat(mean, num , 1) + samp * M';
-end
-
+%% Functions
 function y_dec_boundary = decision_boundary(x_dec_boundary, ...
     midpoint_data, w_hat)
-
+    % The function computes a decision boundary given the discriminant
+    % vector. It uses the information that decision boundary is
+    % perpendicular to the discriminant vector and that it passes through
+    % the midpoint between the means of two datasets. The equation of line
+    % can then be used to compute the decision boundary.
     dec_boundary_slope = -(w_hat(1))/(w_hat(2));
     y_dec_boundary(1) = midpoint_data(2) + dec_boundary_slope * ...
         (x_dec_boundary(1) - midpoint_data(1));
@@ -457,16 +922,62 @@ end
 
 function frac_correctly_classified = classification_performance(data1, ...
     data2, x_dec_boundary, y_dec_boundary, w_hat)
-    
+    % The function computes the fraction of datapoints that are correctly
+    % classified by the given linear classifier. It computes the expected
+    % y-value given x-value of each datapoint were that datapoint to lie on
+    % the decision boundary. It then uses the predicted y-value and the
+    % actual y-value to decide the class of the datapoint and checks it with
+    % the true class of the datapoint.
+
     dec_boundary_slope = -(w_hat(1))/(w_hat(2));
+    
     x_ones = ones(size(data1(:, 1))) .* x_dec_boundary(1);
     y_ones = ones(size(data1(:, 1))) .* y_dec_boundary(1);
+    
     y_data1 = y_ones + dec_boundary_slope * (data1(:, 1) - x_ones);
     y_data2 = y_ones + dec_boundary_slope * (data2(:, 1) - x_ones);
+    
     correct_data1 = sum(y_data1 >= data1(:, 2));
     correct_data2 = sum(y_data2 <= data2(:, 2));
+    
     frac_correctly_classified = (correct_data1 + correct_data2)./...
         (2 * size(data1, 1));
+end
+
+function count_correct = frac_correctly_classified_qda(data, cov1, cov2, mean1, mean2, ...
+    p1, p2, data_num)
+    % An attempt was made to compute the correctly classified datapoints using the
+    % closed-form solution. No clue why it doesn't work.
+    decs = zeros(size(data, 1), 1);
+    for ss = 1:size(data, 1)
+        x = data(ss, :);
+        decs(ss) = x * inv(cov1 - cov2) * x' - 2 * (inv(cov1) * mean1' - ...
+            inv(cov2) * mean2')' * x' + ((mean1 * inv(cov1) * mean1') - (mean2 * ...
+            inv(cov2) * mean2')) - log(det(cov2)./det(cov1)) - 2 * log(p1(ss)./p2(ss));
+    end
+
+    if data_num == 1
+        count_correct = sum(decs < 0);
+    else
+        count_correct = sum(decs > 0);
+    end
+end
+
+function boundary = dec_bound_qda(XY, cov1, cov2, mean1, mean2)
+    % An attempt was made to compute the decision boundary using the
+    % closed-form solution. No clue why it doesn't work.
+    x = []; y = [];
+    for ss = 1:size(XY, 1)
+        xy = XY(ss, :);
+        decs = xy * inv(cov1 - cov2) * xy' - 2 * (inv(cov1) * mean1' - ...
+            inv(cov2) * mean2')' * xy' + ((mean1 * inv(cov1) * mean1') - (mean2 * ...
+            inv(cov2) * mean2')) - log(det(cov2)./det(cov1));
+        if decs < 1e-2
+            x = [x, xy(2)];
+            y = [y, xy(1)];
+        end
+    end
+    boundary = [x(:) y(:)];
 end
 ##### SOURCE END #####
 --></body></html>
